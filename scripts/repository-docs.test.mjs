@@ -130,6 +130,17 @@ describe('repository documentation', () => {
     }
   })
 
+  it('describes the approved ecosystem identity with the current exact tagline', () => {
+    const audit = readRepositoryFile('docs/audits/final-audit.md')
+
+    expect(audit).toContain(
+      'The umbrella “Focused primitives and tools for the web.” positioning is',
+    )
+    expect(audit).not.toContain(
+      'The umbrella “Production-grade primitives and tools for the web” positioning is',
+    )
+  })
+
   it('records exact recommended GitHub repository metadata', () => {
     const checklist = readRepositoryFile('docs/LAUNCH_CHECKLIST.md')
 

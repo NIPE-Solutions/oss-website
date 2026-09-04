@@ -49,6 +49,15 @@ describe('homepage', () => {
     const directory = screen.getByRole('region', { name: 'Projects' })
 
     expect(
+      within(directory).getByText(
+        'Public projects and their canonical technical references, grouped by the problem they address.',
+      ),
+    ).toBeInTheDocument()
+    expect(
+      within(directory).queryByText(/released packages/i),
+    ).not.toBeInTheDocument()
+
+    expect(
       within(directory)
         .getAllByRole('heading', { level: 3 })
         .map(({ textContent }) => textContent),

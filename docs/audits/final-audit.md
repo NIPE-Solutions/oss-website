@@ -128,9 +128,9 @@ duplicating full project documentation.
 
 ### Skeptical technical buyer
 
-The umbrella “Production-grade primitives and tools for the web” positioning is
-the approved site identity, not a blanket maturity claim. The codemod is visibly
-marked Prerelease/beta and explicitly disclaims production-ready coverage.
+The umbrella “Focused primitives and tools for the web.” positioning is the
+approved site identity and does not make a blanket maturity claim. The codemod
+is visibly marked Prerelease/beta and explicitly disclaims production-ready coverage.
 Readonly View does not describe its source as immutable, and the codemod does
 not imply complete automatic migration. Every substantive capability and
 limitation has a linked source.
