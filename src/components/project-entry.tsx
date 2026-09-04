@@ -18,6 +18,7 @@ const statusLabels = {
 export function ProjectEntry({ project }: ProjectEntryProps) {
   const headingId = `${project.slug}-title`
   const style = { '--project-accent': project.accent } as CSSProperties
+  const canonicalDestination = project.documentation ?? project.repository
 
   return (
     <article
@@ -28,7 +29,9 @@ export function ProjectEntry({ project }: ProjectEntryProps) {
       <div className="project-entry__content">
         <div className="project-entry__heading">
           <h4 id={headingId}>
-            <a href={`/projects/${project.slug}`}>{project.name}</a>
+            <ExternalLink href={canonicalDestination}>
+              {project.name}
+            </ExternalLink>
           </h4>
           <span className="project-status">{statusLabels[project.status]}</span>
         </div>
