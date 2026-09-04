@@ -1,117 +1,107 @@
 # Production deployment record
 
 **Recorded:** 2026-09-04 (Europe/Vienna).
-**Reviewed source commit:** [`6ecb5d1`](https://github.com/NIPE-Solutions/oss-website/commit/6ecb5d1)
-(`fix: resolve final publication review findings`) on `main`.
+
+**Reviewed source commit:** [`b017acc`](https://github.com/NIPE-Solutions/oss-website/commit/b017acc)
+(`fix: align launch copy with public lifecycle`) on `main`.
+
+## Launch readiness
+
+**NOT READY.** The reviewed release is deployed and the application, preview
+isolation, production routes, project documentation domains, and GitHub
+repositories passed their recorded checks. The prominent NIPE Solutions
+destination remains a launch blocker: both `nipesolutions.com` and
+`www.nipesolutions.com` fail TLS hostname validation (`curl` code 60; verify
+result 1). npm package pages also remain a manual browser gate because their
+web frontend rejected the automated checker with HTTP 403.
+
+Owner/legal review and the manual GitHub settings in the
+[launch checklist](../LAUNCH_CHECKLIST.md) remain open. This record makes no
+legal or compliance claim.
 
 ## Repository and continuous integration
 
 - The reviewed commit was pushed to `NIPE-Solutions/oss-website` on `main`.
-- The production CI workflow succeeded: [GitHub Actions run 33912004228](https://github.com/NIPE-Solutions/oss-website/actions/runs/33912004228).
+- [GitHub Actions run 33920948789](https://github.com/NIPE-Solutions/oss-website/actions/runs/33920948789)
+  succeeded. Its quality job ran `npm run check`, including 107 tests and the
+  production build; its browser job passed 66 E2E tests.
 
-## Vercel project and deployments
+## Current Vercel deployments
 
 | Item                      | Recorded value                                            |
 | ------------------------- | --------------------------------------------------------- |
 | Team / project            | `nipe-solutions` / `oss-website`                          |
 | Project ID                | `prj_OvJwAMRsJx6c37q34AjqwGalfSNM`                        |
-| Production deployment     | `dpl_C2Vuh2bmJmEPX9TQbdrGg1US2eTc`                        |
-| Production deployment URL | <https://oss-website-ny7qhn9zn-nipe-solutions.vercel.app> |
-| Production alias          | <https://oss-website-vert.vercel.app>                     |
-| Preview deployment        | `dpl_Gq5NC1H86J7tyX68d75AUmrMHtRd`                        |
-| Preview URL               | <https://oss-website-ji0g4iu81-nipe-solutions.vercel.app> |
+| Protected preview         | `dpl_F1dCxPNcYgNv3SBJpggHs9jS4VfA`                        |
+| Preview URL               | <https://oss-website-1lcxgarel-nipe-solutions.vercel.app> |
+| Production deployment     | `dpl_GF9ovWh1XLztDHNgSL4xp28bCSXF`                        |
+| Production deployment URL | <https://oss-website-fxzhx1tvx-nipe-solutions.vercel.app> |
+| Production custom domain  | <https://opensource.nipesolutions.com>                    |
 
-The preview is deployment-protected. An authenticated inspection confirmed its
-preview isolation: `noindex, nofollow`, production canonical URLs, and
-`Disallow` robots directives. The reviewed commit was also deployed to the
-production alias with the Vercel CLI.
+The protected preview was created at `2026-09-04T21:23:11Z` and verified
+before production. Authenticated checks confirmed HTTP 200 for intended routes,
+`X-Robots-Tag: noindex`, `noindex, nofollow` page metadata, `Disallow: /` in
+robots, production canonical URLs, expected security headers, and the custom
+404 response.
 
-## Deployment timeline
-
-| Timestamp                            | Evidence                                                                    |
-| ------------------------------------ | --------------------------------------------------------------------------- |
-| 2026-09-04T19:38:34Z (21:38:34 CEST) | Production deployment created.                                              |
-| 2026-09-04T19:42:41Z                 | DNS and Vercel domain configuration verified; first HTTP response received. |
-| 2026-09-04T19:44:09Z                 | HTTPS/TLS issuance and response security headers verified.                  |
-| 2026-09-04T19:44:44Z                 | Protected preview deployment created.                                       |
-| 2026-09-04T19:49:49Z                 | Final live production recheck completed.                                    |
-
-## Process deviation: production before preview
-
-The release plan called for preview verification before attaching the custom
-domain. In this release, the Vercel CLI output reported that it automatically
-assigned the project's first deployment to production. Consequently, the
-custom domain was attached before the separate protected preview was created.
-
-No unreviewed code was exposed: the production deployment used reviewed commit
-[`6ecb5d1`](https://github.com/NIPE-Solutions/oss-website/commit/6ecb5d1)
-after local quality-gate and full-branch review. The later protected preview
-still verified the required `noindex, nofollow`, production-canonical, and
-`Disallow` robots behavior. No pre-domain preview was created or verified, so
-this record does not invent a pre-domain preview time.
-
-This is a process deviation and a known deployment-process limitation. Future
-releases should explicitly confirm the Vercel CLI deployment mode and complete
-protected-preview verification before attaching a custom domain.
+The production deployment was created at `2026-09-04T21:25:49Z`. Its aliases
+include `https://opensource.nipesolutions.com`. The final live recheck completed
+at `2026-09-04T21:27:00Z`. This release followed the required preview-first
+sequence.
 
 ## Custom domain and DNS
 
-- Production domain: <https://opensource.nipesolutions.com>
-- The domain is attached to and verified by the Vercel project.
-- The narrow GoDaddy change was the exact Vercel record:
+- The production domain is attached to and verified by the Vercel project.
+- DNS remained unchanged during this polish pass:
 
   | Type    | Name         | Target                                |
   | ------- | ------------ | ------------------------------------- |
   | `CNAME` | `opensource` | `c9997db25044abeb.vercel-dns-017.com` |
 
-- Authoritative DNS was confirmed through `ns67`; no unrelated apex, mail,
-  verification, or existing project-subdomain record was changed.
+- No GoDaddy record was changed during this release.
 
-## Post-deployment verification
+## Production verification
 
-The following checks passed after the certificate issued:
+The final live recheck confirmed:
 
-- `https://opensource.nipesolutions.com` returned `200`; HTTP redirected to
-  HTTPS with `308`.
-- HSTS and the expected response security headers were present.
-- Production canonical metadata identified `https://opensource.nipesolutions.com`.
+- HTTP redirects to HTTPS.
+- The root, all public project pages, Contributing, Security, Impressum,
+  Privacy, `robots.txt`, `sitemap.xml`, and OpenGraph image routes return HTTP 200.
+- An unknown route returns HTTP 404.
+- Production pages permit indexing and use
+  `https://opensource.nipesolutions.com` canonicals.
+- Expected CSP, HSTS, `X-Content-Type-Options`, `Referrer-Policy`,
+  `Permissions-Policy`, and framing protections are present.
+- OpenGraph image responses use `image/png`.
+- The React Spring Bottom Sheet and Readonly View documentation domains and all
+  configured GitHub repositories return HTTP 200.
 
-The final live recheck at `2026-09-04T19:49:49Z` recorded these route results:
+The responsive, theme, keyboard, focus, contrast, and accessibility inspection
+evidence is recorded in the
+[launch-polish final audit](./launch-polish-final.md).
 
-| Checked URL or path                                    | Result     |
-| ------------------------------------------------------ | ---------- |
-| `https://opensource.nipesolutions.com/`                | HTTP `200` |
-| `/projects/react-spring-bottom-sheet`                  | HTTP `200` |
-| `/projects/readonly-view`                              | HTTP `200` |
-| `/projects/flex-layout-codemod`                        | HTTP `200` |
-| `/impressum`                                           | HTTP `200` |
-| `/privacy`                                             | HTTP `200` |
-| `/security`                                            | HTTP `200` |
-| `/robots.txt`                                          | HTTP `200` |
-| `/sitemap.xml`                                         | HTTP `200` |
-| `/does-not-exist`                                      | HTTP `404` |
-| `https://react-spring-bottom-sheet.nipesolutions.com/` | HTTP `200` |
-| `https://readonly-view.nipesolutions.com/`             | HTTP `200` |
+## Open gates and external blocker
 
-## Known operational limitation
+- `https://nipesolutions.com` and `https://www.nipesolutions.com` both fail TLS
+  hostname validation (`curl` code 60; verify result 1). The cross-domain gate
+  must remain open until that external host is corrected or the public link is
+  removed and production is rechecked.
+- The three npm package pages require verification in a normal browser; earlier
+  automation received HTTP 403 from npm's web frontend.
+- GitHub About description, website, topics, and the vulnerability-reporting
+  and Discussions decisions remain manual owner settings.
+- Final owner/legal review remains outstanding.
 
-Vercel Git auto-connect was not enabled because the Vercel GitHub integration
-does not currently have permission for this repository. This does not block
-the authenticated CLI workflow: preview and production deployments succeeded.
+## Historical deployment context
 
-When the repository owner has intentionally granted that integration the
-needed repository access, reconnect it from the linked project with:
+The original 2026-09-04 deployment used reviewed commit `6ecb5d1`, production
+deployment `dpl_C2Vuh2bmJmEPX9TQbdrGg1US2eTc`, and protected preview
+`dpl_Gq5NC1H86J7tyX68d75AUmrMHtRd`. That first deployment established the
+Vercel project and custom-domain DNS but attached production before its
+separate preview was inspected. The current `b017acc` release supersedes that
+deployment evidence and completed preview verification before production.
 
-```bash
-vercel git connect
-```
-
-Do not change GitHub or Vercel integration permissions as part of routine
-deployments; that is an owner-controlled follow-up.
-
-## Legal review status
-
-The live legal routes and privacy disclosures were verified as reachable, but
-this deployment record makes no legal or compliance claim. Professional
-owner/legal review remains recommended, particularly after a material change
-to the operator, hosting, or data processing.
+Vercel Git auto-connect remains unavailable because the Vercel GitHub
+integration does not have repository permission. Authenticated CLI preview and
+production deployments are working. Granting integration access and running
+`vercel git connect` is an optional owner-controlled follow-up.
