@@ -71,6 +71,9 @@ describe('page metadata', () => {
       default: 'NIPE Open Source',
       template: '%s | NIPE Open Source',
     })
+    expect(homeMetadata.description).toBe(
+      'Focused primitives and tools for the web.',
+    )
     expect(routeMetadata.slice(1).map(({ title }) => title)).toEqual([
       'Contributing',
       'Security',
@@ -176,7 +179,7 @@ describe('structured data', () => {
       '@type': 'WebSite',
       name: 'NIPE Open Source',
       url: 'https://opensource.nipesolutions.com/',
-      description: 'Production-grade primitives and tools for the web.',
+      description: 'Focused primitives and tools for the web.',
     })
     expect(createOrganizationStructuredData()).toEqual({
       '@context': 'https://schema.org',
@@ -223,7 +226,7 @@ describe('structured data', () => {
 describe('Open Graph images', () => {
   it('provides a restrained 1200 by 630 site image with descriptive metadata', () => {
     expect(rootOpenGraphAlt).toBe(
-      'NIPE Open Source — production-grade primitives and tools for the web',
+      'NIPE Open Source — Focused primitives and tools for the web.',
     )
     expect(rootOpenGraphSize).toEqual({ width: 1200, height: 630 })
     expect(rootOpenGraphContentType).toBe('image/png')

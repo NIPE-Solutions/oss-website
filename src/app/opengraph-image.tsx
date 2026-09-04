@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
+import { siteConfig } from '@/lib/site'
 
-export const alt =
-  'NIPE Open Source — production-grade primitives and tools for the web'
+export const alt = `${siteConfig.title} — ${siteConfig.description}`
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -60,7 +60,7 @@ export default function OpenGraphImage() {
               letterSpacing: '-0.045em',
             }}
           >
-            Production-grade primitives and tools for the web.
+            {siteConfig.description}
           </div>
           <div
             style={{
