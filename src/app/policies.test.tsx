@@ -6,7 +6,6 @@ import ImpressumPage from '@/app/impressum/page'
 import NotFound, { metadata as notFoundMetadata } from '@/app/not-found'
 import PrivacyPage from '@/app/privacy/page'
 import SecurityPage from '@/app/security/page'
-import { publishedProjects } from '@/content/projects'
 
 afterEach(cleanup)
 
@@ -132,60 +131,69 @@ describe('project support routes', () => {
     ).toHaveAttribute('href', 'mailto:office@nipesolutions.com')
   })
 
-  it('routes every published project to its repository contribution guide', () => {
+  it('renders only explicitly configured contribution support destinations', () => {
     render(<ContributingPage />)
 
     const directory = screen.getByRole('list', {
-      name: 'Project contribution guides',
+      name: 'Project contribution routes',
     })
 
-    for (const project of publishedProjects) {
-      expect(
-        within(directory).getByRole('link', {
-          name: `${project.name} contribution guide`,
-        }),
-      ).toHaveAttribute(
-        'href',
-        `${project.repository}/blob/main/CONTRIBUTING.md`,
-      )
-    }
+    expect(
+      within(directory).queryByRole('link', {
+        name: 'React Spring Bottom Sheet issues',
+      }),
+    ).not.toBeInTheDocument()
+    expect(
+      within(directory).getByRole('link', {
+        name: 'React Spring Bottom Sheet documentation',
+      }),
+    ).toHaveAttribute(
+      'href',
+      'https://react-spring-bottom-sheet.nipesolutions.com',
+    )
+    expect(
+      within(directory).getByRole('link', { name: 'Readonly View issues' }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/NIPE-Solutions/readonly-view/issues',
+    )
+    expect(
+      within(directory).getByRole('link', {
+        name: 'Angular Flex-Layout Codemod documentation',
+      }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/docs/SUPPORT.md',
+    )
+    expect(
+      within(directory).queryByRole('link', { name: /discussions/i }),
+    ).not.toBeInTheDocument()
+    expect(
+      within(directory).queryByText('React Swipe Actions'),
+    ).not.toBeInTheDocument()
   })
 
   it('uses only verified project-specific security destinations', () => {
     render(<SecurityPage />)
 
     expect(
-      screen.getByRole('link', {
-        name: 'React Spring Bottom Sheet security overview',
-      }),
-    ).toHaveAttribute(
-      'href',
-      'https://github.com/NIPE-Solutions/react-spring-bottom-sheet/security',
-    )
+      screen.queryByText('React Spring Bottom Sheet'),
+    ).not.toBeInTheDocument()
     expect(
-      screen.getByRole('link', { name: 'Readonly View security policy' }),
+      screen.getByRole('link', { name: 'Readonly View security' }),
     ).toHaveAttribute(
       'href',
       'https://github.com/NIPE-Solutions/readonly-view/security/policy',
     )
     expect(
       screen.getByRole('link', {
-        name: 'Angular Flex-Layout Codemod private vulnerability report',
+        name: 'Angular Flex-Layout Codemod security',
       }),
     ).toHaveAttribute(
       'href',
       'https://github.com/NIPE-Solutions/flex-layout-migrator/security/advisories/new',
     )
-    expect(
-      screen.getByText(
-        /No verified private reporting route or published policy/,
-      ),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        /Private vulnerability reporting is not currently enabled/,
-      ),
-    ).toBeInTheDocument()
+    expect(screen.queryByText('React Swipe Actions')).not.toBeInTheDocument()
   })
 })
 

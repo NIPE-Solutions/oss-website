@@ -42,18 +42,23 @@ export default function SecurityPage() {
           listed for the affected project.
         </p>
         <ul className="support-directory" aria-label="Project security routes">
-          {projectSupportRoutes.map(({ project, security, securityUrl }) => (
-            <li key={project.slug}>
-              <h3>{project.name}</h3>
-              <p>{security.note}</p>
-              <ExternalLink
-                href={securityUrl}
-                aria-label={`${project.name} ${security.label}`}
-              >
-                {security.label[0].toUpperCase() + security.label.slice(1)}
-              </ExternalLink>
-            </li>
-          ))}
+          {projectSupportRoutes.map(({ project, support }) =>
+            support.security ? (
+              <li key={project.slug}>
+                <h3>{project.name}</h3>
+                <p>
+                  Review the project’s security instructions before sharing
+                  sensitive details.
+                </p>
+                <ExternalLink
+                  href={support.security}
+                  aria-label={`${project.name} security`}
+                >
+                  Security
+                </ExternalLink>
+              </li>
+            ) : null,
+          )}
         </ul>
       </section>
     </LegalPage>

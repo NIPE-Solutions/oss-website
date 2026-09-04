@@ -2,7 +2,7 @@ import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { ProjectDetail } from '@/components/project-detail'
-import { publishedProjects } from '@/content/projects'
+import { publicProjects } from '@/content/projects'
 import Page, { generateMetadata, generateStaticParams } from './[slug]/page'
 
 afterEach(cleanup)
@@ -18,7 +18,7 @@ describe('project detail routes', () => {
 
   it('generates unique factual metadata and production canonicals', async () => {
     const metadata = await Promise.all(
-      publishedProjects.map(({ slug }) =>
+      publicProjects.map(({ slug }) =>
         generateMetadata({ params: Promise.resolve({ slug }) }),
       ),
     )
@@ -54,7 +54,7 @@ describe('project detail routes', () => {
     ])
   })
 
-  it.each(publishedProjects)(
+  it.each(publicProjects)(
     'renders the registry-backed overview, status, evidence, scope, and actions for $name',
     async (project) => {
       render(await Page({ params: Promise.resolve({ slug: project.slug }) }))
@@ -69,26 +69,34 @@ describe('project detail routes', () => {
       ).toBeInTheDocument()
       const purpose = screen.getByRole('region', { name: 'Why it exists' })
       expect(
-        within(purpose).getByText(project.purpose.detail),
+        within(purpose).getByText(project.purpose.description),
       ).toBeInTheDocument()
       expect(
         within(purpose).getByRole('link', { name: 'Evidence for purpose' }),
-      ).toHaveAttribute('href', project.purpose.verifiedFrom)
+      ).toHaveAttribute('href', project.purpose.source.href)
       expect(
-        screen.getByText(project.status === 'stable' ? 'Stable' : 'Prerelease'),
+        screen.getByText(
+          project.status === 'stable'
+            ? 'Stable'
+            : project.status === 'beta'
+              ? 'Beta'
+              : project.status,
+        ),
       ).toBeInTheDocument()
 
       const claims = screen.getByRole('region', { name: 'Verified claims' })
       for (const claim of project.claims.filter(
         ({ kind }) => kind === 'capability',
       )) {
-        expect(within(claims).getByText(claim.label)).toBeInTheDocument()
-        expect(within(claims).getByText(claim.detail)).toBeInTheDocument()
+        expect(within(claims).getByText(claim.title)).toBeInTheDocument()
+        expect(
+          within(claims).getByText(claim.description ?? ''),
+        ).toBeInTheDocument()
         expect(
           within(claims).getByRole('link', {
-            name: `Evidence for ${claim.label}`,
+            name: `Evidence for ${claim.title}`,
           }),
-        ).toHaveAttribute('href', claim.verifiedFrom)
+        ).toHaveAttribute('href', claim.source.href)
       }
 
       const limitations = screen.getByRole('region', {
@@ -97,8 +105,10 @@ describe('project detail routes', () => {
       for (const claim of project.claims.filter(
         ({ kind }) => kind === 'limitation',
       )) {
-        expect(within(limitations).getByText(claim.label)).toBeInTheDocument()
-        expect(within(limitations).getByText(claim.detail)).toBeInTheDocument()
+        expect(within(limitations).getByText(claim.title)).toBeInTheDocument()
+        expect(
+          within(limitations).getByText(claim.description ?? ''),
+        ).toBeInTheDocument()
       }
 
       if (project.example) {
@@ -108,7 +118,7 @@ describe('project detail routes', () => {
         )
         expect(
           within(example).getByRole('link', { name: 'Example source' }),
-        ).toHaveAttribute('href', project.example.verifiedFrom)
+        ).toHaveAttribute('href', project.example.source.href)
       }
 
       const actions = screen.getByRole('navigation', {
@@ -126,10 +136,10 @@ describe('project detail routes', () => {
         within(actions).getByRole('link', { name: 'npm package' }),
       ).toHaveAttribute(
         'href',
-        `https://www.npmjs.com/package/${project.npmPackage}`,
+        `https://www.npmjs.com/package/${project.npm?.package}`,
       )
       const installCommand = screen.getByText(
-        `npm install ${project.npmPackage}`,
+        `npm install ${project.npm?.package}`,
       )
       expect(installCommand).toBeInTheDocument()
       expect(installCommand.closest('pre')).toHaveAttribute('tabindex', '0')
@@ -137,7 +147,10 @@ describe('project detail routes', () => {
   )
 
   it('omits package actions when a project has no published package', () => {
-    const project = { ...publishedProjects[0], npmPackage: undefined }
+    const project = {
+      ...publicProjects[0],
+      npm: { package: '@nipe-solutions/unreleased', published: false },
+    }
     render(<ProjectDetail project={project} />)
 
     expect(
@@ -146,25 +159,37 @@ describe('project detail routes', () => {
     expect(screen.queryByText(/^npm install /)).not.toBeInTheDocument()
   })
 
+  it.each([
+    ['development', 'Development'],
+    ['archived', 'Archived'],
+  ] as const)(
+    'renders an intentionally public %s lifecycle label',
+    (status, label) => {
+      render(<ProjectDetail project={{ ...publicProjects[0], status }} />)
+
+      expect(screen.getByText(label)).toBeInTheDocument()
+    },
+  )
+
   it('groups claims by their explicit kind rather than their registry position', () => {
     const project = {
-      ...publishedProjects[0],
+      ...publicProjects[0],
       claims: [
-        { ...publishedProjects[0].claims[3], kind: 'limitation' as const },
-        { ...publishedProjects[0].claims[0], kind: 'capability' as const },
+        { ...publicProjects[0].claims[3], kind: 'limitation' as const },
+        { ...publicProjects[0].claims[0], kind: 'capability' as const },
       ],
     }
     render(<ProjectDetail project={project} />)
 
     expect(
       within(screen.getByRole('region', { name: 'Verified claims' })).getByText(
-        project.claims[1].label,
+        project.claims[1].title,
       ),
     ).toBeInTheDocument()
     expect(
       within(
         screen.getByRole('region', { name: 'Scope and limitations' }),
-      ).getByText(project.claims[0].label),
+      ).getByText(project.claims[0].title),
     ).toBeInTheDocument()
   })
 
@@ -172,5 +197,16 @@ describe('project detail routes', () => {
     await expect(
       Page({ params: Promise.resolve({ slug: 'missing-project' }) }),
     ).rejects.toThrow()
+  })
+
+  it('does not expose a local page or metadata for a hidden project', async () => {
+    const params = Promise.resolve({ slug: 'react-swipe-actions' })
+
+    await expect(Page({ params })).rejects.toThrow()
+    await expect(
+      generateMetadata({
+        params: Promise.resolve({ slug: 'react-swipe-actions' }),
+      }),
+    ).resolves.toEqual({})
   })
 })

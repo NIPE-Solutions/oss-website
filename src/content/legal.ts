@@ -1,5 +1,5 @@
-import type { OpenSourceProject } from '@/content/project-types'
-import { publishedProjects } from '@/content/projects'
+import type { OpenSourceProject, ProjectSupport } from '@/content/project-types'
+import { publicProjects } from '@/content/projects'
 
 export interface Operator {
   readonly company: string
@@ -42,77 +42,12 @@ export const operator: Operator = {
   chamber: 'Wirtschaftskammer Wien',
 }
 
-type SecurityDestination =
-  | {
-      readonly kind: 'private-reporting'
-      readonly label: 'private vulnerability report'
-      readonly note: string
-    }
-  | {
-      readonly kind: 'policy'
-      readonly label: 'security policy'
-      readonly note: string
-    }
-  | {
-      readonly kind: 'overview'
-      readonly label: 'security overview'
-      readonly note: string
-    }
-
 export interface ProjectSupportRoute {
   readonly project: OpenSourceProject
-  readonly contributionUrl: string
-  readonly securityUrl: string
-  readonly security: SecurityDestination
-}
-
-function securityDestination(project: OpenSourceProject): SecurityDestination {
-  if (project.slug === 'flex-layout-codemod') {
-    return {
-      kind: 'private-reporting',
-      label: 'private vulnerability report',
-      note: 'Private vulnerability reporting is enabled for this repository.',
-    }
-  }
-
-  if (project.slug === 'readonly-view') {
-    return {
-      kind: 'policy',
-      label: 'security policy',
-      note: 'Private vulnerability reporting is not currently enabled. Read the repository policy and confirm its current instructions before sharing details.',
-    }
-  }
-
-  return {
-    kind: 'overview',
-    label: 'security overview',
-    note: 'No verified private reporting route or published policy is available. Review the repository security overview without disclosing sensitive details in a public issue.',
-  }
-}
-
-function securityUrl(
-  project: OpenSourceProject,
-  destination: SecurityDestination,
-) {
-  if (destination.kind === 'private-reporting') {
-    return `${project.repository}/security/advisories/new`
-  }
-
-  if (destination.kind === 'policy') {
-    return `${project.repository}/security/policy`
-  }
-
-  return `${project.repository}/security`
+  readonly support: ProjectSupport
 }
 
 export const projectSupportRoutes: readonly ProjectSupportRoute[] =
-  publishedProjects.map((project) => {
-    const security = securityDestination(project)
-
-    return {
-      project,
-      contributionUrl: `${project.repository}/blob/main/CONTRIBUTING.md`,
-      securityUrl: securityUrl(project, security),
-      security,
-    }
-  })
+  publicProjects.flatMap((project) =>
+    project.support ? [{ project, support: project.support }] : [],
+  )

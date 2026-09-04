@@ -6,31 +6,25 @@ import {
   createProjectStructuredData,
   StructuredData,
 } from '@/components/structured-data'
-import { getProject, publishedProjects } from '@/content/projects'
+import { publicProjects } from '@/content/projects'
 import { createPageMetadata } from '@/lib/metadata'
 
 interface ProjectPageProps {
   readonly params: Promise<{ slug: string }>
 }
 
-function getPublishedProject(slug: string) {
-  const project = getProject(slug)
-
-  return publishedProjects.includes(
-    project as (typeof publishedProjects)[number],
-  )
-    ? project
-    : undefined
+function getPublicProject(slug: string) {
+  return publicProjects.find((project) => project.slug === slug)
 }
 
 export function generateStaticParams() {
-  return publishedProjects.map(({ slug }) => ({ slug }))
+  return publicProjects.map(({ slug }) => ({ slug }))
 }
 
 export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
-  const project = getPublishedProject((await params).slug)
+  const project = getPublicProject((await params).slug)
 
   if (!project) {
     return {}
@@ -44,7 +38,7 @@ export async function generateMetadata({
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
-  const project = getPublishedProject((await params).slug)
+  const project = getPublicProject((await params).slug)
 
   if (!project) {
     notFound()

@@ -2,7 +2,7 @@ import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { SiteShell } from '@/app/layout'
-import { publishedProjects } from '@/content/projects'
+import { publicProjects } from '@/content/projects'
 import { ExternalLink } from './external-link'
 
 afterEach(cleanup)
@@ -63,11 +63,15 @@ describe('site shell', () => {
       name: 'Footer',
     })
 
-    for (const project of publishedProjects) {
+    for (const project of publicProjects) {
       expect(
         within(navigation).getByRole('link', { name: project.name }),
       ).toHaveAttribute('href', `/projects/${project.slug}`)
     }
+
+    expect(
+      within(navigation).queryByRole('link', { name: 'React Swipe Actions' }),
+    ).not.toBeInTheDocument()
 
     expect(
       within(navigation).getByRole('link', { name: 'Contributing' }),
