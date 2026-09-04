@@ -11,7 +11,10 @@ interface ProjectDetailProps {
 
 const statusLabels: Record<ProjectStatus, string> = {
   stable: 'Stable',
-  prerelease: 'Prerelease',
+  beta: 'Beta',
+  alpha: 'Alpha',
+  preview: 'Preview',
+  development: 'Development',
   maintenance: 'Maintenance',
   archived: 'Archived',
 }
@@ -48,8 +51,8 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
 
         <section aria-labelledby="purpose-heading">
           <h2 id="purpose-heading">Why it exists</h2>
-          <p>{project.purpose.detail}</p>
-          <ExternalLink href={project.purpose.verifiedFrom}>
+          <p>{project.purpose.description}</p>
+          <ExternalLink href={project.purpose.source.href}>
             Evidence for purpose
           </ExternalLink>
         </section>
@@ -58,11 +61,11 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           <h2 id="claims-heading">Verified claims</h2>
           <ul className="project-detail__claims">
             {capabilityClaims.map((claim) => (
-              <li key={claim.label}>
-                <h3>{claim.label}</h3>
-                <p>{claim.detail}</p>
-                <ExternalLink href={claim.verifiedFrom}>
-                  Evidence for {claim.label}
+              <li key={claim.title}>
+                <h3>{claim.title}</h3>
+                {claim.description ? <p>{claim.description}</p> : null}
+                <ExternalLink href={claim.source.href}>
+                  Evidence for {claim.title}
                 </ExternalLink>
               </li>
             ))}
@@ -75,12 +78,14 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
             {limitationClaims.map((limitation) => (
               <div
                 className="project-detail__limitation"
-                key={limitation.label}
+                key={limitation.title}
               >
-                <h3>{limitation.label}</h3>
-                <p>{limitation.detail}</p>
-                <ExternalLink href={limitation.verifiedFrom}>
-                  Evidence for {limitation.label}
+                <h3>{limitation.title}</h3>
+                {limitation.description ? (
+                  <p>{limitation.description}</p>
+                ) : null}
+                <ExternalLink href={limitation.source.href}>
+                  Evidence for {limitation.title}
                 </ExternalLink>
               </div>
             ))}
@@ -91,12 +96,12 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           <CodeExample
             language={project.example.language}
             code={project.example.code}
-            source={project.example.verifiedFrom}
+            source={project.example.source.href}
           />
         ) : null}
 
-        {project.npmPackage ? (
-          <InstallCommand packageName={project.npmPackage} />
+        {project.npm?.published ? (
+          <InstallCommand packageName={project.npm.package} />
         ) : null}
 
         <nav
@@ -109,9 +114,9 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
             </ExternalLink>
           ) : null}
           <ExternalLink href={project.repository}>Source</ExternalLink>
-          {project.npmPackage ? (
+          {project.npm?.published ? (
             <ExternalLink
-              href={`https://www.npmjs.com/package/${project.npmPackage}`}
+              href={`https://www.npmjs.com/package/${project.npm.package}`}
             >
               npm package
             </ExternalLink>

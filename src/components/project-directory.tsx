@@ -1,11 +1,11 @@
 import { ProjectEntry } from '@/components/project-entry'
-import { projectCategories, publishedProjects } from '@/content/projects'
+import { projectCategories, publicProjects } from '@/content/projects'
 
 export function ProjectDirectory() {
   const populatedCategories = projectCategories
     .map((category) => ({
       ...category,
-      projects: publishedProjects.filter(
+      projects: publicProjects.filter(
         (project) => project.category === category.id,
       ),
     }))

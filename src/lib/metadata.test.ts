@@ -28,7 +28,7 @@ import {
   createProjectStructuredData,
   createWebsiteStructuredData,
 } from '@/components/structured-data'
-import { publishedProjects } from '@/content/projects'
+import { publicProjects } from '@/content/projects'
 import {
   createPageMetadata,
   createRobotsMetadata,
@@ -90,7 +90,7 @@ describe('page metadata', () => {
 
   it('derives unique project titles, descriptions, and canonicals from the registry', async () => {
     const projectMetadata = await Promise.all(
-      publishedProjects.map(({ slug }) =>
+      publicProjects.map(({ slug }) =>
         generateMetadata({ params: Promise.resolve({ slug }) }),
       ),
     )
@@ -189,7 +189,7 @@ describe('structured data', () => {
   })
 
   it('adds factual SoftwareSourceCode data to each published project page', async () => {
-    for (const project of publishedProjects) {
+    for (const project of publicProjects) {
       expect(createProjectStructuredData(project)).toEqual({
         '@context': 'https://schema.org',
         '@type': 'SoftwareSourceCode',
@@ -237,7 +237,7 @@ describe('Open Graph images', () => {
     expect(projectOpenGraphSize).toEqual({ width: 1200, height: 630 })
     expect(projectOpenGraphContentType).toBe('image/png')
 
-    for (const project of publishedProjects) {
+    for (const project of publicProjects) {
       expect(
         await generateImageMetadata({
           params: Promise.resolve({ slug: project.slug }),
@@ -257,6 +257,14 @@ describe('Open Graph images', () => {
       expect(response).toBeInstanceOf(Response)
       expect(response.headers.get('content-type')).toBe('image/png')
     }
+  })
+
+  it('does not provide image metadata for a hidden project route', async () => {
+    await expect(
+      generateImageMetadata({
+        params: Promise.resolve({ slug: 'react-swipe-actions' }),
+      }),
+    ).resolves.toEqual([])
   })
 })
 

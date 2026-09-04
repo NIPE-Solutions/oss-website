@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 
-import { publishedProjects } from '@/content/projects'
+import { publicProjects } from '@/content/projects'
 
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
@@ -9,12 +9,12 @@ interface ProjectImageProps {
   readonly params: Promise<{ slug: string }>
 }
 
-function findPublishedProject(slug: string) {
-  return publishedProjects.find((project) => project.slug === slug)
+function findPublicProject(slug: string) {
+  return publicProjects.find((project) => project.slug === slug)
 }
 
 export async function generateImageMetadata({ params }: ProjectImageProps) {
-  const project = findPublishedProject((await params).slug)
+  const project = findPublicProject((await params).slug)
 
   if (!project) {
     return []
@@ -33,13 +33,14 @@ export async function generateImageMetadata({ params }: ProjectImageProps) {
 export default async function ProjectOpenGraphImage({
   params,
 }: ProjectImageProps) {
-  const project = findPublishedProject((await params).slug)
+  const project = findPublicProject((await params).slug)
 
   if (!project) {
     throw new Error('Unknown project image route')
   }
 
-  const status = project.status === 'stable' ? 'Stable' : 'Prerelease'
+  const status =
+    project.status[0].toUpperCase() + project.status.slice(1).toLowerCase()
 
   return new ImageResponse(
     <div
@@ -132,7 +133,7 @@ export default async function ProjectOpenGraphImage({
             background: '#b52d2d',
           }}
         />
-        {project.npmPackage}
+        {project.npm?.package}
       </div>
     </div>,
     size,

@@ -1,5 +1,5 @@
 import { ExternalLink } from '@/components/external-link'
-import { publishedProjects } from '@/content/projects'
+import { publicProjects } from '@/content/projects'
 import { siteConfig } from '@/lib/site'
 
 export function SupportRouting() {
@@ -18,22 +18,42 @@ export function SupportRouting() {
           </p>
         </div>
         <ul className="support-routing__projects">
-          {publishedProjects.map((project) => (
+          {publicProjects.map((project) => (
             <li key={project.slug}>
               <span>{project.name}</span>
               <span>
-                <ExternalLink
-                  href={`${project.repository}/issues`}
-                  aria-label={`${project.name} issues`}
-                >
-                  Issues
-                </ExternalLink>
-                <ExternalLink
-                  href={`${project.repository}/security`}
-                  aria-label={`${project.name} security`}
-                >
-                  Security
-                </ExternalLink>
+                {project.support?.documentation ? (
+                  <ExternalLink
+                    href={project.support.documentation}
+                    aria-label={`${project.name} documentation`}
+                  >
+                    Documentation
+                  </ExternalLink>
+                ) : null}
+                {project.support?.issues ? (
+                  <ExternalLink
+                    href={project.support.issues}
+                    aria-label={`${project.name} issues`}
+                  >
+                    Issues
+                  </ExternalLink>
+                ) : null}
+                {project.support?.discussions ? (
+                  <ExternalLink
+                    href={project.support.discussions}
+                    aria-label={`${project.name} discussions`}
+                  >
+                    Discussions
+                  </ExternalLink>
+                ) : null}
+                {project.support?.security ? (
+                  <ExternalLink
+                    href={project.support.security}
+                    aria-label={`${project.name} security`}
+                  >
+                    Security
+                  </ExternalLink>
+                ) : null}
               </span>
             </li>
           ))}

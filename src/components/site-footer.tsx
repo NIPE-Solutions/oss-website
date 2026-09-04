@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import { ExternalLink } from '@/components/external-link'
-import { publishedProjects } from '@/content/projects'
+import { publicProjects } from '@/content/projects'
 import { siteConfig } from '@/lib/site'
 
 export function SiteFooter() {
@@ -12,7 +12,7 @@ export function SiteFooter() {
         <nav className="footer-navigation" aria-label="Footer">
           <div>
             <h2>Projects</h2>
-            {publishedProjects.map((project) => (
+            {publicProjects.map((project) => (
               <Link href={`/projects/${project.slug}`} key={project.slug}>
                 {project.name}
               </Link>

@@ -11,7 +11,10 @@ interface ProjectEntryProps {
 
 const statusLabels = {
   stable: 'Stable',
-  prerelease: 'Prerelease',
+  beta: 'Beta',
+  alpha: 'Alpha',
+  preview: 'Preview',
+  development: 'Development',
   maintenance: 'Maintenance',
   archived: 'Archived',
 } as const
@@ -40,9 +43,9 @@ export function ProjectEntry({ project }: ProjectEntryProps) {
             </ExternalLink>
           ) : null}
           <ExternalLink href={project.repository}>Source</ExternalLink>
-          {project.npmPackage ? (
+          {project.npm?.published ? (
             <ExternalLink
-              href={`https://www.npmjs.com/package/${project.npmPackage}`}
+              href={`https://www.npmjs.com/package/${project.npm.package}`}
             >
               npm
             </ExternalLink>

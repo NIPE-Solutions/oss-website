@@ -69,7 +69,7 @@ describe('homepage', () => {
     ).toBeInTheDocument()
 
     expect(screen.getAllByText('Stable')).toHaveLength(2)
-    expect(screen.getByText('Prerelease')).toBeInTheDocument()
+    expect(screen.getByText('Beta')).toBeInTheDocument()
   })
 
   it('routes every project to its documentation, source, and published package', () => {
@@ -92,7 +92,7 @@ describe('homepage', () => {
       {
         name: 'Angular Flex-Layout Codemod',
         documentation:
-          'https://github.com/NIPE-Solutions/flex-layout-migrator#readme',
+          'https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/README.md',
         source: 'https://github.com/NIPE-Solutions/flex-layout-migrator',
         package:
           'https://www.npmjs.com/package/@nipe-solutions/flex-layout-codemod',
@@ -143,7 +143,7 @@ describe('homepage', () => {
     }
   })
 
-  it('states qualified principles and routes project-specific support', () => {
+  it('states qualified principles and renders only configured support routes', () => {
     render(<Home />)
 
     const principles = screen.getByRole('region', {
@@ -157,13 +157,16 @@ describe('homepage', () => {
     const support = screen.getByRole('region', {
       name: 'Contributing and security',
     })
+    const bottomSheet = within(support)
+      .getByText('React Spring Bottom Sheet')
+      .closest('li')
+    expect(bottomSheet).not.toBeNull()
+    expect(within(bottomSheet!).getAllByRole('link')).toHaveLength(1)
     expect(
-      within(support).getByRole('link', {
-        name: 'React Spring Bottom Sheet issues',
-      }),
+      within(bottomSheet!).getByRole('link', { name: /documentation/i }),
     ).toHaveAttribute(
       'href',
-      'https://github.com/NIPE-Solutions/react-spring-bottom-sheet/issues',
+      'https://react-spring-bottom-sheet.nipesolutions.com',
     )
     expect(
       within(support).getByRole('link', {
@@ -171,7 +174,7 @@ describe('homepage', () => {
       }),
     ).toHaveAttribute(
       'href',
-      'https://github.com/NIPE-Solutions/readonly-view/security',
+      'https://github.com/NIPE-Solutions/readonly-view/security/policy',
     )
     expect(
       within(support).getByRole('link', {
@@ -179,8 +182,11 @@ describe('homepage', () => {
       }),
     ).toHaveAttribute(
       'href',
-      'https://github.com/NIPE-Solutions/flex-layout-migrator/security',
+      'https://github.com/NIPE-Solutions/flex-layout-migrator/security/advisories/new',
     )
+    expect(
+      within(support).queryByRole('link', { name: /discussions/i }),
+    ).not.toBeInTheDocument()
   })
 
   it('keeps concept visuals free of component-owned project facts', () => {
