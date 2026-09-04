@@ -21,8 +21,8 @@ export function ProjectDirectory() {
         <header className="section-introduction">
           <h2 id="projects-heading">Projects</h2>
           <p>
-            Released packages and their canonical technical references, grouped
-            by the problem they address.
+            Public projects and their canonical technical references, grouped by
+            the problem they address.
           </p>
         </header>
 
