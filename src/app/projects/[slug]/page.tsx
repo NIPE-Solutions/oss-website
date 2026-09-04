@@ -27,7 +27,7 @@ export async function generateMetadata({
   const project = getPublicProject((await params).slug)
 
   if (!project) {
-    return {}
+    return { alternates: null, robots: null }
   }
 
   return createPageMetadata({
