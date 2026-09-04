@@ -10,7 +10,7 @@ export function ProjectVisual({ project }: ProjectVisualProps) {
       <figure
         className="project-visual project-visual--bottom-sheet"
         role="img"
-        aria-label="Layered panels illustrate a bottom sheet moving through named snap points."
+        aria-label={`${project.name} concept illustration`}
       >
         <div className="sheet-stage" aria-hidden="true">
           <span className="sheet-stage__content" />
@@ -33,22 +33,22 @@ export function ProjectVisual({ project }: ProjectVisualProps) {
       <figure
         className="project-visual project-visual--readonly-view"
         role="img"
-        aria-label="An owner-controlled source remains connected to a protected live view."
+        aria-label={`${project.name} concept illustration`}
       >
         <div className="view-model" aria-hidden="true">
           <div className="view-model__source">
-            <span>owner source</span>
-            <b>name: Bob</b>
-            <i>write</i>
+            <span className="view-model__cap" />
+            <span className="view-model__datum" />
+            <span className="view-model__edge" />
           </div>
           <div className="view-model__connection">
             <span />
             <span />
           </div>
           <div className="view-model__view">
-            <span>readonly view</span>
-            <b>name: Bob</b>
-            <i>read</i>
+            <span className="view-model__cap" />
+            <span className="view-model__datum" />
+            <span className="view-model__edge" />
           </div>
         </div>
       </figure>
@@ -60,22 +60,18 @@ export function ProjectVisual({ project }: ProjectVisualProps) {
       <figure
         className="project-visual project-visual--codemod"
         role="img"
-        aria-label="A compact diff illustrates a reviewed Flex-Layout to Tailwind conversion."
+        aria-label={`${project.name} concept illustration`}
       >
         <div className="migration-diff" aria-hidden="true">
           <div className="migration-diff__header">
-            <span>template.html</span>
-            <span>dry run</span>
+            <span />
+            <span />
           </div>
-          <code className="migration-diff__removed">
-            − fxLayout=&quot;row&quot;
-          </code>
-          <code className="migration-diff__added">
-            + class=&quot;flex&quot;
-          </code>
+          <span className="migration-diff__removed" />
+          <span className="migration-diff__added" />
           <div className="migration-diff__result">
-            <span>exact edit planned</span>
-            <span>review required</span>
+            <span />
+            <span />
           </div>
         </div>
       </figure>

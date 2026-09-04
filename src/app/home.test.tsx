@@ -118,6 +118,31 @@ describe('homepage', () => {
     ).not.toBeInTheDocument()
   })
 
+  it('links project titles to working canonical destinations', () => {
+    render(<Home />)
+
+    for (const destination of [
+      {
+        name: 'React Spring Bottom Sheet',
+        href: 'https://react-spring-bottom-sheet.nipesolutions.com',
+      },
+      {
+        name: 'Readonly View',
+        href: 'https://readonly-view.nipesolutions.com',
+      },
+      {
+        name: 'Angular Flex-Layout Codemod',
+        href: 'https://github.com/NIPE-Solutions/flex-layout-migrator#readme',
+      },
+    ]) {
+      const project = screen.getByRole('article', { name: destination.name })
+
+      expect(
+        within(project).getByRole('link', { name: destination.name }),
+      ).toHaveAttribute('href', destination.href)
+    }
+  })
+
   it('states qualified principles and routes project-specific support', () => {
     render(<Home />)
 
@@ -156,6 +181,22 @@ describe('homepage', () => {
       'href',
       'https://github.com/NIPE-Solutions/flex-layout-migrator/security',
     )
+  })
+
+  it('keeps concept visuals free of component-owned project facts', () => {
+    render(<Home />)
+
+    for (const projectName of [
+      'React Spring Bottom Sheet',
+      'Readonly View',
+      'Angular Flex-Layout Codemod',
+    ]) {
+      const visual = screen.getByRole('img', {
+        name: `${projectName} concept illustration`,
+      })
+
+      expect(visual).not.toHaveTextContent(/\S/)
+    }
   })
 
   it('contains no placeholder, social-proof, or generic marketing language', () => {

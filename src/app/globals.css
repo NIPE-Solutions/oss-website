@@ -546,31 +546,26 @@ a:hover {
   background: var(--surface);
 }
 
-.view-model__source span,
-.view-model__view span {
+.view-model__cap {
+  min-block-size: 2.35rem;
   padding: var(--space-sm);
+  display: block;
   border-block-end: var(--border-thin) solid var(--project-accent);
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
 }
 
-.view-model__source b,
-.view-model__view b {
+.view-model__datum {
+  inline-size: 58%;
+  block-size: 0.55rem;
   margin: auto var(--space-sm);
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  font-weight: 600;
+  display: block;
+  background: var(--rule);
 }
 
-.view-model__source i,
-.view-model__view i {
+.view-model__edge {
+  min-block-size: 2rem;
   padding: var(--space-xs) var(--space-sm);
+  display: block;
   background: var(--project-accent);
-  color: var(--surface);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-style: normal;
 }
 
 .view-model__view {
@@ -578,10 +573,9 @@ a:hover {
   border-width: 4px;
 }
 
-.view-model__view i {
+.view-model__view .view-model__edge {
   background: transparent;
-  color: var(--project-accent);
-  text-align: end;
+  border-block-start: var(--border-thin) solid var(--project-accent);
 }
 
 .view-model__connection {
@@ -616,29 +610,58 @@ a:hover {
 
 .migration-diff__header,
 .migration-diff__result {
+  min-block-size: 2.4rem;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
   padding: var(--space-sm) var(--space-md);
-  color: var(--muted);
-  font-size: var(--text-xs);
+}
+
+.migration-diff__header span,
+.migration-diff__result span {
+  inline-size: 4.5rem;
+  block-size: 0.35rem;
+  display: block;
+  background: var(--rule);
+}
+
+.migration-diff__header span:last-child,
+.migration-diff__result span:last-child {
+  inline-size: 3.2rem;
 }
 
 .migration-diff__header {
   border-block-end: var(--border-thin) solid var(--rule);
 }
 
-.migration-diff code {
+.migration-diff__removed,
+.migration-diff__added {
+  min-block-size: 4rem;
   padding: var(--space-lg) var(--space-md);
   display: block;
-  overflow-wrap: anywhere;
-  font-size: var(--text-sm);
+}
+
+.migration-diff__removed::before,
+.migration-diff__added::before {
+  content: '';
+  inline-size: 68%;
+  block-size: 0.55rem;
+  display: block;
+  background: currentcolor;
 }
 
 .migration-diff__removed {
   color: var(--muted);
-  text-decoration: line-through;
-  text-decoration-color: var(--nipe-red);
+}
+
+.migration-diff__removed::after {
+  content: '';
+  inline-size: 72%;
+  block-size: var(--border-thin);
+  margin-block-start: -0.32rem;
+  display: block;
+  background: var(--nipe-red);
 }
 
 .migration-diff__added {
@@ -648,8 +671,7 @@ a:hover {
 }
 
 .migration-diff__result span:last-child {
-  color: var(--project-accent);
-  font-weight: 700;
+  background: var(--project-accent);
 }
 
 .principles {
@@ -885,11 +907,6 @@ a:hover {
 
   .view-model {
     grid-template-columns: minmax(0, 1fr) 2rem minmax(0, 1fr);
-  }
-
-  .view-model__source b,
-  .view-model__view b {
-    font-size: 0.68rem;
   }
 }
 
