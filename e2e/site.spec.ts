@@ -33,7 +33,7 @@ test('loads the project directory with every project linked to its page', async 
   await expect(
     page.getByRole('heading', {
       level: 1,
-      name: 'Production-grade primitives and tools for the web.',
+      name: 'Focused primitives and tools for the web.',
     }),
   ).toBeVisible()
 
