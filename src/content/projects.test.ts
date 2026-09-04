@@ -4,81 +4,142 @@ import {
   getProject,
   projectCategories,
   projects,
-  publishedProjects,
+  publicProjects,
 } from './projects'
 
 describe('project registry', () => {
-  it('lists each evidence-backed public project once in editorial order', () => {
+  it('keeps every candidate project in evidence-backed editorial order', () => {
     expect(projects.map(({ slug }) => slug)).toEqual([
       'react-spring-bottom-sheet',
       'readonly-view',
       'flex-layout-codemod',
+      'react-swipe-actions',
     ])
-    expect(projects.map(({ order }) => order)).toEqual([1, 2, 3])
+    expect(projects.map(({ order }) => order)).toEqual([1, 2, 3, 4])
     expect(new Set(projects.map(({ slug }) => slug)).size).toBe(projects.length)
-    expect(
-      projects.find(({ slug }) => slug === 'flex-layout-codemod')?.category,
-    ).toBe('tooling')
+    expect(getProject('flex-layout-codemod')?.category).toBe('tooling')
   })
 
-  it('only exposes known categories and evidence-backed project statuses', () => {
+  it('selects public projects from explicit visibility rather than npm state', () => {
+    expect(publicProjects.map(({ slug }) => slug)).toEqual([
+      'react-spring-bottom-sheet',
+      'readonly-view',
+      'flex-layout-codemod',
+    ])
+    expect(
+      publicProjects.every(({ visibility }) => visibility === 'public'),
+    ).toBe(true)
+    expect(
+      projects.filter(({ visibility }) => visibility === 'hidden'),
+    ).toEqual([expect.objectContaining({ slug: 'react-swipe-actions' })])
+  })
+
+  it('uses explicit category, visibility, and lifecycle values for every entry', () => {
     const categoryIds = projectCategories.map(({ id }) => id)
 
     expect(
       projects.every(({ category }) => categoryIds.includes(category)),
     ).toBe(true)
-    expect(projects.map(({ status }) => status)).toEqual([
-      'stable',
-      'stable',
-      'prerelease',
+    expect(
+      projects.map(({ visibility, status }) => [visibility, status]),
+    ).toEqual([
+      ['public', 'stable'],
+      ['public', 'stable'],
+      ['public', 'beta'],
+      ['hidden', 'development'],
     ])
-    expect(
-      projects
-        .flatMap(({ claims }) => claims)
-        .every(({ verifiedFrom }) => Boolean(verifiedFrom)),
-    ).toBe(true)
-    expect(
-      projects.every(
-        ({ purpose }) =>
-          Boolean(purpose.detail) && Boolean(purpose.verifiedFrom),
-      ),
-    ).toBe(true)
-    expect(
-      projects
-        .flatMap(({ claims }) => claims)
-        .every(({ kind }) => ['capability', 'limitation'].includes(kind)),
-    ).toBe(true)
   })
 
-  it('links public projects to HTTPS repositories and only uses NIPE scoped npm packages', () => {
+  it('keeps unpublished Swipe Actions metadata out of public selection', () => {
+    expect(getProject('react-swipe-actions')).toMatchObject({
+      visibility: 'hidden',
+      status: 'development',
+      repository: 'https://github.com/NIPE-Solutions/react-swipe-actions',
+      visual: 'swipe-actions',
+    })
+    expect(getProject('react-swipe-actions')).not.toHaveProperty('npm')
+    expect(getProject('react-swipe-actions')).not.toHaveProperty('support')
     expect(
-      projects.every(
-        ({ repository }) => new URL(repository).protocol === 'https:',
-      ),
-    ).toBe(true)
-    expect(publishedProjects.map(({ npmPackage }) => npmPackage)).toEqual([
-      '@nipe-solutions/react-spring-bottom-sheet',
-      '@nipe-solutions/readonly-view',
-      '@nipe-solutions/flex-layout-codemod',
-    ])
-    expect(
-      publishedProjects.every(({ npmPackage }) =>
-        /^@nipe-solutions\/[a-z0-9][a-z0-9-]*$/.test(npmPackage ?? ''),
-      ),
-    ).toBe(true)
+      publicProjects.some(({ slug }) => slug === 'react-swipe-actions'),
+    ).toBe(false)
   })
 
-  it('omits Swipe Actions until there is a meaningfully usable public implementation', () => {
-    expect(getProject('react-swipe-actions')).toBeUndefined()
-    expect(projects.some(({ slug }) => slug === 'react-swipe-actions')).toBe(
-      false,
+  it('preserves established accents and project visuals', () => {
+    expect(
+      publicProjects.map(({ accent, visual }) => ({ accent, visual })),
+    ).toEqual([
+      {
+        accent: 'var(--project-bottom-sheet)',
+        visual: 'bottom-sheet',
+      },
+      {
+        accent: 'var(--project-readonly-view)',
+        visual: 'readonly-view',
+      },
+      { accent: 'var(--project-codemod)', visual: 'codemod' },
+    ])
+  })
+
+  it('records package publication independently from package identity', () => {
+    expect(publicProjects.map(({ npm }) => npm)).toEqual([
+      {
+        package: '@nipe-solutions/react-spring-bottom-sheet',
+        published: true,
+      },
+      { package: '@nipe-solutions/readonly-view', published: true },
+      {
+        package: '@nipe-solutions/flex-layout-codemod',
+        published: true,
+      },
+    ])
+    expect(publicProjects.every(({ npm }) => npm?.published === true)).toBe(
+      true,
     )
   })
 
-  it('retrieves projects by slug without duplicating their public data', () => {
-    expect(getProject('readonly-view')).toMatchObject({
-      name: 'Readonly View',
-      repository: 'https://github.com/NIPE-Solutions/readonly-view',
+  it('exposes only support destinations confirmed by the source audit', () => {
+    expect(getProject('react-spring-bottom-sheet')?.support).toEqual({
+      documentation: 'https://react-spring-bottom-sheet.nipesolutions.com',
     })
+    expect(getProject('readonly-view')?.support).toEqual({
+      documentation: 'https://readonly-view.nipesolutions.com',
+      issues: 'https://github.com/NIPE-Solutions/readonly-view/issues',
+      security:
+        'https://github.com/NIPE-Solutions/readonly-view/security/policy',
+    })
+    expect(getProject('flex-layout-codemod')?.support).toEqual({
+      documentation:
+        'https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/docs/SUPPORT.md',
+      issues: 'https://github.com/NIPE-Solutions/flex-layout-migrator/issues',
+      security:
+        'https://github.com/NIPE-Solutions/flex-layout-migrator/security/advisories/new',
+    })
+  })
+
+  it('normalizes claim and purpose evidence as labeled sources', () => {
+    for (const project of publicProjects) {
+      expect(project.purpose.description).toBeTruthy()
+      expect(project.purpose.source).toMatchObject({
+        label: expect.any(String),
+        href: expect.stringMatching(/^https:\/\//),
+      })
+
+      for (const claim of project.claims) {
+        expect(['capability', 'limitation']).toContain(claim.kind)
+        expect(claim.title).toBeTruthy()
+        expect(claim.source).toMatchObject({
+          label: expect.any(String),
+          href: expect.stringMatching(/^https:\/\//),
+        })
+        expect(claim).not.toHaveProperty('verifiedFrom')
+      }
+    }
+  })
+
+  it('retrieves projects by slug without duplicating their registry data', () => {
+    expect(getProject('readonly-view')).toBe(
+      projects.find(({ slug }) => slug === 'readonly-view'),
+    )
+    expect(getProject('unknown')).toBeUndefined()
   })
 })
