@@ -1,3 +1,12 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Page not found',
+  description: 'The requested NIPE Open Source page does not exist.',
+  alternates: null,
+  robots: null,
+}
+
 export default function NotFound() {
   return (
     <article className="not-found site-frame reading-width">
