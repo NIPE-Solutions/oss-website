@@ -25,7 +25,7 @@ run check:links` passed after the final code and audit edits:
 
 - `npm ci`: 456 packages installed, 0 vulnerabilities reported. npm emitted
   informational deprecation/install-script-policy warnings; no install failed.
-- `npm run check`: formatting, zero-warning lint, typecheck, 10 Vitest files / 105
+- `npm run check`: formatting, zero-warning lint, typecheck, 10 Vitest files / 106
   tests, four-entry registry validation, 46-destination deterministic link
   audit, and the 14-page production build passed.
 - `npm run test:e2e`: 66 Chromium tests passed.
@@ -35,9 +35,13 @@ run check:links` passed after the final code and audit edits:
 ## Changes made by this pass
 
 - Added browser coverage for canonical category and lifecycle labels, explicit
-  public selection, hidden-project and unpublished-package absence, configured
-  evidence/support destinations, keyboard activation, visible focus, skip-link
-  focus transfer, reduced motion, legal routes, and light/dark accent contrast.
+  public selection, hidden-project absence, configured evidence/support
+  destinations, keyboard activation, visible focus, skip-link focus transfer,
+  reduced motion, legal routes, and light/dark accent contrast.
+- Added component regressions that render a public project with
+  `{ package, published: false }` and require both the homepage project entry and
+  detail page to suppress npm/install actions while preserving other project
+  destinations. The live registry intentionally has no such public entry.
 - Added responsive coverage for the homepage and all three public project pages
   at 375, 430, 768, 1024, 1366, 1440, and 1920 CSS pixels. The checks bound page,
   hero, project, detail-section, and footer height; require no page overflow;
@@ -51,7 +55,10 @@ run check:links` passed after the final code and audit edits:
 
 Both production fixes followed a red/green cycle: the hidden-route browser and
 unit assertions failed before the metadata change, and the 812×375 responsive
-test failed with 116px of overflow before the footer breakpoint change.
+test failed with 116px of overflow before the footer breakpoint change. The
+false-publication component tests were mutation-checked: weakening each
+`npm.published` guard made its focused test fail before the guarded
+implementation was restored.
 
 ## Accessibility and interaction evidence
 

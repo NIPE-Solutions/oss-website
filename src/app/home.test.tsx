@@ -1,6 +1,8 @@
 import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
+import { ProjectEntry } from '@/components/project-entry'
+import { publicProjects } from '@/content/projects'
 import Home from './page'
 
 afterEach(cleanup)
@@ -134,6 +136,23 @@ describe('homepage', () => {
     expect(
       screen.queryByRole('link', { name: /swipe actions.*npm/i }),
     ).not.toBeInTheDocument()
+  })
+
+  it('omits npm from a public project entry when its known package is unpublished', () => {
+    const project = {
+      ...publicProjects[0],
+      npm: { package: '@nipe-solutions/unreleased', published: false },
+    }
+    render(<ProjectEntry project={project} />)
+
+    const entry = screen.getByRole('article', { name: project.name })
+    expect(
+      within(entry).queryByRole('link', { name: 'npm' }),
+    ).not.toBeInTheDocument()
+    expect(within(entry).getByRole('link', { name: 'Source' })).toHaveAttribute(
+      'href',
+      project.repository,
+    )
   })
 
   it('links project titles to their local detail pages', () => {

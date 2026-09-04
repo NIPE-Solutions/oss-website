@@ -59,7 +59,7 @@ test('publishes only explicit public project routes in the sitemap', async ({
   expect(sitemap).not.toContain('react-swipe-actions')
 })
 
-test('keeps the hidden unpublished project out of public routes and package links', async ({
+test('keeps the hidden project out of public routes and package links', async ({
   page,
 }) => {
   const response = await page.goto('/projects/react-swipe-actions')

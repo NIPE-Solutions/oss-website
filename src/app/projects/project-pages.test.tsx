@@ -159,7 +159,7 @@ describe('project detail routes', () => {
     },
   )
 
-  it('omits package actions when a project has no published package', () => {
+  it('omits install and npm actions from a public project with a known unpublished package', () => {
     const project = {
       ...publicProjects[0],
       npm: { package: '@nipe-solutions/unreleased', published: false },
