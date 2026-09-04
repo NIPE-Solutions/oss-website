@@ -5,13 +5,23 @@ import vm from 'node:vm'
 import ts from 'typescript'
 
 const knownCategories = new Set(['ui-interaction', 'runtime', 'tooling'])
+const knownVisibilities = new Set(['public', 'hidden'])
 const knownStatuses = new Set([
   'stable',
-  'prerelease',
+  'beta',
+  'alpha',
+  'preview',
+  'development',
   'maintenance',
   'archived',
 ])
 const knownClaimKinds = new Set(['capability', 'limitation'])
+const supportDestinations = [
+  'issues',
+  'discussions',
+  'security',
+  'documentation',
+]
 const nipePackageName = /^@nipe-solutions\/[a-z0-9][a-z0-9-]*$/
 
 function isHttpsUrl(value) {
@@ -19,6 +29,16 @@ function isHttpsUrl(value) {
     return new URL(value).protocol === 'https:'
   } catch {
     return false
+  }
+}
+
+function validateSource(errors, slug, source, context) {
+  if (!source?.label) {
+    errors.push(`Project "${slug}" ${context} source is missing a label.`)
+  }
+
+  if (!isHttpsUrl(source?.href)) {
+    errors.push(`Project "${slug}" ${context} source URL must use HTTPS.`)
   }
 }
 
@@ -41,6 +61,12 @@ export function validateProjects(entries) {
       )
     }
 
+    if (!knownVisibilities.has(entry.visibility)) {
+      errors.push(
+        `Project "${slug}" has an unknown visibility "${entry.visibility}".`,
+      )
+    }
+
     if (!knownStatuses.has(entry.status)) {
       errors.push(`Project "${slug}" has an unknown status "${entry.status}".`)
     }
@@ -55,18 +81,36 @@ export function validateProjects(entries) {
       )
     }
 
-    if (entry.npmPackage && !nipePackageName.test(entry.npmPackage)) {
-      errors.push(
-        `Project "${slug}" has an invalid npm package "${entry.npmPackage}"; expected a scoped @nipe-solutions package name.`,
-      )
+    if (entry.visibility === 'public' && !entry.documentation) {
+      errors.push(`Public project "${slug}" is missing documentation.`)
     }
 
-    if (!entry.purpose?.detail) {
-      errors.push(`Project "${slug}" purpose is missing detail.`)
+    if (entry.npm) {
+      if (!nipePackageName.test(entry.npm.package)) {
+        errors.push(
+          `Project "${slug}" has an invalid npm package "${entry.npm.package}"; expected a scoped @nipe-solutions package name.`,
+        )
+      }
+
+      if (typeof entry.npm.published !== 'boolean') {
+        errors.push(`Project "${slug}" npm publication state must be boolean.`)
+      }
     }
 
-    if (!entry.purpose?.verifiedFrom) {
-      errors.push(`Project "${slug}" purpose is missing verifiedFrom.`)
+    if (!entry.purpose?.description) {
+      errors.push(`Project "${slug}" purpose is missing description.`)
+    }
+
+    validateSource(errors, slug, entry.purpose?.source, 'purpose')
+
+    for (const destination of supportDestinations) {
+      const url = entry.support?.[destination]
+
+      if (url !== undefined && !isHttpsUrl(url)) {
+        errors.push(
+          `Project "${slug}" support ${destination} URL must use HTTPS.`,
+        )
+      }
     }
 
     if (!Number.isInteger(entry.order) || entry.order < 1) {
@@ -85,15 +129,11 @@ export function validateProjects(entries) {
         )
       }
 
-      if (!claim.verifiedFrom) {
-        errors.push(
-          `Project "${slug}" claim ${index + 1} is missing verifiedFrom.`,
-        )
-      }
+      validateSource(errors, slug, claim.source, `claim ${index + 1}`)
     }
 
-    if (entry.example && !entry.example.verifiedFrom) {
-      errors.push(`Project "${slug}" example is missing verifiedFrom.`)
+    if (entry.example) {
+      validateSource(errors, slug, entry.example.source, 'example')
     }
   }
 
