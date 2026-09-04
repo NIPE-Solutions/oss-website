@@ -220,6 +220,6 @@ describe('project detail routes', () => {
       generateMetadata({
         params: Promise.resolve({ slug: 'react-swipe-actions' }),
       }),
-    ).resolves.toEqual({})
+    ).resolves.toEqual({ alternates: null, robots: null })
   })
 })

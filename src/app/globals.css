@@ -1104,6 +1104,13 @@ a:hover {
   font-size: var(--text-lg);
 }
 
+@media (max-width: 60rem) {
+  .site-footer__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+}
+
 @media (max-width: 48rem) {
   .site-header__inner {
     grid-template-columns: 1fr;
@@ -1116,11 +1123,6 @@ a:hover {
     inline-size: 100%;
     justify-content: space-between;
     gap: 0 var(--space-md);
-  }
-
-  .site-footer__inner {
-    grid-template-columns: 1fr;
-    gap: var(--space-md);
   }
 
   .footer-navigation {
