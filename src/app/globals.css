@@ -189,6 +189,7 @@ a:hover {
 
 .primary-navigation a,
 .legal-navigation a {
+  min-inline-size: 2.75rem;
   min-block-size: 2.75rem;
   display: inline-flex;
   align-items: center;

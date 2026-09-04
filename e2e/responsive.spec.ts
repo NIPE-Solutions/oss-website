@@ -30,6 +30,7 @@ for (const width of viewports) {
       const box = await control.boundingBox()
 
       expect(box?.height).toBeGreaterThanOrEqual(44)
+      expect(box?.width).toBeGreaterThanOrEqual(44)
     }
   })
 }
