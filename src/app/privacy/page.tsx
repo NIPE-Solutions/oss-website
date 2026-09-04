@@ -1,6 +1,15 @@
+import type { Metadata } from 'next'
+
 import { ExternalLink } from '@/components/external-link'
 import { LegalPage } from '@/components/legal-page'
 import { operator } from '@/content/legal'
+import { createPageMetadata } from '@/lib/metadata'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Privacy',
+  description: 'Privacy information for the static NIPE Open Source website.',
+  path: '/privacy',
+})
 
 export default function PrivacyPage() {
   return (

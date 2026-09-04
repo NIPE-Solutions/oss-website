@@ -1,6 +1,16 @@
+import type { Metadata } from 'next'
+
 import { ExternalLink } from '@/components/external-link'
 import { LegalPage } from '@/components/legal-page'
 import { projectSupportRoutes } from '@/content/legal'
+import { createPageMetadata } from '@/lib/metadata'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Security',
+  description:
+    'Verified vulnerability-reporting routes for NIPE open-source projects.',
+  path: '/security',
+})
 
 export default function SecurityPage() {
   return (

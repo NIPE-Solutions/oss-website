@@ -2,8 +2,12 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { ProjectDetail } from '@/components/project-detail'
+import {
+  createProjectStructuredData,
+  StructuredData,
+} from '@/components/structured-data'
 import { getProject, publishedProjects } from '@/content/projects'
-import { siteConfig } from '@/lib/site'
+import { createPageMetadata } from '@/lib/metadata'
 
 interface ProjectPageProps {
   readonly params: Promise<{ slug: string }>
@@ -32,13 +36,11 @@ export async function generateMetadata({
     return {}
   }
 
-  return {
+  return createPageMetadata({
     title: project.name,
     description: project.description,
-    alternates: {
-      canonical: `${siteConfig.origin}/projects/${project.slug}`,
-    },
-  }
+    path: `/projects/${project.slug}`,
+  })
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
@@ -48,5 +50,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound()
   }
 
-  return <ProjectDetail project={project} />
+  return (
+    <>
+      <StructuredData data={createProjectStructuredData(project)} />
+      <ProjectDetail project={project} />
+    </>
+  )
 }

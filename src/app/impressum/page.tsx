@@ -1,6 +1,15 @@
+import type { Metadata } from 'next'
+
 import { ExternalLink } from '@/components/external-link'
 import { LegalPage } from '@/components/legal-page'
 import { operator } from '@/content/legal'
+import { createPageMetadata } from '@/lib/metadata'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Impressum',
+  description: 'Provider and publisher information for NIPE Open Source.',
+  path: '/impressum',
+})
 
 export default function ImpressumPage() {
   return (
