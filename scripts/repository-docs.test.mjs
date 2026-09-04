@@ -65,6 +65,83 @@ describe('repository documentation', () => {
     expect(guide).toContain('npm run check')
   })
 
+  it('documents the current project registry contract and lifecycle examples', () => {
+    const guide = readRepositoryFile('docs/ADDING_A_PROJECT.md')
+
+    for (const field of [
+      '`slug`',
+      '`name`',
+      '`category`',
+      '`visibility`',
+      '`status`',
+      '`repository`',
+      '`documentation`',
+      '`npm.published`',
+      'support URLs',
+      '`accent`',
+      '`claims`',
+      'purpose source',
+      'claim source',
+    ]) {
+      expect(guide).toContain(field)
+    }
+
+    for (const lifecycleExample of [
+      '### Stable npm package',
+      '### Public beta',
+      '### GitHub-only tool',
+      '### Hidden development project',
+      '### Public archived project',
+    ]) {
+      expect(guide).toContain(lifecycleExample)
+    }
+  })
+
+  it('provides automated, manual, and owner/legal launch gates', () => {
+    const checklist = readRepositoryFile('docs/LAUNCH_CHECKLIST.md')
+
+    for (const section of [
+      '## Automated gates',
+      '## Manual gates',
+      '## Owner and legal gates',
+    ]) {
+      expect(checklist).toContain(section)
+    }
+
+    for (const automatedCheck of [
+      'npm run check',
+      'npm run test:e2e',
+      'npm run check:links',
+      'sitemap',
+      'robots',
+      'canonical',
+    ]) {
+      expect(checklist).toContain(automatedCheck)
+    }
+
+    for (const manualCheck of [
+      'nipesolutions.com TLS issue',
+      'npm browser verification',
+      'visual social preview',
+      'private vulnerability reporting',
+      'Discussions',
+    ]) {
+      expect(checklist).toContain(manualCheck)
+    }
+  })
+
+  it('records exact recommended GitHub repository metadata', () => {
+    const checklist = readRepositoryFile('docs/LAUNCH_CHECKLIST.md')
+
+    expect(checklist).toContain(
+      'The website for NIPE Open Source — focused primitives and developer tools for the web.',
+    )
+    expect(checklist).toContain('https://opensource.nipesolutions.com')
+    expect(checklist).toContain(
+      '`open-source`, `developer-tools`, `typescript`, `react`, `nipe-solutions`',
+    )
+  })
+
   it('keeps centralized documentation aggregation out of this release', () => {
     const futureDocs = readRepositoryFile('docs/FUTURE_CENTRAL_DOCS.md')
 
