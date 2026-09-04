@@ -59,9 +59,10 @@ export default function PrivacyPage() {
           This site does not run analytics, advertising, or session replay. It
           does not intentionally set cookies, does not use browser storage, does
           not embed third-party media, and does not request external fonts.
-          Styles, fonts, and other page assets are served locally as part of the
-          site. Because there is no consent system, there is no cookie-settings
-          control.
+          Styles and other page assets are served locally as part of the site,
+          while text uses your device’s system fonts without making a font
+          request. Because there is no consent system, there is no
+          cookie-settings control.
         </p>
       </section>
 

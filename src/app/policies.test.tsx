@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 
 import ContributingPage from '@/app/contributing/page'
 import ImpressumPage from '@/app/impressum/page'
-import NotFound from '@/app/not-found'
+import NotFound, { metadata as notFoundMetadata } from '@/app/not-found'
 import PrivacyPage from '@/app/privacy/page'
 import SecurityPage from '@/app/security/page'
 import { publishedProjects } from '@/content/projects'
@@ -76,6 +76,10 @@ describe('legal routes', () => {
     expect(storage).toHaveTextContent(/does not request external fonts/i)
     expect(storage).toHaveTextContent(/does not use browser storage/i)
     expect(storage).toHaveTextContent(/does not intentionally set cookies/i)
+    expect(storage).toHaveTextContent(/uses your device’s system fonts/i)
+    expect(storage).not.toHaveTextContent(
+      /Styles, fonts, and other page assets are served locally/i,
+    )
     expect(container).not.toHaveTextContent(
       /Google Analytics|Plausible|Matomo|Hotjar|Meta Pixel/i,
     )
@@ -164,6 +168,14 @@ describe('project support routes', () => {
 })
 
 describe('not-found route', () => {
+  it('does not publish the homepage canonical or invite indexing', () => {
+    expect(notFoundMetadata).toMatchObject({
+      title: 'Page not found',
+      alternates: null,
+      robots: null,
+    })
+  })
+
   it('offers useful recovery and disclosure destinations', () => {
     render(<NotFound />)
 
