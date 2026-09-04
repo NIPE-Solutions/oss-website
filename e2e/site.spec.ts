@@ -70,6 +70,28 @@ test('primary navigation works with keyboard only', async ({ page }) => {
   }
 })
 
+test.describe('mobile primary navigation', () => {
+  test.use({ hasTouch: true, viewport: { width: 375, height: 900 } })
+
+  test('supports touch and Enter activation at a narrow width', async ({
+    page,
+  }) => {
+    await page.goto('/')
+
+    const navigation = page.getByRole('navigation', { name: 'Primary' })
+    const projects = navigation.getByRole('link', { name: 'Projects' })
+    const principles = navigation.getByRole('link', { name: 'Principles' })
+
+    await expect(navigation).toBeVisible()
+    await projects.tap()
+    await expect(page).toHaveURL('/#projects')
+
+    await principles.focus()
+    await page.keyboard.press('Enter')
+    await expect(page).toHaveURL('/#principles')
+  })
+})
+
 test('skip link moves keyboard focus to the main content', async ({ page }) => {
   await page.goto('/')
 
