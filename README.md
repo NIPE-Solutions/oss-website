@@ -52,6 +52,10 @@ processing of this site. That source approval is not a claim of legal
 compliance; professional owner/legal review remains recommended after material
 operator, hosting, or processing changes.
 
+Before release, use the [launch checklist](docs/LAUNCH_CHECKLIST.md). It keeps
+deterministic checks separate from manual deployment and GitHub settings, and
+from owner/legal review that cannot be automated.
+
 ## Deployment
 
 Vercel deploys this Next.js repository. Use Node.js 24 and npm 11, and start
