@@ -92,6 +92,7 @@ body {
 
 main {
   inline-size: 100%;
+  min-inline-size: 0;
 }
 
 ::selection {
