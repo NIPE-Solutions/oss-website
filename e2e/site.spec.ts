@@ -109,7 +109,7 @@ test('legal navigation reaches the publication information pages', async ({
 }) => {
   await page.goto('/')
 
-  const legalNavigation = page.getByRole('navigation', { name: 'Legal' })
+  const legalNavigation = page.getByRole('navigation', { name: 'Footer' })
   await expect(
     legalNavigation.getByRole('link', { name: 'Impressum' }),
   ).toHaveAttribute('href', '/impressum')

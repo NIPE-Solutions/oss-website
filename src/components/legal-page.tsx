@@ -5,7 +5,6 @@ interface LegalPageProps {
   readonly title: string
   readonly introduction: string
   readonly children: ReactNode
-  readonly reviewRequired?: boolean
 }
 
 export function LegalPage({
@@ -13,7 +12,6 @@ export function LegalPage({
   title,
   introduction,
   children,
-  reviewRequired = false,
 }: LegalPageProps) {
   return (
     <article className="legal-page">
@@ -25,12 +23,6 @@ export function LegalPage({
         </div>
       </header>
       <div className="site-frame reading-width legal-page__content">
-        {reviewRequired ? (
-          <aside className="review-notice" aria-label="Publication review">
-            This draft legal text requires owner or legal review before
-            publication. It is not a claim of legal compliance.
-          </aside>
-        ) : null}
         {children}
       </div>
     </article>

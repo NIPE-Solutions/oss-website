@@ -11,6 +11,7 @@
   --rule: #c9c1b3;
   --rule-inverse: #464038;
   --nipe-red: #b5222b;
+  --ink-on-red: #fff;
   --focus: #b5222b;
   --project-bottom-sheet: #596d91;
   --project-readonly-view: #587052;
@@ -59,6 +60,7 @@
     --rule: #4b453d;
     --rule-inverse: #c9c1b3;
     --nipe-red: #ff6b70;
+    --ink-on-red: #171614;
     --focus: #ff7b7f;
     --project-bottom-sheet: #8fa8d1;
     --project-readonly-view: #91ab88;
@@ -97,7 +99,7 @@ main {
 
 ::selection {
   background: var(--nipe-red);
-  color: #fff;
+  color: var(--ink-on-red);
 }
 
 a {
@@ -180,16 +182,14 @@ a:hover {
   font-weight: 500;
 }
 
-.primary-navigation,
-.legal-navigation {
+.primary-navigation {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--space-xs) var(--space-lg);
 }
 
-.primary-navigation a,
-.legal-navigation a {
+.primary-navigation a {
   min-inline-size: 2.75rem;
   min-block-size: 2.75rem;
   display: inline-flex;
@@ -199,8 +199,7 @@ a:hover {
   text-decoration: none;
 }
 
-.primary-navigation a:hover,
-.legal-navigation a:hover {
+.primary-navigation a:hover {
   text-decoration: underline;
   text-decoration-thickness: 0.12em;
 }
@@ -303,7 +302,7 @@ a:hover {
 }
 
 .ecosystem-map__hub text {
-  fill: #fff;
+  fill: var(--ink-on-red);
 }
 
 .project-directory {
@@ -495,6 +494,7 @@ a:hover {
 
 .project-detail__claims a,
 .project-detail__limitation a,
+.project-detail__content > section > a,
 .code-example a {
   min-block-size: 2.75rem;
   margin-block-start: var(--space-sm);
@@ -924,12 +924,11 @@ a:hover {
 }
 
 .site-footer__inner {
-  min-block-size: 8.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-xl);
-  padding-block: var(--space-xl);
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.3fr);
+  align-items: start;
+  gap: var(--space-2xl);
+  padding-block: var(--space-2xl);
 }
 
 .site-footer p {
@@ -937,6 +936,40 @@ a:hover {
   margin: 0;
   color: var(--muted-inverse);
   font-size: var(--text-sm);
+}
+
+.footer-navigation {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1.6fr) repeat(3, minmax(7rem, 1fr));
+  gap: var(--space-xl);
+}
+
+.footer-navigation > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-navigation h2 {
+  margin: 0 0 var(--space-sm);
+  color: var(--muted-inverse);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer-navigation a {
+  min-block-size: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-sm);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.footer-navigation a:hover {
+  text-decoration: underline;
 }
 
 .legal-page__header {
@@ -1031,13 +1064,6 @@ a:hover {
   margin: 0;
 }
 
-.review-notice {
-  padding: var(--space-md) var(--space-lg);
-  border-inline-start: 0.4rem solid var(--nipe-red);
-  background: var(--surface);
-  color: var(--muted);
-}
-
 .support-directory {
   margin: var(--space-xl) 0 0;
   padding: 0;
@@ -1093,9 +1119,12 @@ a:hover {
   }
 
   .site-footer__inner {
-    align-items: flex-start;
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: var(--space-md);
+  }
+
+  .footer-navigation {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero__inner {
@@ -1178,6 +1207,11 @@ a:hover {
     font-size: var(--text-xs);
   }
 
+  .footer-navigation {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
   .hero h1 {
     font-size: clamp(2.25rem, 11vw, 4rem);
   }
@@ -1239,7 +1273,7 @@ a:hover {
 
   .skip-link,
   .primary-navigation,
-  .legal-navigation,
+  .footer-navigation,
   .ecosystem-map,
   .project-entry__visual {
     display: none;
@@ -1283,10 +1317,6 @@ a:hover {
   .legal-page__content,
   .not-found {
     padding-block: 1rem;
-  }
-
-  .review-notice {
-    background: transparent;
   }
 
   .legal-page__content section,

@@ -2,6 +2,7 @@ import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { SiteShell } from '@/app/layout'
+import { publishedProjects } from '@/content/projects'
 import { ExternalLink } from './external-link'
 
 afterEach(cleanup)
@@ -50,7 +51,7 @@ describe('site shell', () => {
     ).toHaveAttribute('href', 'https://nipesolutions.com')
   })
 
-  it('keeps legal routes available from the footer', () => {
+  it('groups registry projects, resources, NIPE, and legal routes in the footer', () => {
     render(
       <SiteShell>
         <h1>Directory</h1>
@@ -58,13 +59,41 @@ describe('site shell', () => {
     )
 
     const footer = screen.getByRole('contentinfo')
+    const navigation = within(footer).getByRole('navigation', {
+      name: 'Footer',
+    })
+
+    for (const project of publishedProjects) {
+      expect(
+        within(navigation).getByRole('link', { name: project.name }),
+      ).toHaveAttribute('href', `/projects/${project.slug}`)
+    }
 
     expect(
-      within(footer).getByRole('link', { name: 'Impressum' }),
+      within(navigation).getByRole('link', { name: 'Contributing' }),
+    ).toHaveAttribute('href', '/contributing')
+    expect(
+      within(navigation).getByRole('link', { name: 'Security' }),
+    ).toHaveAttribute('href', '/security')
+    expect(
+      within(navigation).getByRole('link', { name: 'NIPE Solutions' }),
+    ).toHaveAttribute('href', 'https://nipesolutions.com')
+    expect(
+      within(navigation).getByRole('link', { name: 'GitHub' }),
+    ).toHaveAttribute('href', 'https://github.com/NIPE-Solutions')
+
+    expect(
+      within(navigation).getByRole('link', { name: 'Impressum' }),
     ).toHaveAttribute('href', '/impressum')
     expect(
-      within(footer).getByRole('link', { name: 'Privacy' }),
+      within(navigation).getByRole('link', { name: 'Privacy' }),
     ).toHaveAttribute('href', '/privacy')
+
+    expect(
+      within(navigation)
+        .getAllByRole('heading', { level: 2 })
+        .map(({ textContent }) => textContent),
+    ).toEqual(['Projects', 'Resources', 'NIPE', 'Legal'])
   })
 })
 

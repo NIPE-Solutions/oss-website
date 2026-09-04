@@ -17,8 +17,12 @@ const statusLabels: Record<ProjectStatus, string> = {
 }
 
 export function ProjectDetail({ project }: ProjectDetailProps) {
-  const capabilityClaims = project.claims.slice(0, -1)
-  const limitation = project.claims.at(-1)
+  const capabilityClaims = project.claims.filter(
+    ({ kind }) => kind === 'capability',
+  )
+  const limitationClaims = project.claims.filter(
+    ({ kind }) => kind === 'limitation',
+  )
   const style = { '--project-accent': project.accent } as CSSProperties
 
   return (
@@ -42,6 +46,14 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           <p>{project.description}</p>
         </section>
 
+        <section aria-labelledby="purpose-heading">
+          <h2 id="purpose-heading">Why it exists</h2>
+          <p>{project.purpose.detail}</p>
+          <ExternalLink href={project.purpose.verifiedFrom}>
+            Evidence for purpose
+          </ExternalLink>
+        </section>
+
         <section aria-labelledby="claims-heading">
           <h2 id="claims-heading">Verified claims</h2>
           <ul className="project-detail__claims">
@@ -57,16 +69,21 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           </ul>
         </section>
 
-        {limitation ? (
+        {limitationClaims.length > 0 ? (
           <section aria-labelledby="limitations-heading">
             <h2 id="limitations-heading">Scope and limitations</h2>
-            <div className="project-detail__limitation">
-              <h3>{limitation.label}</h3>
-              <p>{limitation.detail}</p>
-              <ExternalLink href={limitation.verifiedFrom}>
-                Evidence for {limitation.label}
-              </ExternalLink>
-            </div>
+            {limitationClaims.map((limitation) => (
+              <div
+                className="project-detail__limitation"
+                key={limitation.label}
+              >
+                <h3>{limitation.label}</h3>
+                <p>{limitation.detail}</p>
+                <ExternalLink href={limitation.verifiedFrom}>
+                  Evidence for {limitation.label}
+                </ExternalLink>
+              </div>
+            ))}
           </section>
         ) : null}
 

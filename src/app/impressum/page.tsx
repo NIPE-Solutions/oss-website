@@ -17,7 +17,6 @@ export default function ImpressumPage() {
       eyebrow="Legal / Provider information"
       title="Impressum"
       introduction="Provider, media-owner, and publisher information for NIPE Open Source."
-      reviewRequired
     >
       <section aria-labelledby="provider-heading">
         <h2 id="provider-heading">
