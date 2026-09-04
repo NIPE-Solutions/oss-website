@@ -118,21 +118,21 @@ describe('homepage', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('links project titles to working canonical destinations', () => {
+  it('links project titles to their local detail pages', () => {
     render(<Home />)
 
     for (const destination of [
       {
         name: 'React Spring Bottom Sheet',
-        href: 'https://react-spring-bottom-sheet.nipesolutions.com',
+        href: '/projects/react-spring-bottom-sheet',
       },
       {
         name: 'Readonly View',
-        href: 'https://readonly-view.nipesolutions.com',
+        href: '/projects/readonly-view',
       },
       {
         name: 'Angular Flex-Layout Codemod',
-        href: 'https://github.com/NIPE-Solutions/flex-layout-migrator#readme',
+        href: '/projects/flex-layout-codemod',
       },
     ]) {
       const project = screen.getByRole('article', { name: destination.name })
