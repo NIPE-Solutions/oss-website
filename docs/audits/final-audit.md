@@ -6,17 +6,17 @@ was commit `055fe03`; the audit changes and this report are committed together.
 
 ## Outcome
 
-The local production-readiness audit passes its technical gates. Three defects
-found during the audit were fixed and covered by regression tests: inaccurate
-system-font wording, inherited homepage metadata on 404 responses, and a
-missing favicon. Publication still requires the explicit NIPE owner/legal
-review described below, followed by the deployment, DNS, TLS, and live-origin
-checks in Task 12.
+The local production-readiness audit passes its technical gates. Four defects
+found during the audit and blocking review were fixed and covered by regression
+tests: inaccurate system-font wording, inherited homepage metadata on 404
+responses, a missing favicon, and project-detail overflow at narrow widths.
+Publication still requires the explicit NIPE owner/legal review described
+below, followed by the deployment, DNS, TLS, and live-origin checks in Task 12.
 
 ## Verification evidence
 
 - `npm ci && npm run check && npm run test:e2e` passes after a clean dependency
-  install: 9 Vitest files / 65 tests and 27 Chromium tests.
+  install: 9 Vitest files / 65 tests and 33 Chromium tests.
 - `npm audit --omit=dev --audit-level=moderate` reports 0 vulnerabilities.
 - Lighthouse 13.4.1 ran against a build created with
   `VERCEL_ENV=production NODE_ENV=production` and served by `next start`.
@@ -25,6 +25,12 @@ checks in Task 12.
   color schemes. Each capture reported `scrollWidth === innerWidth`; no clipping,
   collisions, accidental overflow, missing content, or illegible color-scheme
   transition was found.
+- Blocking review exposed that the original responsive suite covered only the
+  homepage and therefore missed long code content enlarging all three project
+  detail pages. After the fix, six additional full-page captures cover every
+  project route at 375 and 430 CSS pixels. Each reports
+  `scrollWidth === innerWidth`; code and install lines remain available through
+  their own focusable horizontal scroll regions.
 - Browser inspection also covered the homepage, Readonly View detail page,
   privacy page, and a 404 at 430 and 1366 CSS pixels. The 404 exposes one
   `noindex` directive, no canonical, and a route-specific title.
@@ -46,12 +52,13 @@ material user impact.
 
 ## Finding disposition
 
-| ID   | Area                     | Finding                                                                                                | Disposition                                                                                                                                                                                                                                                                              | Evidence                                                                                                           |
-| ---- | ------------------------ | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| F-01 | Privacy                  | The notice said fonts were served locally, but CSS uses device system stacks and serves no font files. | Fixed. The notice now distinguishes local styles/assets from device-installed system fonts.                                                                                                                                                                                              | Policy test checks the corrected wording; browser and capture runs found 0 loaded font faces and no font requests. |
-| F-02 | SEO                      | The custom 404 inherited the homepage canonical and environment-level robots metadata.                 | Fixed. `not-found.tsx` clears inherited canonical and robots values; Next supplies the one 404 `noindex` tag.                                                                                                                                                                            | Unit metadata assertion plus browser regression for HTTP 404, zero canonicals, and exactly one `noindex` tag.      |
-| F-03 | Product / Best Practices | `/favicon.ico` returned 404, producing a console error and a Lighthouse Best Practices deduction.      | Fixed. A local App Router icon matching the site identity was added.                                                                                                                                                                                                                     | Browser regression requires one local icon link and HTTP 200; Lighthouse Best Practices returned to 100.           |
-| F-04 | Legal                    | The imprint and privacy copy have not been approved for this new site.                                 | **NIPE owner/legal review required before publication.** Confirm the legal bases, Vercel processor/transfer wording, log retention description, email-provider disclosure, rights wording, and all operator facts. Remove or revise the visible draft-review notice only after approval. | Both pages explicitly say they are drafts and do not claim legal compliance.                                       |
+| ID   | Area                     | Finding                                                                                                                              | Disposition                                                                                                                                                                                                                                                                              | Evidence                                                                                                           |
+| ---- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| F-01 | Privacy                  | The notice said fonts were served locally, but CSS uses device system stacks and serves no font files.                               | Fixed. The notice now distinguishes local styles/assets from device-installed system fonts.                                                                                                                                                                                              | Policy test checks the corrected wording; browser and capture runs found 0 loaded font faces and no font requests. |
+| F-02 | SEO                      | The custom 404 inherited the homepage canonical and environment-level robots metadata.                                               | Fixed. `not-found.tsx` clears inherited canonical and robots values; Next supplies the one 404 `noindex` tag.                                                                                                                                                                            | Unit metadata assertion plus browser regression for HTTP 404, zero canonicals, and exactly one `noindex` tag.      |
+| F-03 | Product / Best Practices | `/favicon.ico` returned 404, producing a console error and a Lighthouse Best Practices deduction.                                    | Fixed. A local App Router icon matching the site identity was added.                                                                                                                                                                                                                     | Browser regression requires one local icon link and HTTP 200; Lighthouse Best Practices returned to 100.           |
+| F-04 | Legal                    | The imprint and privacy copy have not been approved for this new site.                                                               | **NIPE owner/legal review required before publication.** Confirm the legal bases, Vercel processor/transfer wording, log retention description, email-provider disclosure, rights wording, and all operator facts. Remove or revise the visible draft-review notice only after approval. | Both pages explicitly say they are drafts and do not claim legal compliance.                                       |
+| F-05 | Responsive layout        | Every project detail route overflowed horizontally at 375 and 430 CSS pixels because long code content enlarged the body grid track. | Fixed. The main grid item can now shrink to the viewport while each focusable code block retains local horizontal scrolling.                                                                                                                                                             | Six browser regressions and full-page captures cover all three project routes at both narrow widths.               |
 
 No unresolved technical defect is accepted by this audit.
 
@@ -126,8 +133,9 @@ The absence of a cookie banner matches the measured implementation.
 - Axe checks pass on the homepage, all project routes, contributing, security,
   imprint, and privacy with zero serious or critical violations.
 - Keyboard tests cover the skip link, primary navigation, and mobile activation.
-- All six target widths have no horizontal overflow; primary controls meet the
-  44 CSS pixel minimum tested by the suite.
+- The homepage has no horizontal overflow at all six target widths, and every
+  project detail route has no page-level overflow at 375 and 430 CSS pixels.
+  Primary controls meet the 44 CSS pixel minimum tested by the suite.
 - Light and dark palettes remain legible, project accents stay subordinate to
   content, and concept visuals convey no hover-only facts.
 - `prefers-reduced-motion` removes smooth scrolling and reduces transition
