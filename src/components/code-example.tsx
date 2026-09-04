@@ -13,7 +13,7 @@ export function CodeExample({ language, code, source }: CodeExampleProps) {
         <h2 id="example-heading">Example</h2>
         <ExternalLink href={source}>Example source</ExternalLink>
       </div>
-      <pre data-language={language}>
+      <pre data-language={language} tabIndex={0}>
         <code>{code}</code>
       </pre>
     </section>
