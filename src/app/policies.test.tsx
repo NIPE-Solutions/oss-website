@@ -100,16 +100,38 @@ describe('legal routes', () => {
   })
 
   it.each([ImpressumPage, PrivacyPage])(
-    'flags the legal copy for owner or legal review',
+    'presents the approved source-based legal copy without a draft warning or compliance claim',
     (Page) => {
-      render(<Page />)
+      const { container } = render(<Page />)
 
-      expect(screen.getByText(/owner or legal review/i)).toBeInTheDocument()
+      expect(container).not.toHaveTextContent(/draft|before publication/i)
+      expect(container).not.toHaveTextContent(
+        /legally compliant|legal compliance/i,
+      )
+      expect(
+        screen.queryByRole('complementary', { name: 'Publication review' }),
+      ).not.toBeInTheDocument()
     },
   )
 })
 
 describe('project support routes', () => {
+  it('publishes the website vulnerability-reporting route from SECURITY.md', () => {
+    render(<SecurityPage />)
+
+    const website = screen.getByRole('region', {
+      name: 'NIPE Open Source website',
+    })
+    expect(website).toHaveTextContent(
+      /affected URL.*reproduction steps.*impact/i,
+    )
+    expect(
+      within(website).getByRole('link', {
+        name: 'Email a website vulnerability report',
+      }),
+    ).toHaveAttribute('href', 'mailto:office@nipesolutions.com')
+  })
+
   it('routes every published project to its repository contribution guide', () => {
     render(<ContributingPage />)
 

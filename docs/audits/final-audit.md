@@ -1,22 +1,27 @@
 # Final product, privacy, and performance audit
 
 Audited on **2026-09-04** in Europe/Vienna against the production-preview
-configuration for `https://opensource.nipesolutions.com`. The reviewed baseline
-was commit `055fe03`; the audit changes and this report are committed together.
+configuration for `https://opensource.nipesolutions.com`. The final review fix
+wave started from commit `b11ca02`; its implementation and this corrected report
+are committed together.
 
 ## Outcome
 
-The local production-readiness audit passes its technical gates. Four defects
-found during the audit and blocking review were fixed and covered by regression
-tests: inaccurate system-font wording, inherited homepage metadata on 404
-responses, a missing favicon, and project-detail overflow at narrow widths.
-Publication still requires the explicit NIPE owner/legal review described
-below, followed by the deployment, DNS, TLS, and live-origin checks in Task 12.
+The site is ready for the ordered deployment wave after local verification. The
+original audit fixes remain in place, and final review fixes now cover keyboard
+access to install-command overflow, complete footer routing, evidence-backed
+project purpose copy with explicit claim kinds, and dark-mode contrast on NIPE
+red surfaces. The owner approved the React Spring Bottom Sheet legal source and
+page design for publication, so the legal pages no longer display a draft
+warning. Professional legal review remains recommended; this audit does not
+claim legal compliance.
 
 ## Verification evidence
 
-- `npm ci && npm run check && npm run test:e2e` passes after a clean dependency
-  install: 9 Vitest files / 65 tests and 33 Chromium tests.
+- `npm run check` passes: formatting, lint, type checking, 9 Vitest files / 71
+  tests, 3-project registry validation, and the 14-page static production build.
+- `npm run test:e2e` passes all 37 Chromium tests, including the three narrow
+  axe/focus regressions and computed dark-mode contrast regression.
 - `npm audit --omit=dev --audit-level=moderate` reports 0 vulnerabilities.
 - Lighthouse 13.4.1 ran against a build created with
   `VERCEL_ENV=production NODE_ENV=production` and served by `next start`.
@@ -27,15 +32,20 @@ below, followed by the deployment, DNS, TLS, and live-origin checks in Task 12.
   transition was found.
 - Blocking review exposed that the original responsive suite covered only the
   homepage and therefore missed long code content enlarging all three project
-  detail pages. After the fix, six additional full-page captures cover every
-  project route at 375 and 430 CSS pixels. Each reports
-  `scrollWidth === innerWidth`; code and install lines remain available through
-  their own focusable horizontal scroll regions.
+  detail pages. Six browser regressions now cover every project route at 375 and
+  430 CSS pixels and require `scrollWidth <= innerWidth`. Final review then found
+  that install-command scroll regions were not keyboard focusable; three narrow
+  viewport axe/focus regressions now cover that separate accessibility behavior.
 - Browser inspection also covered the homepage, Readonly View detail page,
   privacy page, and a 404 at 430 and 1366 CSS pixels. The 404 exposes one
   `noindex` directive, no canonical, and a route-specific title.
 
-### Lighthouse
+### Lighthouse baseline
+
+These Lighthouse 13.4.1 measurements were captured during the preceding audit
+before the final-review HTML/CSS fixes. They remain useful baseline evidence but
+were not rerun in this fix wave and are not presented as fresh final-build
+scores.
 
 | Route                     | Performance | Accessibility | Best Practices | SEO |   FCP |   LCP |   TBT | CLS | Transfer |
 | ------------------------- | ----------: | ------------: | -------------: | --: | ----: | ----: | ----: | --: | -------: |
@@ -52,20 +62,24 @@ material user impact.
 
 ## Finding disposition
 
-| ID   | Area                     | Finding                                                                                                                              | Disposition                                                                                                                                                                                                                                                                              | Evidence                                                                                                           |
-| ---- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| F-01 | Privacy                  | The notice said fonts were served locally, but CSS uses device system stacks and serves no font files.                               | Fixed. The notice now distinguishes local styles/assets from device-installed system fonts.                                                                                                                                                                                              | Policy test checks the corrected wording; browser and capture runs found 0 loaded font faces and no font requests. |
-| F-02 | SEO                      | The custom 404 inherited the homepage canonical and environment-level robots metadata.                                               | Fixed. `not-found.tsx` clears inherited canonical and robots values; Next supplies the one 404 `noindex` tag.                                                                                                                                                                            | Unit metadata assertion plus browser regression for HTTP 404, zero canonicals, and exactly one `noindex` tag.      |
-| F-03 | Product / Best Practices | `/favicon.ico` returned 404, producing a console error and a Lighthouse Best Practices deduction.                                    | Fixed. A local App Router icon matching the site identity was added.                                                                                                                                                                                                                     | Browser regression requires one local icon link and HTTP 200; Lighthouse Best Practices returned to 100.           |
-| F-04 | Legal                    | The imprint and privacy copy have not been approved for this new site.                                                               | **NIPE owner/legal review required before publication.** Confirm the legal bases, Vercel processor/transfer wording, log retention description, email-provider disclosure, rights wording, and all operator facts. Remove or revise the visible draft-review notice only after approval. | Both pages explicitly say they are drafts and do not claim legal compliance.                                       |
-| F-05 | Responsive layout        | Every project detail route overflowed horizontally at 375 and 430 CSS pixels because long code content enlarged the body grid track. | Fixed. The main grid item can now shrink to the viewport while each focusable code block retains local horizontal scrolling.                                                                                                                                                             | Six browser regressions and full-page captures cover all three project routes at both narrow widths.               |
+| ID   | Area                     | Finding                                                                                                                              | Disposition                                                                                                                                                                                                                               | Evidence                                                                                                                       |
+| ---- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| F-01 | Privacy                  | The notice said fonts were served locally, but CSS uses device system stacks and serves no font files.                               | Fixed. The notice distinguishes local styles/assets from device-installed system fonts.                                                                                                                                                   | Policy regression; prior browser inspection found no loaded font faces or font requests.                                       |
+| F-02 | SEO                      | The custom 404 inherited the homepage canonical and environment-level robots metadata.                                               | Fixed. `not-found.tsx` clears inherited canonical and robots values; Next supplies one 404 `noindex` tag.                                                                                                                                 | Unit metadata assertion and browser regression for HTTP 404, zero canonicals, and exactly one `noindex`.                       |
+| F-03 | Product / Best Practices | `/favicon.ico` returned 404, producing a console error and a Lighthouse Best Practices deduction.                                    | Fixed. A local App Router icon matching the site identity was added.                                                                                                                                                                      | Browser regression requires one local icon link and HTTP 200; baseline Lighthouse Best Practices returned to 100.              |
+| F-04 | Legal                    | The public legal pages still displayed an unapproved-draft warning.                                                                  | Resolved by owner ruling. The owner approved the Bottom Sheet legal source and page design and ordered deployment; the visible draft warning was removed. Professional legal review remains recommended, and no compliance claim is made. | Unit regressions require publication-ready pages without draft/compliance wording; maintenance guidance retains review advice. |
+| F-05 | Responsive layout        | Every project detail route overflowed horizontally at 375 and 430 CSS pixels because long code content enlarged the body grid track. | Fixed. The main grid item can shrink while wide code stays locally scrollable.                                                                                                                                                            | Six browser regressions cover all three project routes at 375 and 430 CSS pixels.                                              |
+| F-06 | Keyboard accessibility   | Horizontally scrollable install commands had no keyboard focus target.                                                               | Fixed. Install `pre` regions join example code as explicit tab stops.                                                                                                                                                                     | Three 375 CSS pixel browser tests focus both scroll regions and run axe; unit tests assert the install tab stop.               |
+| F-07 | Information architecture | The footer exposed only legal links and omitted project/resource/NIPE groups; website vulnerability reporting was not public.        | Fixed. A registry-driven footer groups projects, Contributing/Security, NIPE, and legal routes. `/security` now publishes the website email route specified by `SECURITY.md`.                                                             | Footer and policy component regressions assert every destination and all four groups.                                          |
+| F-08 | Project evidence         | Project pages lacked a sourced reason for existence and inferred limitations from claim position.                                    | Fixed. Every registry entry has a separately sourced purpose; claims use an explicit `capability`/`limitation` discriminator and render by kind regardless of order.                                                                      | Registry, validator, and page regressions cover purpose evidence, valid kinds, and reordered claims.                           |
+| F-09 | Color contrast           | Dark-mode white text on the lighter NIPE red measured 2.77:1.                                                                        | Fixed. A theme-aware on-red token uses dark ink in dark mode while retaining white on the darker light-mode red.                                                                                                                          | Browser regression computes contrast for selection and ecosystem-hub surfaces and requires at least 4.5:1.                     |
 
 No unresolved technical defect is accepted by this audit.
 
 ## Evidence-backed claims
 
 The complete registry was reconciled with
-[`project-sources.md`](./project-sources.md): all 15 claim/example
+[`project-sources.md`](./project-sources.md): all 18 purpose/claim/example
 `verifiedFrom` references occur in the Task 1 inventory, and the registry
 validator passes.
 
@@ -77,9 +91,9 @@ validator passes.
 | React Swipe Actions         | Correctly omitted: Task 1 found no usable implementation, release, NIPE-scoped package, documentation, or claims.                                                                                                                           |
 
 The site publishes no stars, download counts, customer/adoption claims,
-testimonials, inferred compatibility, or live vanity data. Project claims and
-examples are rendered from the single typed registry; no visitor-time GitHub or
-npm fetch exists.
+testimonials, inferred compatibility, or live vanity data. Project purposes,
+claims, and examples are rendered from the single typed registry; no
+visitor-time GitHub or npm fetch exists.
 
 ## Five-perspective review
 
@@ -99,16 +113,18 @@ Each project routes to its canonical documentation, repository, npm package,
 contribution guide, and evidence. Security routing does not overstate private
 reporting availability: Bottom Sheet links to its security overview, Readonly
 View links to its policy while describing the current mismatch, and the codemod
-uses its verified private-report route. Registry-first maintenance and project
+uses its verified private-report route. The website itself exposes the email
+route documented in `SECURITY.md`. Registry-first maintenance and project
 archiving/status behavior remain documented.
 
 ### First-time developer
 
 The homepage answers who maintains the directory, groups the three published
 projects by problem, shows status at the point of discovery, and provides direct
-documentation/source/package routes. Detail pages add verified capabilities,
-explicit limitations, source-linked examples, install commands, and recovery
-navigation without duplicating full project documentation.
+documentation/source/package routes. Detail pages add a separately sourced
+reason for existence, verified capabilities, explicit limitations,
+source-linked examples, install commands, and recovery navigation without
+duplicating full project documentation.
 
 ### Skeptical technical buyer
 
@@ -130,14 +146,17 @@ The absence of a cookie banner matches the measured implementation.
 
 ## Accessibility and responsive review
 
-- Axe checks pass on the homepage, all project routes, contributing, security,
-  imprint, and privacy with zero serious or critical violations.
-- Keyboard tests cover the skip link, primary navigation, and mobile activation.
+- Axe checks cover the homepage, all project routes, contributing, security,
+  imprint, privacy, and all project routes again at a 375 CSS pixel viewport.
+- Keyboard tests cover the skip link, primary navigation, mobile activation,
+  and both horizontal code regions on every narrow project route.
 - The homepage has no horizontal overflow at all six target widths, and every
   project detail route has no page-level overflow at 375 and 430 CSS pixels.
   Primary controls meet the 44 CSS pixel minimum tested by the suite.
 - Light and dark palettes remain legible, project accents stay subordinate to
-  content, and concept visuals convey no hover-only facts.
+  content, and concept visuals convey no hover-only facts. A computed-color
+  regression requires at least 4.5:1 for text on red selection and hub surfaces
+  in dark mode.
 - `prefers-reduced-motion` removes smooth scrolling and reduces transition
   duration.
 - The 404 and legal pages remain complete without client-side interaction.
@@ -154,7 +173,13 @@ The absence of a cookie banner matches the measured implementation.
   `SoftwareSourceCode` JSON-LD contain factual fields only.
 - CSP limits content to the same origin (plus data images), prohibits objects and
   framing, and is accompanied by nosniff, referrer, permissions, frame, and
-  production HSTS headers.
+  production HSTS headers. `script-src 'unsafe-inline'` is retained because
+  Next's statically rendered App Router output includes framework bootstrap and
+  local JSON-LD scripts; `style-src 'unsafe-inline'` permits registry-derived
+  inline accent custom properties. This weakens CSP injection protection, so
+  the site accepts no visitor-authored content and loads no third-party scripts.
+  Revisit hashes/nonces if Next static output provides a stable deployment-safe
+  mechanism.
 - The local favicon, CSS, scripts, and generated social images are same-origin.
 
 ## Privacy, storage, cookies, assets, and third parties
@@ -188,8 +213,11 @@ proprietor Nicholas Petrasek; Achtergasse 10, 1230 Wien, Austria/Österreich;
 number `FN 585066t`; Handelsgericht Wien; registered office Wien; the recorded
 IT trade, district authority, and Wirtschaftskammer Wien.
 
-This is factual reconciliation, not legal approval. F-04 remains a publication
-action for the NIPE owner/legal reviewer.
+The owner has approved the React Spring Bottom Sheet legal source and the new
+page design as the publication basis and ordered deployment. That decision
+resolves the visible draft blocker; it is not a legal-compliance claim.
+Professional legal review remains recommended, especially after changes to the
+operator, processor, international transfers, retention, or email handling.
 
 ## AI-slop and copy audit
 
@@ -212,10 +240,11 @@ the audit. Task 12 must repeat this check before and after the narrowly scoped
 
 ## Remaining actions
 
-1. Obtain NIPE owner/legal approval for F-04 before publishing.
-2. In Task 12, verify the preview deployment, production headers and indexing,
+1. In Task 12, verify the preview deployment, production headers and indexing,
    exact Vercel DNS target, TLS, redirects, sitemap, 404 behavior, outbound
    links, and non-interference with existing project domains.
+2. Record professional legal review when obtained and repeat owner review after
+   material operator, processor, transfer, retention, or contact changes.
 3. Revisit the pinned ESLint 9 toolchain when the plugins bundled by
    `eslint-config-next` support ESLint 10; the current compatible version is
    retained because ESLint 10 currently crashes those rules. Weekly Dependabot

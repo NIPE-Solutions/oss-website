@@ -37,6 +37,17 @@ describe('project registry', () => {
         .flatMap(({ claims }) => claims)
         .every(({ verifiedFrom }) => Boolean(verifiedFrom)),
     ).toBe(true)
+    expect(
+      projects.every(
+        ({ purpose }) =>
+          Boolean(purpose.detail) && Boolean(purpose.verifiedFrom),
+      ),
+    ).toBe(true)
+    expect(
+      projects
+        .flatMap(({ claims }) => claims)
+        .every(({ kind }) => ['capability', 'limitation'].includes(kind)),
+    ).toBe(true)
   })
 
   it('links public projects to HTTPS repositories and only uses NIPE scoped npm packages', () => {

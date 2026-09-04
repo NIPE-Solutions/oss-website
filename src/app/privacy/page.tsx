@@ -17,7 +17,6 @@ export default function PrivacyPage() {
       eyebrow="Legal / Data protection"
       title="Privacy"
       introduction="This notice describes the limited processing required to deliver and protect this static website."
-      reviewRequired
     >
       <section aria-labelledby="controller-heading">
         <h2 id="controller-heading">Controller</h2>

@@ -67,12 +67,21 @@ describe('project detail routes', () => {
           project.description,
         ),
       ).toBeInTheDocument()
+      const purpose = screen.getByRole('region', { name: 'Why it exists' })
+      expect(
+        within(purpose).getByText(project.purpose.detail),
+      ).toBeInTheDocument()
+      expect(
+        within(purpose).getByRole('link', { name: 'Evidence for purpose' }),
+      ).toHaveAttribute('href', project.purpose.verifiedFrom)
       expect(
         screen.getByText(project.status === 'stable' ? 'Stable' : 'Prerelease'),
       ).toBeInTheDocument()
 
       const claims = screen.getByRole('region', { name: 'Verified claims' })
-      for (const claim of project.claims.slice(0, -1)) {
+      for (const claim of project.claims.filter(
+        ({ kind }) => kind === 'capability',
+      )) {
         expect(within(claims).getByText(claim.label)).toBeInTheDocument()
         expect(within(claims).getByText(claim.detail)).toBeInTheDocument()
         expect(
@@ -85,14 +94,12 @@ describe('project detail routes', () => {
       const limitations = screen.getByRole('region', {
         name: 'Scope and limitations',
       })
-      const finalClaim = project.claims.at(-1)
-      expect(finalClaim).toBeDefined()
-      expect(
-        within(limitations).getByText(finalClaim!.label),
-      ).toBeInTheDocument()
-      expect(
-        within(limitations).getByText(finalClaim!.detail),
-      ).toBeInTheDocument()
+      for (const claim of project.claims.filter(
+        ({ kind }) => kind === 'limitation',
+      )) {
+        expect(within(limitations).getByText(claim.label)).toBeInTheDocument()
+        expect(within(limitations).getByText(claim.detail)).toBeInTheDocument()
+      }
 
       if (project.example) {
         const example = screen.getByRole('region', { name: 'Example' })
@@ -121,9 +128,11 @@ describe('project detail routes', () => {
         'href',
         `https://www.npmjs.com/package/${project.npmPackage}`,
       )
-      expect(
-        screen.getByText(`npm install ${project.npmPackage}`),
-      ).toBeInTheDocument()
+      const installCommand = screen.getByText(
+        `npm install ${project.npmPackage}`,
+      )
+      expect(installCommand).toBeInTheDocument()
+      expect(installCommand.closest('pre')).toHaveAttribute('tabindex', '0')
     },
   )
 
@@ -135,6 +144,28 @@ describe('project detail routes', () => {
       screen.queryByRole('link', { name: 'npm package' }),
     ).not.toBeInTheDocument()
     expect(screen.queryByText(/^npm install /)).not.toBeInTheDocument()
+  })
+
+  it('groups claims by their explicit kind rather than their registry position', () => {
+    const project = {
+      ...publishedProjects[0],
+      claims: [
+        { ...publishedProjects[0].claims[3], kind: 'limitation' as const },
+        { ...publishedProjects[0].claims[0], kind: 'capability' as const },
+      ],
+    }
+    render(<ProjectDetail project={project} />)
+
+    expect(
+      within(screen.getByRole('region', { name: 'Verified claims' })).getByText(
+        project.claims[1].label,
+      ),
+    ).toBeInTheDocument()
+    expect(
+      within(
+        screen.getByRole('region', { name: 'Scope and limitations' }),
+      ).getByText(project.claims[0].label),
+    ).toBeInTheDocument()
   })
 
   it('uses Next notFound for an unknown project slug', async () => {

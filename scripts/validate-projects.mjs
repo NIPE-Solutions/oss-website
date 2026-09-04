@@ -11,6 +11,7 @@ const knownStatuses = new Set([
   'maintenance',
   'archived',
 ])
+const knownClaimKinds = new Set(['capability', 'limitation'])
 const nipePackageName = /^@nipe-solutions\/[a-z0-9][a-z0-9-]*$/
 
 function isHttpsUrl(value) {
@@ -60,6 +61,14 @@ export function validateProjects(entries) {
       )
     }
 
+    if (!entry.purpose?.detail) {
+      errors.push(`Project "${slug}" purpose is missing detail.`)
+    }
+
+    if (!entry.purpose?.verifiedFrom) {
+      errors.push(`Project "${slug}" purpose is missing verifiedFrom.`)
+    }
+
     if (!Number.isInteger(entry.order) || entry.order < 1) {
       errors.push(
         `Project "${slug}" has an order that must be a positive integer.`,
@@ -70,6 +79,12 @@ export function validateProjects(entries) {
     orders.add(entry.order)
 
     for (const [index, claim] of entry.claims.entries()) {
+      if (!knownClaimKinds.has(claim.kind)) {
+        errors.push(
+          `Project "${slug}" claim ${index + 1} has an unknown kind "${claim.kind}".`,
+        )
+      }
+
       if (!claim.verifiedFrom) {
         errors.push(
           `Project "${slug}" claim ${index + 1} is missing verifiedFrom.`,

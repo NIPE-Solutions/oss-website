@@ -19,17 +19,33 @@ describe('repository documentation', () => {
     expect(readme).toContain('## Deployment')
 
     for (const command of [
+      'npm ci',
       'npm install',
       'npm run dev',
       'npm run check',
       'npm run build',
       'npm run preview',
       'npm run test:e2e',
+      'npx vercel@latest link',
+      'npx vercel@latest deploy',
+      'npx vercel@latest inspect',
+      'npx vercel@latest promote',
+      'npx vercel@latest domains add',
+      'npx vercel@latest domains verify',
+      'curl -fsSI',
     ]) {
       expect(readme).toContain(command)
     }
 
     expect(readme).toContain('Vercel')
+  })
+
+  it('ignores Vercel linkage and local environment files', () => {
+    const gitignore = readRepositoryFile('.gitignore')
+
+    expect(gitignore).toContain('.vercel/')
+    expect(gitignore).toContain('.env.local')
+    expect(gitignore).toContain('.env.*.local')
   })
 
   it('uses the MIT license for website source', () => {

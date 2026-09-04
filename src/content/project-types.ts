@@ -3,6 +3,7 @@ export type ProjectCategory = 'ui-interaction' | 'runtime' | 'tooling'
 export type ProjectStatus = 'stable' | 'prerelease' | 'maintenance' | 'archived'
 
 export interface ProjectClaim {
+  readonly kind: 'capability' | 'limitation'
   readonly label: string
   readonly detail: string
   readonly verifiedFrom: string
@@ -18,6 +19,10 @@ export interface OpenSourceProject {
   readonly documentation?: string
   readonly npmPackage?: string
   readonly license: string
+  readonly purpose: {
+    readonly detail: string
+    readonly verifiedFrom: string
+  }
   readonly claims: readonly ProjectClaim[]
   readonly example?: {
     readonly language: string

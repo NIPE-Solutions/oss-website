@@ -13,8 +13,13 @@ const validProject = {
   documentation: 'https://example.com/docs',
   npmPackage: '@nipe-solutions/valid-project',
   license: 'MIT',
+  purpose: {
+    detail: 'This fixture exists to prove registry validation behavior.',
+    verifiedFrom: 'https://example.com/purpose-evidence',
+  },
   claims: [
     {
+      kind: 'capability',
       label: 'Verified capability',
       detail: 'This fixture has a source reference.',
       verifiedFrom: 'https://example.com/evidence',
@@ -61,6 +66,46 @@ describe('validateProjects', () => {
         },
       ]),
     ).toEqual(['Project "missing-evidence" claim 1 is missing verifiedFrom.'])
+  })
+
+  it('requires evidence for the project purpose', () => {
+    expect(
+      validateProjects([
+        {
+          ...validProject,
+          slug: 'missing-purpose-evidence',
+          purpose: { ...validProject.purpose, verifiedFrom: '' },
+        },
+      ]),
+    ).toEqual([
+      'Project "missing-purpose-evidence" purpose is missing verifiedFrom.',
+    ])
+  })
+
+  it('requires distinct project-purpose copy', () => {
+    expect(
+      validateProjects([
+        {
+          ...validProject,
+          slug: 'missing-purpose-detail',
+          purpose: { ...validProject.purpose, detail: '' },
+        },
+      ]),
+    ).toEqual(['Project "missing-purpose-detail" purpose is missing detail.'])
+  })
+
+  it('rejects claims without an explicit capability or limitation kind', () => {
+    expect(
+      validateProjects([
+        {
+          ...validProject,
+          slug: 'unknown-claim-kind',
+          claims: [{ ...validProject.claims[0], kind: 'note' }],
+        },
+      ]),
+    ).toEqual([
+      'Project "unknown-claim-kind" claim 1 has an unknown kind "note".',
+    ])
   })
 
   it('rejects npm package names outside the NIPE scope', () => {
