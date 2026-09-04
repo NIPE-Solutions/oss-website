@@ -72,8 +72,11 @@ describe('project detail routes', () => {
         within(purpose).getByText(project.purpose.description),
       ).toBeInTheDocument()
       expect(
-        within(purpose).getByRole('link', { name: 'Evidence for purpose' }),
+        within(purpose).getByRole('link', { name: 'Source for purpose' }),
       ).toHaveAttribute('href', project.purpose.source.href)
+      expect(
+        within(purpose).getByRole('link', { name: 'Source for purpose' }),
+      ).toHaveTextContent('Source')
       expect(
         screen.getByText(
           project.status === 'stable'
@@ -84,7 +87,7 @@ describe('project detail routes', () => {
         ),
       ).toBeInTheDocument()
 
-      const claims = screen.getByRole('region', { name: 'Verified claims' })
+      const claims = screen.getByRole('region', { name: 'Capabilities' })
       for (const claim of project.claims.filter(
         ({ kind }) => kind === 'capability',
       )) {
@@ -94,14 +97,17 @@ describe('project detail routes', () => {
         ).toBeInTheDocument()
         expect(
           within(claims).getByRole('link', {
-            name: `Evidence for ${claim.title}`,
+            name: `Source for ${claim.title}`,
           }),
         ).toHaveAttribute('href', claim.source.href)
+        expect(
+          within(claims).getByRole('link', {
+            name: `Source for ${claim.title}`,
+          }),
+        ).toHaveTextContent('Source')
       }
 
-      const limitations = screen.getByRole('region', {
-        name: 'Scope and limitations',
-      })
+      const limitations = screen.getByRole('region', { name: 'Limitations' })
       for (const claim of project.claims.filter(
         ({ kind }) => kind === 'limitation',
       )) {
@@ -109,7 +115,14 @@ describe('project detail routes', () => {
         expect(
           within(limitations).getByText(claim.description ?? ''),
         ).toBeInTheDocument()
+        expect(
+          within(limitations).getByRole('link', {
+            name: `Source for ${claim.title}`,
+          }),
+        ).toHaveAttribute('href', claim.source.href)
       }
+
+      expect(screen.queryByText(/Evidence for/i)).not.toBeInTheDocument()
 
       if (project.example) {
         const example = screen.getByRole('region', { name: 'Example' })
@@ -182,14 +195,14 @@ describe('project detail routes', () => {
     render(<ProjectDetail project={project} />)
 
     expect(
-      within(screen.getByRole('region', { name: 'Verified claims' })).getByText(
+      within(screen.getByRole('region', { name: 'Capabilities' })).getByText(
         project.claims[1].title,
       ),
     ).toBeInTheDocument()
     expect(
-      within(
-        screen.getByRole('region', { name: 'Scope and limitations' }),
-      ).getByText(project.claims[0].title),
+      within(screen.getByRole('region', { name: 'Limitations' })).getByText(
+        project.claims[0].title,
+      ),
     ).toBeInTheDocument()
   })
 

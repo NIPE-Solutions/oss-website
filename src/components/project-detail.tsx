@@ -52,20 +52,26 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
         <section aria-labelledby="purpose-heading">
           <h2 id="purpose-heading">Why it exists</h2>
           <p>{project.purpose.description}</p>
-          <ExternalLink href={project.purpose.source.href}>
-            Evidence for purpose
+          <ExternalLink
+            href={project.purpose.source.href}
+            aria-label="Source for purpose"
+          >
+            Source
           </ExternalLink>
         </section>
 
-        <section aria-labelledby="claims-heading">
-          <h2 id="claims-heading">Verified claims</h2>
+        <section aria-labelledby="capabilities-heading">
+          <h2 id="capabilities-heading">Capabilities</h2>
           <ul className="project-detail__claims">
             {capabilityClaims.map((claim) => (
               <li key={claim.title}>
                 <h3>{claim.title}</h3>
                 {claim.description ? <p>{claim.description}</p> : null}
-                <ExternalLink href={claim.source.href}>
-                  Evidence for {claim.title}
+                <ExternalLink
+                  href={claim.source.href}
+                  aria-label={`Source for ${claim.title}`}
+                >
+                  Source
                 </ExternalLink>
               </li>
             ))}
@@ -74,7 +80,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
 
         {limitationClaims.length > 0 ? (
           <section aria-labelledby="limitations-heading">
-            <h2 id="limitations-heading">Scope and limitations</h2>
+            <h2 id="limitations-heading">Limitations</h2>
             {limitationClaims.map((limitation) => (
               <div
                 className="project-detail__limitation"
@@ -84,8 +90,11 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
                 {limitation.description ? (
                   <p>{limitation.description}</p>
                 ) : null}
-                <ExternalLink href={limitation.source.href}>
-                  Evidence for {limitation.title}
+                <ExternalLink
+                  href={limitation.source.href}
+                  aria-label={`Source for ${limitation.title}`}
+                >
+                  Source
                 </ExternalLink>
               </div>
             ))}

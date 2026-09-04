@@ -13,7 +13,7 @@ describe('homepage', () => {
     expect(
       screen.getByRole('heading', {
         level: 1,
-        name: 'Production-grade primitives and tools for the web.',
+        name: 'Focused primitives and tools for the web.',
       }),
     ).toBeInTheDocument()
     expect(
@@ -21,6 +21,24 @@ describe('homepage', () => {
         'NIPE Open Source maintains focused libraries and migration tools in public, with documentation and source kept close to each project.',
       ),
     ).toBeInTheDocument()
+  })
+
+  it('uses the canonical project categories in the ecosystem map', () => {
+    render(<Home />)
+
+    const ecosystemMap = screen.getByRole('img', {
+      name: 'NIPE Open Source connects UI & Interaction, Runtime, and Tooling projects.',
+    })
+
+    for (const category of ['UI & Interaction', 'Runtime', 'Tooling']) {
+      expect(within(ecosystemMap).getByText(category)).toBeInTheDocument()
+    }
+    expect(
+      within(ecosystemMap).queryByText('Interface'),
+    ).not.toBeInTheDocument()
+    expect(
+      within(ecosystemMap).queryByText('Migration'),
+    ).not.toBeInTheDocument()
   })
 
   it('renders only populated project categories and each published project once', () => {
@@ -150,9 +168,10 @@ describe('homepage', () => {
       name: 'Engineering principles',
     })
     expect(within(principles).getByText('Evidence before claims')).toBeVisible()
+    expect(within(principles).getByText('Focused by design')).toBeVisible()
     expect(
-      within(principles).getByText('Automation leaves a review path'),
-    ).toBeVisible()
+      within(principles).queryByText('Automation leaves a review path'),
+    ).not.toBeInTheDocument()
 
     const support = screen.getByRole('region', {
       name: 'Contributing and security',

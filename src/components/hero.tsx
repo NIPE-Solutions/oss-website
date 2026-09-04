@@ -1,13 +1,16 @@
 import { EcosystemMap } from '@/components/ecosystem-map'
+import { siteConfig } from '@/lib/site'
 
 export function Hero() {
+  const [taglineLead, ...taglineRest] = siteConfig.description.split(' ')
+
   return (
     <section className="hero" aria-labelledby="hero-heading">
       <div className="site-frame hero__inner">
         <div className="hero__copy">
           <h1 id="hero-heading">
-            <span className="hero__unbroken">Production-grade</span> primitives
-            and tools for the web.
+            <span className="hero__unbroken">{taglineLead}</span>{' '}
+            {taglineRest.join(' ')}
           </h1>
           <p>
             NIPE Open Source maintains focused libraries and migration tools in

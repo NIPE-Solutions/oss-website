@@ -24,15 +24,15 @@ export function Principles() {
           <article>
             <h3>Accessibility is behavior</h3>
             <p>
-              Interface components document focus, keyboard, motion, and
-              background behavior alongside their visual states.
+              UI components document focus, keyboard, motion, and background
+              behavior alongside their visual states.
             </p>
           </article>
           <article>
-            <h3>Automation leaves a review path</h3>
+            <h3>Focused by design</h3>
             <p>
-              Migration tooling reports exact edits and preserves unresolved
-              cases for human review instead of approximating them silently.
+              Each project solves a bounded problem rather than expanding into a
+              framework.
             </p>
           </article>
         </div>
