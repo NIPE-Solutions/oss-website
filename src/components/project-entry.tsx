@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import Link from 'next/link'
 
 import { ExternalLink } from '@/components/external-link'
 import { ProjectVisual } from '@/components/project-visual'
@@ -18,8 +19,6 @@ const statusLabels = {
 export function ProjectEntry({ project }: ProjectEntryProps) {
   const headingId = `${project.slug}-title`
   const style = { '--project-accent': project.accent } as CSSProperties
-  const canonicalDestination = project.documentation ?? project.repository
-
   return (
     <article
       className={`project-entry project-entry--${project.visual}`}
@@ -29,9 +28,7 @@ export function ProjectEntry({ project }: ProjectEntryProps) {
       <div className="project-entry__content">
         <div className="project-entry__heading">
           <h4 id={headingId}>
-            <ExternalLink href={canonicalDestination}>
-              {project.name}
-            </ExternalLink>
+            <Link href={`/projects/${project.slug}`}>{project.name}</Link>
           </h4>
           <span className="project-status">{statusLabels[project.status]}</span>
         </div>
