@@ -55,6 +55,16 @@ describe('legal routes', () => {
     expect(screen.getByText(/Wirtschaftskammer Wien/)).toBeInTheDocument()
   })
 
+  it('describes only the outbound destinations currently linked by the site', () => {
+    render(<ImpressumPage />)
+
+    const external = screen.getByRole('region', {
+      name: 'Projects and external links',
+    })
+    expect(external).toHaveTextContent(/GitHub, npm, and project documentation/)
+    expect(external).not.toHaveTextContent(/and NIPE Solutions/)
+  })
+
   it('describes only this static site’s actual processing', () => {
     const { container } = render(<PrivacyPage />)
 

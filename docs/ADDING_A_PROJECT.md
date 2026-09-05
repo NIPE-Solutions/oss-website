@@ -22,11 +22,12 @@ optional support URLs directly in `support` (`issues`, `discussions`,
 
 Use a dedicated `visual` motif and accent token for each public project. The
 same registry entry places that motif in the hero constellation, homepage
-directory, and project detail page. Open Graph images use project accent and
-text metadata, but do not currently render the motif. Set `order` deliberately:
-it controls the constellation and directory narrative rather than indicating
-quality or adoption. Check accent text, links, focus rings, and motif edges in
-both themes before publishing the entry.
+directory, and project detail page. Open Graph images currently use the fixed
+NIPE Open Source treatment with project text metadata; they do not render the
+project motif or registry accent. Set `order` deliberately: it controls the
+constellation and directory narrative rather than indicating quality or
+adoption. Check accent text, links, focus rings, and motif edges in both themes
+before publishing the entry.
 
 Every entry has a purpose description and purpose source. Each item in
 `claims` is either `capability` or `limitation` and needs its own claim source
