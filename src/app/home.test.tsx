@@ -67,6 +67,7 @@ describe('homepage', () => {
       'React Spring Bottom Sheet',
       'Readonly View',
       'Angular Flex-Layout Codemod',
+      'React Swipe Actions',
     ]) {
       expect(
         within(directory).getAllByRole('heading', { name: projectName }),
@@ -74,8 +75,12 @@ describe('homepage', () => {
     }
 
     expect(
-      within(directory).queryByText(/swipe actions/i),
-    ).not.toBeInTheDocument()
+      within(directory)
+        .getByRole('img', {
+          name: 'React Swipe Actions concept illustration',
+        })
+        .querySelector('.swipe-row'),
+    ).not.toBeNull()
   })
 
   it('shows the verified description and status of every published project', () => {
@@ -96,9 +101,15 @@ describe('homepage', () => {
         'A beta Angular template codemod for Flex-Layout to Tailwind CSS v4 migrations.',
       ),
     ).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
+      ),
+    ).toBeInTheDocument()
 
     expect(screen.getAllByText('Stable')).toHaveLength(2)
     expect(screen.getByText('Beta')).toBeInTheDocument()
+    expect(screen.getByText('Alpha')).toBeInTheDocument()
   })
 
   it('routes every project to its documentation, source, and published package', () => {
@@ -126,6 +137,13 @@ describe('homepage', () => {
         package:
           'https://www.npmjs.com/package/@nipe-solutions/flex-layout-codemod',
       },
+      {
+        name: 'React Swipe Actions',
+        documentation: 'https://react-swipe-actions.nipesolutions.com',
+        source: 'https://github.com/NIPE-Solutions/react-swipe-actions',
+        package:
+          'https://www.npmjs.com/package/@nipe-solutions/react-swipe-actions',
+      },
     ]
 
     for (const destination of destinations) {
@@ -141,10 +159,6 @@ describe('homepage', () => {
         within(project).getByRole('link', { name: 'npm' }),
       ).toHaveAttribute('href', destination.package)
     }
-
-    expect(
-      screen.queryByRole('link', { name: /swipe actions.*npm/i }),
-    ).not.toBeInTheDocument()
   })
 
   it('omits npm from a public project entry when its known package is unpublished', () => {
@@ -179,6 +193,10 @@ describe('homepage', () => {
       {
         name: 'Angular Flex-Layout Codemod',
         href: '/projects/flex-layout-codemod',
+      },
+      {
+        name: 'React Swipe Actions',
+        href: '/projects/react-swipe-actions',
       },
     ]) {
       const project = screen.getByRole('article', { name: destination.name })
@@ -232,8 +250,13 @@ describe('homepage', () => {
       'https://github.com/NIPE-Solutions/flex-layout-migrator/security/advisories/new',
     )
     expect(
-      within(support).queryByRole('link', { name: /discussions/i }),
-    ).not.toBeInTheDocument()
+      within(support).getByRole('link', {
+        name: 'React Swipe Actions discussions',
+      }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/NIPE-Solutions/react-swipe-actions/discussions',
+    )
   })
 
   it('keeps concept visuals free of component-owned project facts', () => {
@@ -243,6 +266,7 @@ describe('homepage', () => {
       'React Spring Bottom Sheet',
       'Readonly View',
       'Angular Flex-Layout Codemod',
+      'React Swipe Actions',
     ]) {
       const visual = screen.getByRole('img', {
         name: `${projectName} concept illustration`,

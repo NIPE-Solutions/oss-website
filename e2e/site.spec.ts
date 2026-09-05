@@ -35,6 +35,17 @@ const projects = [
       'https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/README.md#current-scope',
     npm: 'https://www.npmjs.com/package/@nipe-solutions/flex-layout-codemod',
   },
+  {
+    name: 'React Swipe Actions',
+    path: '/projects/react-swipe-actions',
+    category: 'UI & Interaction',
+    status: 'Alpha',
+    documentation: 'https://react-swipe-actions.nipesolutions.com',
+    repository: 'https://github.com/NIPE-Solutions/react-swipe-actions',
+    purposeSource:
+      'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md',
+    npm: 'https://www.npmjs.com/package/@nipe-solutions/react-swipe-actions',
+  },
 ] as const
 
 const configuredSupportLinks = [
@@ -62,6 +73,22 @@ const configuredSupportLinks = [
   [
     'Angular Flex-Layout Codemod security',
     'https://github.com/NIPE-Solutions/flex-layout-migrator/security/advisories/new',
+  ],
+  [
+    'React Swipe Actions documentation',
+    'https://react-swipe-actions.nipesolutions.com',
+  ],
+  [
+    'React Swipe Actions issues',
+    'https://github.com/NIPE-Solutions/react-swipe-actions/issues',
+  ],
+  [
+    'React Swipe Actions discussions',
+    'https://github.com/NIPE-Solutions/react-swipe-actions/discussions',
+  ],
+  [
+    'React Swipe Actions security',
+    'https://github.com/NIPE-Solutions/react-swipe-actions/security/advisories/new',
   ],
 ] as const
 
@@ -104,8 +131,6 @@ test('renders only canonical category and lifecycle labels for public projects',
     await expect(entry.getByText(project.status, { exact: true })).toBeVisible()
   }
 
-  await expect(page.getByText('React Swipe Actions')).toHaveCount(0)
-  await expect(page.locator('a[href*="react-swipe-actions"]')).toHaveCount(0)
   await expect(page.getByRole('heading', { name: 'Interface' })).toHaveCount(0)
   await expect(page.getByRole('heading', { name: 'Migration' })).toHaveCount(0)
 })
@@ -325,11 +350,7 @@ test('publishes configured support destinations without inferred fallbacks', asy
     )
   }
 
-  await expect(support.getByRole('link', { name: /discussions/i })).toHaveCount(
-    0,
-  )
   await expect(
     support.getByRole('link', { name: 'React Spring Bottom Sheet issues' }),
   ).toHaveCount(0)
-  await expect(support.getByText('React Swipe Actions')).toHaveCount(0)
 })

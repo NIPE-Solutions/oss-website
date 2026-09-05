@@ -102,11 +102,13 @@ describe('page metadata', () => {
       'React Spring Bottom Sheet',
       'Readonly View',
       'Angular Flex-Layout Codemod',
+      'React Swipe Actions',
     ])
     expect(projectMetadata.map(({ description }) => description)).toEqual([
       'Accessible React 19 bottom sheets with a compound Sheet API, named snap points, and separately exported styles.',
       'A deeply readonly, lazy, live view of owner-controlled mutable data for JavaScript and TypeScript.',
       'A beta Angular template codemod for Flex-Layout to Tailwind CSS v4 migrations.',
+      'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
     ])
     expect(
       projectMetadata.map(({ alternates }) => alternates?.canonical),
@@ -114,6 +116,7 @@ describe('page metadata', () => {
       'https://opensource.nipesolutions.com/projects/react-spring-bottom-sheet',
       'https://opensource.nipesolutions.com/projects/readonly-view',
       'https://opensource.nipesolutions.com/projects/flex-layout-codemod',
+      'https://opensource.nipesolutions.com/projects/react-swipe-actions',
     ])
   })
 })
@@ -128,6 +131,9 @@ describe('discovery routes', () => {
       { url: 'https://opensource.nipesolutions.com/projects/readonly-view' },
       {
         url: 'https://opensource.nipesolutions.com/projects/flex-layout-codemod',
+      },
+      {
+        url: 'https://opensource.nipesolutions.com/projects/react-swipe-actions',
       },
       { url: 'https://opensource.nipesolutions.com/contributing' },
       { url: 'https://opensource.nipesolutions.com/security' },
@@ -262,10 +268,10 @@ describe('Open Graph images', () => {
     }
   })
 
-  it('does not provide image metadata for a hidden project route', async () => {
+  it('does not provide image metadata for an unknown project route', async () => {
     await expect(
       generateImageMetadata({
-        params: Promise.resolve({ slug: 'react-swipe-actions' }),
+        params: Promise.resolve({ slug: 'hidden-project' }),
       }),
     ).resolves.toEqual([])
   })

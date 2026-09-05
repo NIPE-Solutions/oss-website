@@ -279,22 +279,103 @@ console.log(view.user.name) // Bob`,
     slug: 'react-swipe-actions',
     name: 'React Swipe Actions',
     category: 'ui-interaction',
-    description: 'No public project documentation is available.',
-    visibility: 'hidden',
-    status: 'development',
+    description:
+      'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
+    visibility: 'public',
+    status: 'alpha',
     repository: 'https://github.com/NIPE-Solutions/react-swipe-actions',
+    documentation: 'https://react-swipe-actions.nipesolutions.com',
+    npm: {
+      package: '@nipe-solutions/react-swipe-actions',
+      published: true,
+    },
+    support: {
+      documentation: 'https://react-swipe-actions.nipesolutions.com',
+      issues: 'https://github.com/NIPE-Solutions/react-swipe-actions/issues',
+      discussions:
+        'https://github.com/NIPE-Solutions/react-swipe-actions/discussions',
+      security:
+        'https://github.com/NIPE-Solutions/react-swipe-actions/security/advisories/new',
+    },
+    license: 'MIT',
     purpose: {
       description:
-        'The repository does not yet establish a public package purpose.',
+        'It supplies the row interaction while applications keep ownership of list data, mutations, undo, confirmation, and removal.',
       source: {
-        label: 'Empty repository',
-        href: 'https://github.com/NIPE-Solutions/react-swipe-actions',
+        label: 'Audited README',
+        href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md',
       },
     },
-    claims: [],
-    accent: 'var(--ink)',
+    claims: [
+      {
+        kind: 'capability',
+        title: 'Composable row actions',
+        description:
+          'Reveals measured leading and trailing actions through composable Root, Content, Leading, Trailing, and Action components.',
+        source: {
+          label: 'Audited row API',
+          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md#start-with-the-row-api',
+        },
+      },
+      {
+        kind: 'capability',
+        title: 'Keyboard, focus, and RTL behavior',
+        description:
+          'Documents physical-arrow keyboard controls, Escape closing, inactive-action tab order, accessible row labels, and logical leading and trailing state in LTR and RTL.',
+        source: {
+          label: 'Interaction guide',
+          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/docs/guides/interaction-accessibility.md',
+        },
+      },
+      {
+        kind: 'capability',
+        title: 'Controlled rows and group coordination',
+        description:
+          'Supports controlled or uncontrolled open state, optional full-swipe activation, and groups that close the previously open sibling.',
+        source: {
+          label: 'State documentation',
+          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md#state-accessibility-and-platforms',
+        },
+      },
+      {
+        kind: 'limitation',
+        title: 'Alpha scope',
+        description:
+          'The 0.1 line is alpha and intentionally excludes generic gesture hooks, nested swipe roots, portals, React Native, asChild, and application list lifecycle features.',
+        source: {
+          label: 'Documented alpha boundaries',
+          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md#state-accessibility-and-platforms',
+        },
+      },
+    ],
+    example: {
+      language: 'tsx',
+      code: `import {
+  Action,
+  Content,
+  Leading,
+  Root,
+  Trailing,
+} from '@nipe-solutions/react-swipe-actions'
+import '@nipe-solutions/react-swipe-actions/core.css'
+
+<Root aria-label="Message actions">
+  <Leading>
+    <Action onAction={archive}>Archive</Action>
+  </Leading>
+  <Content>Quarterly planning</Content>
+  <Trailing>
+    <Action destructive fullSwipe onAction={remove}>Delete</Action>
+  </Trailing>
+</Root>`,
+      source: {
+        label: 'Audited row example',
+        href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md#start-with-the-row-api',
+      },
+    },
+    accent: 'var(--project-swipe-actions)',
     visual: 'swipe-actions',
-    featured: false,
+    featured: true,
     order: 4,
   },
 ] as const

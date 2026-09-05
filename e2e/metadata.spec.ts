@@ -5,6 +5,7 @@ const projects = [
   'react-spring-bottom-sheet',
   'readonly-view',
   'flex-layout-codemod',
+  'react-swipe-actions',
 ] as const
 
 for (const slug of projects) {
@@ -56,17 +57,26 @@ test('publishes only explicit public project routes in the sitemap', async ({
   for (const slug of projects) {
     expect(sitemap).toContain(`${origin}/projects/${slug}`)
   }
-  expect(sitemap).not.toContain('react-swipe-actions')
 })
 
-test('keeps the hidden project out of public routes and package links', async ({
+test('publishes Swipe Actions with canonical metadata and package links', async ({
   page,
 }) => {
   const response = await page.goto('/projects/react-swipe-actions')
 
-  expect(response?.status()).toBe(404)
-  await expect(page.getByText('React Swipe Actions')).toHaveCount(0)
-  await expect(page.locator('a[href*="react-swipe-actions"]')).toHaveCount(0)
-  await expect(page.locator('a[href*="npmjs.com/package"]')).toHaveCount(0)
-  await expect(page.locator('link[rel="canonical"]')).toHaveCount(0)
+  expect(response?.status()).toBe(200)
+  await expect(
+    page.getByRole('heading', { name: 'React Swipe Actions' }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('link', { name: 'Documentation' }),
+  ).toHaveAttribute('href', 'https://react-swipe-actions.nipesolutions.com')
+  await expect(page.getByRole('link', { name: 'npm package' })).toHaveAttribute(
+    'href',
+    'https://www.npmjs.com/package/@nipe-solutions/react-swipe-actions',
+  )
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    `${origin}/projects/react-swipe-actions`,
+  )
 })
