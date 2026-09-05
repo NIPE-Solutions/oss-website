@@ -7,10 +7,11 @@ MANUAL ITEMS`, or `READY`.
 
 ## Current verdict
 
-**NOT READY** as of `2026-09-04T21:27:00Z`. Reviewed commit `b017acc` is live,
-but `nipesolutions.com` and `www.nipesolutions.com` fail TLS hostname
-validation. npm browser verification, GitHub repository settings, and final
-owner/legal review also remain open. See the
+**READY WITH MANUAL ITEMS** as of `2026-09-05`. Reviewed application commit
+`63414a1` removes the TLS-broken NIPE company destination; this expanded-
+ecosystem branch still requires deployment and the unchecked gates below.
+npm browser verification, GitHub repository settings, and final owner/legal
+review remain open. See the
 [deployment record](./audits/deployment.md) and
 [launch-polish final audit](./audits/launch-polish-final.md).
 
@@ -29,12 +30,20 @@ passed `npm run check` with 107 tests and a production build, plus 66 browser
 E2E tests. The protected preview was inspected before production for indexing,
 canonical, header, route, and 404 behavior.
 
+Final local review of application commit `63414a1` and its copy corrections
+passed `npm run check` with 134 unit tests, 83 deterministic link destinations,
+registry validation, and an 18-page production build; all 128 Chromium E2E tests passed. A CI and
+production rerun remains required after this branch is published.
+
 ## Manual gates
 
-- [ ] Verify the production domain, DNS, TLS, HTTP-to-HTTPS behavior, response
-      status, security headers, sitemap, robots, canonicals, and existing project
-      domains after deployment. Record the outstanding nipesolutions.com TLS issue
-      and its owner or resolution before declaring cross-domain health green.
+- [ ] Deploy reviewed commit `63414a1` (or its documentation-only successor),
+      then verify the production domain, DNS, TLS, HTTP-to-HTTPS behavior,
+      response status, security headers, sitemap, robots, canonicals, and
+      existing project documentation domains.
+- [ ] Repair and independently verify `nipesolutions.com` before restoring a
+      company-homepage link. The current site intentionally renders the legal
+      operator name as text and does not publish the broken URL.
 - [ ] Complete npm browser verification for every published package: open its
       npm destination in a browser and confirm the install link and package state
       match the registry.
@@ -48,17 +57,28 @@ canonical, header, route, and 404 behavior.
       test it only if the owner chooses it.
 - [ ] Configure GitHub Discussions only if the project will use them; otherwise
       do not imply a Discussions support route.
+- [ ] For **React Anchored Layer**, publish and browser-check the npm package
+      before setting `npm.published` to `true`; complete its GitHub About
+      description, website, and topics.
+- [ ] For **React Pull to Refresh**, publish and browser-check the npm package
+      before setting `npm.published` to `true`; complete its GitHub About
+      description, website, and topics.
+- [ ] For **React Viewport**, publish and browser-check the npm package before
+      setting `npm.published` to `true`; complete its GitHub About description,
+      website, and topics.
+- [ ] Verify `react-viewport.nipesolutions.com` DNS, TLS, production content,
+      canonical metadata, and ownership before using it as the documentation
+      destination. Keep the commit-pinned README fallback until that check
+      passes, then update both `documentation` and `support.documentation` in
+      the registry.
 
 GitHub metadata, vulnerability reporting, and Discussions are manual settings:
 this repository does not update them automatically.
 
-Deployment-specific evidence is recorded in the
-[deployment record](./audits/deployment.md). The production site,
-custom-domain CNAME, HTTP-to-HTTPS redirect, route status, index/follow state,
-canonicals, response headers, sitemap, robots, 404, project documentation
-domains, and GitHub repositories passed. The combined cross-domain item remains
-unchecked only because both NIPE Solutions hostnames fail certificate
-validation. The visual gate is supported by the 28 responsive light/dark
+Deployment-specific evidence for the preceding release is recorded in the
+[deployment record](./audits/deployment.md). Repeat those production checks for
+the expanded-ecosystem commit before launch. The visual gate is supported by
+the 28 responsive light/dark
 captures, landscape inspection, contrast checks, and accessibility results in
 the [launch-polish final audit](./audits/launch-polish-final.md).
 

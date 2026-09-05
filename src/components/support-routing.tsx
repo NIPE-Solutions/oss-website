@@ -1,6 +1,5 @@
 import { ExternalLink } from '@/components/external-link'
 import { publicProjects } from '@/content/projects'
-import { siteConfig } from '@/lib/site'
 
 export function SupportRouting() {
   return (
@@ -60,11 +59,8 @@ export function SupportRouting() {
         </ul>
         <aside className="nipe-relationship" aria-label="About NIPE Solutions">
           <p>
-            NIPE Open Source is maintained by{' '}
-            <ExternalLink href={siteConfig.nipeUrl}>
-              NIPE Solutions
-            </ExternalLink>
-            , an independent software studio in Vienna.
+            NIPE Open Source is maintained by NIPE Solutions e.U., an
+            independent software studio in Vienna.
           </p>
         </aside>
       </div>

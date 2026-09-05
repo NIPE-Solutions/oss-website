@@ -20,27 +20,24 @@ describe('homepage', () => {
     ).toBeInTheDocument()
     expect(
       screen.getByText(
-        'NIPE Open Source maintains focused libraries and migration tools in public, with documentation and source kept close to each project.',
+        'Small, independently useful libraries and developer tools for browser and application problems that should not need to be rebuilt from scratch.',
       ),
     ).toBeInTheDocument()
   })
 
-  it('uses the canonical project categories in the ecosystem map', () => {
+  it('shows the independent projects in the hero constellation', () => {
     render(<Home />)
 
-    const ecosystemMap = screen.getByRole('img', {
-      name: 'NIPE Open Source connects UI & Interaction, Runtime, and Tooling projects.',
+    const constellation = screen.getByRole('navigation', {
+      name: 'NIPE Open Source projects',
     })
-
-    for (const category of ['UI & Interaction', 'Runtime', 'Tooling']) {
-      expect(within(ecosystemMap).getByText(category)).toBeInTheDocument()
-    }
+    expect(within(constellation).getAllByRole('link')).toHaveLength(7)
     expect(
-      within(ecosystemMap).queryByText('Interface'),
+      screen.queryByRole('img', {
+        name: /connects UI & Interaction, Runtime, and Tooling/,
+      }),
     ).not.toBeInTheDocument()
-    expect(
-      within(ecosystemMap).queryByText('Migration'),
-    ).not.toBeInTheDocument()
+    expect(screen.getByText(/do not require each other/i)).toBeInTheDocument()
   })
 
   it('renders only populated project categories and each published project once', () => {
@@ -63,53 +60,65 @@ describe('homepage', () => {
         .map(({ textContent }) => textContent),
     ).toEqual(['UI & Interaction', 'Runtime', 'Tooling'])
 
-    for (const projectName of [
+    const ui = within(directory).getByRole('region', {
+      name: 'UI & Interaction',
+    })
+    const runtime = within(directory).getByRole('region', { name: 'Runtime' })
+    const tooling = within(directory).getByRole('region', { name: 'Tooling' })
+
+    expect(
+      within(ui)
+        .getAllByRole('heading', { level: 4 })
+        .map(({ textContent }) => textContent),
+    ).toEqual([
       'React Spring Bottom Sheet',
-      'Readonly View',
-      'Angular Flex-Layout Codemod',
       'React Swipe Actions',
-    ]) {
-      expect(
-        within(directory).getAllByRole('heading', { name: projectName }),
-      ).toHaveLength(1)
-    }
+      'React Anchored Layer',
+      'React Pull to Refresh',
+      'React Viewport',
+    ])
+    expect(
+      within(runtime)
+        .getAllByRole('heading', { level: 4 })
+        .map(({ textContent }) => textContent),
+    ).toEqual(['Readonly View'])
+    expect(
+      within(tooling)
+        .getAllByRole('heading', { level: 4 })
+        .map(({ textContent }) => textContent),
+    ).toEqual(['Angular Flex-Layout Codemod'])
 
     expect(
       within(directory)
         .getByRole('img', {
           name: 'React Swipe Actions concept illustration',
         })
-        .querySelector('.swipe-row'),
+        .querySelector('.project-motif--swipe-actions'),
     ).not.toBeNull()
   })
 
-  it('shows the verified description and status of every published project', () => {
+  it('shows one verified sentence and the status and category of every public project', () => {
     render(<Home />)
+    const directory = screen.getByRole('region', { name: 'Projects' })
 
-    expect(
-      screen.getByText(
-        'Accessible React 19 bottom sheets with a compound Sheet API, named snap points, and separately exported styles.',
-      ),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        'A deeply readonly, lazy, live view of owner-controlled mutable data for JavaScript and TypeScript.',
-      ),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        'A beta Angular template codemod for Flex-Layout to Tailwind CSS v4 migrations.',
-      ),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
-      ),
-    ).toBeInTheDocument()
+    for (const description of [
+      'Accessible React 19 bottom sheets with a compound Sheet API, named snap points, and separately exported styles.',
+      'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
+      'Anchored floating layers for React that keep arbitrary portal content aligned through scroll, resize, and layout changes.',
+      'Pull-to-refresh for React with scroll arbitration, resistance, threshold hysteresis, and an application-owned refresh lifecycle.',
+      'Reactive React geometry for layout and visual viewports, keyboard occlusion, and safe areas.',
+      'A deeply readonly, lazy, live view of owner-controlled mutable data for JavaScript and TypeScript.',
+      'A beta Angular template codemod for Flex-Layout to Tailwind CSS v4 migrations.',
+    ]) {
+      expect(within(directory).getByText(description)).toBeInTheDocument()
+    }
 
-    expect(screen.getAllByText('Stable')).toHaveLength(2)
-    expect(screen.getByText('Beta')).toBeInTheDocument()
-    expect(screen.getByText('Alpha')).toBeInTheDocument()
+    expect(within(directory).getAllByText('Stable')).toHaveLength(2)
+    expect(within(directory).getAllByText('Beta')).toHaveLength(1)
+    expect(within(directory).getAllByText('Alpha')).toHaveLength(4)
+    expect(within(directory).getAllByText('UI & Interaction')).toHaveLength(6)
+    expect(within(directory).getAllByText('Runtime')).toHaveLength(2)
+    expect(within(directory).getAllByText('Tooling')).toHaveLength(2)
   })
 
   it('routes every project to its documentation, source, and published package', () => {
@@ -178,6 +187,21 @@ describe('homepage', () => {
     )
   })
 
+  it('omits npm links from the three unpublished directory entries', () => {
+    render(<Home />)
+
+    for (const projectName of [
+      'React Anchored Layer',
+      'React Pull to Refresh',
+      'React Viewport',
+    ]) {
+      const project = screen.getByRole('article', { name: projectName })
+      expect(
+        within(project).queryByRole('link', { name: 'npm' }),
+      ).not.toBeInTheDocument()
+    }
+  })
+
   it('links project titles to their local detail pages', () => {
     render(<Home />)
 
@@ -197,6 +221,18 @@ describe('homepage', () => {
       {
         name: 'React Swipe Actions',
         href: '/projects/react-swipe-actions',
+      },
+      {
+        name: 'React Anchored Layer',
+        href: '/projects/react-anchored-layer',
+      },
+      {
+        name: 'React Pull to Refresh',
+        href: '/projects/react-pull-to-refresh',
+      },
+      {
+        name: 'React Viewport',
+        href: '/projects/react-viewport',
       },
     ]) {
       const project = screen.getByRole('article', { name: destination.name })
