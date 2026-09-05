@@ -70,10 +70,6 @@ describe('site shell', () => {
     }
 
     expect(
-      within(navigation).queryByRole('link', { name: 'React Swipe Actions' }),
-    ).not.toBeInTheDocument()
-
-    expect(
       within(navigation).getByRole('link', { name: 'Contributing' }),
     ).toHaveAttribute('href', '/contributing')
     expect(

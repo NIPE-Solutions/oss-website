@@ -166,11 +166,13 @@ describe('project support routes', () => {
       'https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/docs/SUPPORT.md',
     )
     expect(
-      within(directory).queryByRole('link', { name: /discussions/i }),
-    ).not.toBeInTheDocument()
-    expect(
-      within(directory).queryByText('React Swipe Actions'),
-    ).not.toBeInTheDocument()
+      within(directory).getByRole('link', {
+        name: 'React Swipe Actions discussions',
+      }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/NIPE-Solutions/react-swipe-actions/discussions',
+    )
   })
 
   it('uses only verified project-specific security destinations', () => {
@@ -193,7 +195,12 @@ describe('project support routes', () => {
       'href',
       'https://github.com/NIPE-Solutions/flex-layout-migrator/security/advisories/new',
     )
-    expect(screen.queryByText('React Swipe Actions')).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'React Swipe Actions security' }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/NIPE-Solutions/react-swipe-actions/security/advisories/new',
+    )
   })
 })
 

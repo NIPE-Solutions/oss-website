@@ -1,17 +1,17 @@
 # Project source audit
 
-Observed on **2026-09-04 at 22:07 CEST** in Europe/Vienna and refreshed for the launch-polish pass. This inventory records the public evidence available for the first NIPE Open Source directory release. GitHub state was queried with `gh api`; npm publication state was queried with `npm view`. Live sites were checked with `curl`. Local sibling checkouts were treated as read-only hints only, because several were behind their remotes.
+Observed on **2026-09-04 at 22:07 CEST** in Europe/Vienna, refreshed for the launch-polish pass, and re-audited for React Swipe Actions on **2026-09-05**. This inventory records the public evidence available for the NIPE Open Source directory. GitHub state was queried with `gh api`; npm publication state was queried with `npm view`. Live sites were checked with `curl`. Local sibling checkouts were treated as read-only hints only, because several were behind their remotes.
 
 ## Publication decision
 
-| Candidate                   | Directory decision             | Status to show                                | Published package                                  |
-| --------------------------- | ------------------------------ | --------------------------------------------- | -------------------------------------------------- |
-| React Spring Bottom Sheet   | Include under UI & Interaction | Stable, independently maintained continuation | `@nipe-solutions/react-spring-bottom-sheet@5.0.1`  |
-| Readonly View               | Include under Runtime          | Stable                                        | `@nipe-solutions/readonly-view@2.0.1`              |
-| React Swipe Actions         | Keep hidden                    | Development; no public implementation         | No publicly declared or published NIPE package     |
-| Angular Flex-Layout Codemod | Include under Tooling          | Beta                                          | `@nipe-solutions/flex-layout-codemod@2.0.0-beta.1` |
+| Candidate                   | Directory decision             | Status to show                                | Published package                                   |
+| --------------------------- | ------------------------------ | --------------------------------------------- | --------------------------------------------------- |
+| React Spring Bottom Sheet   | Include under UI & Interaction | Stable, independently maintained continuation | `@nipe-solutions/react-spring-bottom-sheet@5.0.1`   |
+| Readonly View               | Include under Runtime          | Stable                                        | `@nipe-solutions/readonly-view@2.0.1`               |
+| React Swipe Actions         | Include under UI & Interaction | Alpha                                         | `@nipe-solutions/react-swipe-actions@0.1.0-alpha.0` |
+| Angular Flex-Layout Codemod | Include under Tooling          | Beta                                          | `@nipe-solutions/flex-layout-codemod@2.0.0-beta.1`  |
 
-Do not present React Swipe Actions as a project card until the repository contains a reviewable implementation and documentation. Do not describe the codemod as stable or as completing every migration automatically.
+Present React Swipe Actions as Alpha and retain its documented boundaries. Do not describe the codemod as stable or as completing every migration automatically.
 
 ## React Spring Bottom Sheet
 
@@ -95,10 +95,12 @@ console.log(view.user.name) // Bob
 ## React Swipe Actions
 
 - Repository: <https://github.com/NIPE-Solutions/react-swipe-actions>
-- GitHub state: public, unarchived, default branch named `main`, repository size `0`, with no commit reachable through the commits API, no tree, no README, no package metadata, no license, no tags, and no releases when observed. Issues are enabled, but that repository feature alone is not evidence of an intentional support surface or public release.
-- npm state: `npm view @nipe-solutions/react-swipe-actions` returned `E404`. The scoped name is only a prospective name inferred from the repository; no public manifest or documentation declares it, so the registry must not treat it as a confirmed npm identity. The unscoped `react-swipe-actions@1.0.2` belongs to `kwelch/react-swipe-actions`, not NIPE, and must not be attributed to NIPE.
-- Canonical site, package, exports, release notes, security policy, contribution guide, capabilities, limitations, and real example: none are publicly evidenced.
-- Decision: retain a hidden `development` registry record with no npm or support object, and no public directory entry. Re-audit after an implementation, license, README, release, and intended package identity exist publicly.
+- Re-audited 2026-09-05 at default branch [`main@6cf9c5c`](https://github.com/NIPE-Solutions/react-swipe-actions/commit/6cf9c5ccd7608158455ba86963fb4d5610690e53). The public MIT repository contains source, tests, documentation, examples, contribution and security policies, and the dedicated website <https://react-swipe-actions.nipesolutions.com>. No GitHub tag or release exists yet.
+- Package: [`@nipe-solutions/react-swipe-actions@0.1.0-alpha.0`](https://www.npmjs.com/package/@nipe-solutions/react-swipe-actions), published 2026-09-05 with npm `latest` and `alpha`; React and React DOM `^18.3.0 || ^19.0.0` are peers; the manifest reports no runtime dependencies.
+- Public scope: composable rows reveal measured leading and trailing actions while the application owns list data and side effects. The package documents controlled and uncontrolled state, optional full swipe, group coordination, keyboard and focus behavior, logical RTL sides, and SSR-safe imports.
+- Documented boundaries: the `0.1` line is alpha and excludes generic gesture hooks, nested swipe roots, portals, React Native, `asChild`, and application list lifecycle features.
+- Support: documentation site, public Issues, enabled Discussions, and the documented private vulnerability form are configured explicitly.
+- Decision: publish the existing registry record as `alpha`, with explicit published npm metadata, support destinations, commit-pinned evidence, and a local ecosystem overview that links outward to the canonical project site.
 
 ## Angular Flex-Layout Codemod
 

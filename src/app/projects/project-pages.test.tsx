@@ -13,6 +13,7 @@ describe('project detail routes', () => {
       { slug: 'react-spring-bottom-sheet' },
       { slug: 'readonly-view' },
       { slug: 'flex-layout-codemod' },
+      { slug: 'react-swipe-actions' },
     ])
   })
 
@@ -51,6 +52,15 @@ describe('project detail routes', () => {
             'https://opensource.nipesolutions.com/projects/flex-layout-codemod',
         },
       },
+      {
+        title: 'React Swipe Actions',
+        description:
+          'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
+        alternates: {
+          canonical:
+            'https://opensource.nipesolutions.com/projects/react-swipe-actions',
+        },
+      },
     ])
   })
 
@@ -83,7 +93,9 @@ describe('project detail routes', () => {
             ? 'Stable'
             : project.status === 'beta'
               ? 'Beta'
-              : project.status,
+              : project.status === 'alpha'
+                ? 'Alpha'
+                : project.status,
         ),
       ).toBeInTheDocument()
 
@@ -212,13 +224,13 @@ describe('project detail routes', () => {
     ).rejects.toThrow()
   })
 
-  it('does not expose a local page or metadata for a hidden project', async () => {
-    const params = Promise.resolve({ slug: 'react-swipe-actions' })
+  it('does not expose a local page or metadata for an unknown project', async () => {
+    const params = Promise.resolve({ slug: 'hidden-project' })
 
     await expect(Page({ params })).rejects.toThrow()
     await expect(
       generateMetadata({
-        params: Promise.resolve({ slug: 'react-swipe-actions' }),
+        params: Promise.resolve({ slug: 'hidden-project' }),
       }),
     ).resolves.toEqual({ alternates: null, robots: null })
   })

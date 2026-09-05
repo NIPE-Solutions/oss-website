@@ -1,5 +1,13 @@
 # Launch-polish final audit
 
+> Historical audit note: this document records the 2026-09-04 three-project
+> launch-polish baseline. React Swipe Actions became a public Alpha on
+> 2026-09-05; its current evidence and publication decision are recorded in
+> [launch-polish-sources.md](./launch-polish-sources.md) and
+> [project-sources.md](./project-sources.md). Statements below about its hidden
+> state describe the earlier snapshot and are no longer the current registry
+> state.
+
 Audited on **2026-09-04 at 23:04 CEST** in Europe/Vienna against the
 launch-polish worktree and the production origin
 `https://opensource.nipesolutions.com`.
