@@ -16,6 +16,15 @@ const knownStatuses = new Set([
   'archived',
 ])
 const knownClaimKinds = new Set(['capability', 'limitation'])
+const knownVisuals = new Set([
+  'bottom-sheet',
+  'readonly-view',
+  'swipe-actions',
+  'anchored-layer',
+  'pull-to-refresh',
+  'viewport',
+  'codemod',
+])
 const supportDestinations = [
   'issues',
   'discussions',
@@ -85,6 +94,10 @@ export function validateProjects(entries) {
       errors.push(`Public project "${slug}" is missing documentation.`)
     }
 
+    if (!entry.license) {
+      errors.push(`Project "${slug}" is missing a license.`)
+    }
+
     if (entry.npm) {
       if (!nipePackageName.test(entry.npm.package)) {
         errors.push(
@@ -102,6 +115,14 @@ export function validateProjects(entries) {
     }
 
     validateSource(errors, slug, entry.purpose?.source, 'purpose')
+
+    if (!entry.claims?.length) {
+      errors.push(`Project "${slug}" must define at least one claim.`)
+    }
+
+    if (!knownVisuals.has(entry.visual)) {
+      errors.push(`Project "${slug}" has an unknown visual "${entry.visual}".`)
+    }
 
     for (const destination of supportDestinations) {
       const url = entry.support?.[destination]
@@ -122,7 +143,7 @@ export function validateProjects(entries) {
     }
     orders.add(entry.order)
 
-    for (const [index, claim] of entry.claims.entries()) {
+    for (const [index, claim] of (entry.claims ?? []).entries()) {
       if (!knownClaimKinds.has(claim.kind)) {
         errors.push(
           `Project "${slug}" claim ${index + 1} has an unknown kind "${claim.kind}".`,
