@@ -4,11 +4,16 @@ import Link from 'next/link'
 import { ExternalLink } from '@/components/external-link'
 import { ProjectVisual } from '@/components/project-visual'
 import { projectStatusLabels } from '@/content/project-status'
+import { projectCategories } from '@/content/projects'
 import type { OpenSourceProject } from '@/content/project-types'
 
 interface ProjectEntryProps {
   readonly project: OpenSourceProject
 }
+
+const projectCategoryLabels = new Map(
+  projectCategories.map(({ id, label }) => [id, label]),
+)
 
 export function ProjectEntry({ project }: ProjectEntryProps) {
   const headingId = `${project.slug}-title`
@@ -24,9 +29,14 @@ export function ProjectEntry({ project }: ProjectEntryProps) {
           <h4 id={headingId}>
             <Link href={`/projects/${project.slug}`}>{project.name}</Link>
           </h4>
-          <span className="project-status">
-            {projectStatusLabels[project.status]}
-          </span>
+          <div className="project-entry__meta">
+            <span className="project-category-label">
+              {projectCategoryLabels.get(project.category)}
+            </span>
+            <span className="project-status">
+              {projectStatusLabels[project.status]}
+            </span>
+          </div>
         </div>
         <p>{project.description}</p>
         <nav aria-label={`${project.name} links`}>
