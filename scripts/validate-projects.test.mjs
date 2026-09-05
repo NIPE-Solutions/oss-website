@@ -207,6 +207,22 @@ describe('validateProjects', () => {
     ])
   })
 
+  it('requires a license, claims, visual, and unique editorial order', () => {
+    const invalid = [
+      { ...validProject, slug: 'missing-license', license: '' },
+      { ...validProject, slug: 'missing-claims', order: 2, claims: [] },
+      { ...validProject, slug: 'unknown-visual', order: 3, visual: 'orb' },
+    ]
+
+    expect(validateProjects(invalid)).toEqual(
+      expect.arrayContaining([
+        'Project "missing-license" is missing a license.',
+        'Project "missing-claims" must define at least one claim.',
+        'Project "unknown-visual" has an unknown visual "orb".',
+      ]),
+    )
+  })
+
   it.each(['issues', 'discussions', 'security', 'documentation'])(
     'requires configured %s support destinations to use HTTPS',
     (destination) => {
@@ -255,6 +271,6 @@ describe('validateProjects', () => {
 
     expect(result.status).toBe(0)
     expect(result.stderr).toBe('')
-    expect(result.stdout).toContain('Validated 4 projects.')
+    expect(result.stdout).toContain('Validated 7 projects.')
   })
 })
