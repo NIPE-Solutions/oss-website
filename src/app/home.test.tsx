@@ -79,7 +79,7 @@ describe('homepage', () => {
         .getByRole('img', {
           name: 'React Swipe Actions concept illustration',
         })
-        .querySelector('.swipe-row'),
+        .querySelector('.project-motif--swipe-actions'),
     ).not.toBeNull()
   })
 
