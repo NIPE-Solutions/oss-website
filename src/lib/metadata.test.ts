@@ -65,6 +65,11 @@ describe('page metadata', () => {
       alternates: {
         canonical: 'https://opensource.nipesolutions.com/security',
       },
+      openGraph: {
+        title: 'Security',
+        description: 'Repository-specific vulnerability reporting routes.',
+        url: 'https://opensource.nipesolutions.com/security',
+      },
     })
   })
 
