@@ -78,5 +78,31 @@ export function ProjectVisual({ project }: ProjectVisualProps) {
     )
   }
 
+  if (project.visual === 'swipe-actions') {
+    return (
+      <figure
+        className="project-visual project-visual--swipe-actions"
+        role="img"
+        aria-label={`${project.name} concept illustration`}
+      >
+        <div className="swipe-row" aria-hidden="true">
+          <div className="swipe-row__actions swipe-row__actions--leading">
+            <span />
+            <span />
+          </div>
+          <div className="swipe-row__actions swipe-row__actions--trailing">
+            <span />
+            <span />
+          </div>
+          <div className="swipe-row__content">
+            <span className="swipe-row__avatar" />
+            <span className="swipe-row__lines" />
+          </div>
+          <span className="swipe-row__direction" />
+        </div>
+      </figure>
+    )
+  }
+
   return null
 }

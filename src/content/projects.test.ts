@@ -25,13 +25,14 @@ describe('project registry', () => {
       'react-spring-bottom-sheet',
       'readonly-view',
       'flex-layout-codemod',
+      'react-swipe-actions',
     ])
     expect(
       publicProjects.every(({ visibility }) => visibility === 'public'),
     ).toBe(true)
     expect(
       projects.filter(({ visibility }) => visibility === 'hidden'),
-    ).toEqual([expect.objectContaining({ slug: 'react-swipe-actions' })])
+    ).toEqual([])
   })
 
   it('uses explicit category, visibility, and lifecycle values for every entry', () => {
@@ -46,22 +47,33 @@ describe('project registry', () => {
       ['public', 'stable'],
       ['public', 'stable'],
       ['public', 'beta'],
-      ['hidden', 'development'],
+      ['public', 'alpha'],
     ])
   })
 
-  it('keeps unpublished Swipe Actions metadata out of public selection', () => {
+  it('publishes Swipe Actions with explicit alpha package and support metadata', () => {
     expect(getProject('react-swipe-actions')).toMatchObject({
-      visibility: 'hidden',
-      status: 'development',
+      visibility: 'public',
+      status: 'alpha',
       repository: 'https://github.com/NIPE-Solutions/react-swipe-actions',
+      documentation: 'https://react-swipe-actions.nipesolutions.com',
+      npm: {
+        package: '@nipe-solutions/react-swipe-actions',
+        published: true,
+      },
+      support: {
+        documentation: 'https://react-swipe-actions.nipesolutions.com',
+        issues: 'https://github.com/NIPE-Solutions/react-swipe-actions/issues',
+        discussions:
+          'https://github.com/NIPE-Solutions/react-swipe-actions/discussions',
+        security:
+          'https://github.com/NIPE-Solutions/react-swipe-actions/security/advisories/new',
+      },
       visual: 'swipe-actions',
     })
-    expect(getProject('react-swipe-actions')).not.toHaveProperty('npm')
-    expect(getProject('react-swipe-actions')).not.toHaveProperty('support')
     expect(
       publicProjects.some(({ slug }) => slug === 'react-swipe-actions'),
-    ).toBe(false)
+    ).toBe(true)
   })
 
   it('preserves established accents and project visuals', () => {
@@ -77,6 +89,7 @@ describe('project registry', () => {
         visual: 'readonly-view',
       },
       { accent: 'var(--project-codemod)', visual: 'codemod' },
+      { accent: 'var(--project-swipe-actions)', visual: 'swipe-actions' },
     ])
   })
 
@@ -89,6 +102,10 @@ describe('project registry', () => {
       { package: '@nipe-solutions/readonly-view', published: true },
       {
         package: '@nipe-solutions/flex-layout-codemod',
+        published: true,
+      },
+      {
+        package: '@nipe-solutions/react-swipe-actions',
         published: true,
       },
     ])
@@ -113,6 +130,14 @@ describe('project registry', () => {
       issues: 'https://github.com/NIPE-Solutions/flex-layout-migrator/issues',
       security:
         'https://github.com/NIPE-Solutions/flex-layout-migrator/security/advisories/new',
+    })
+    expect(getProject('react-swipe-actions')?.support).toEqual({
+      documentation: 'https://react-swipe-actions.nipesolutions.com',
+      issues: 'https://github.com/NIPE-Solutions/react-swipe-actions/issues',
+      discussions:
+        'https://github.com/NIPE-Solutions/react-swipe-actions/discussions',
+      security:
+        'https://github.com/NIPE-Solutions/react-swipe-actions/security/advisories/new',
     })
   })
 

@@ -5,6 +5,7 @@ const projectPaths = [
   '/projects/react-spring-bottom-sheet',
   '/projects/readonly-view',
   '/projects/flex-layout-codemod',
+  '/projects/react-swipe-actions',
 ] as const
 
 async function expectNoPageOverflow(page: import('@playwright/test').Page) {
@@ -60,9 +61,9 @@ for (const width of viewports) {
       ),
     }))
 
-    expect(geometry.pageHeight).toBeLessThan(6_500)
+    expect(geometry.pageHeight).toBeLessThan(7_500)
     expect(geometry.heroHeight).toBeLessThanOrEqual(900)
-    expect(geometry.projectHeights).toHaveLength(3)
+    expect(geometry.projectHeights).toHaveLength(4)
     for (const projectHeight of geometry.projectHeights) {
       expect(projectHeight).toBeLessThanOrEqual(900)
     }

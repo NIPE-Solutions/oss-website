@@ -6,6 +6,7 @@ const routes = [
   '/projects/react-spring-bottom-sheet',
   '/projects/readonly-view',
   '/projects/flex-layout-codemod',
+  '/projects/react-swipe-actions',
   '/impressum',
   '/privacy',
   '/contributing',
@@ -27,6 +28,11 @@ const projectAccentCases = [
     route: '/projects/flex-layout-codemod',
     entry: '.project-entry--codemod',
     visual: '.migration-diff',
+  },
+  {
+    route: '/projects/react-swipe-actions',
+    entry: '.project-entry--swipe-actions',
+    visual: '.swipe-row__content',
   },
 ] as const
 
