@@ -225,7 +225,6 @@ describe('structured data', () => {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'NIPE Solutions e.U.',
-      url: 'https://nipesolutions.com/',
       email: 'office@nipesolutions.com',
       sameAs: ['https://github.com/NIPE-Solutions'],
     })
@@ -244,7 +243,6 @@ describe('structured data', () => {
         author: {
           '@type': 'Organization',
           name: 'NIPE Solutions e.U.',
-          url: 'https://nipesolutions.com/',
         },
       })
 

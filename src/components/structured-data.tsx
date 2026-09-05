@@ -35,7 +35,6 @@ export function createOrganizationStructuredData() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: operator.company,
-    url: new URL(siteConfig.nipeUrl).toString(),
     email: operator.email,
     sameAs: [siteConfig.githubOrganization],
   } as const
@@ -53,7 +52,6 @@ export function createProjectStructuredData(project: OpenSourceProject) {
     author: {
       '@type': 'Organization',
       name: operator.company,
-      url: new URL(siteConfig.nipeUrl).toString(),
     },
   } as const
 }

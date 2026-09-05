@@ -8,5 +8,4 @@ export const siteConfig = {
   description:
     'Focused React interaction primitives, runtime utilities, and developer tooling with independent packages and project-owned documentation.',
   githubOrganization: 'https://github.com/NIPE-Solutions',
-  nipeUrl: 'https://nipesolutions.com',
 } as const

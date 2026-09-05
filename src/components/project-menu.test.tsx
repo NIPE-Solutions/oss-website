@@ -80,4 +80,19 @@ describe('ProjectMenu', () => {
     expect(menu.getAllByText('Beta')).toHaveLength(1)
     expect(menu.getAllByText('Alpha')).toHaveLength(4)
   })
+
+  it('dismisses the open disclosure with Escape and restores summary focus', () => {
+    render(<ProjectMenu />)
+
+    const summary = screen.getByText('Projects', { selector: 'summary' })
+    const disclosure = summary.closest('details')
+    expect(disclosure).not.toBeNull()
+    fireEvent.click(summary)
+    expect(disclosure).toHaveAttribute('open')
+
+    fireEvent.keyDown(disclosure!, { key: 'Escape' })
+
+    expect(disclosure).not.toHaveAttribute('open')
+    expect(summary).toHaveFocus()
+  })
 })

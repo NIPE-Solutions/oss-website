@@ -94,7 +94,8 @@ describe('legal routes', () => {
     const outbound = screen.getByRole('region', {
       name: 'Outbound links',
     })
-    expect(outbound).toHaveTextContent(/GitHub, npm, and NIPE Solutions/)
+    expect(outbound).toHaveTextContent(/GitHub and npm/)
+    expect(outbound).not.toHaveTextContent(/NIPE Solutions/)
     expect(outbound).toHaveTextContent(/only after you follow a link/i)
     expect(outbound).toHaveTextContent(/not embedded/i)
   })
