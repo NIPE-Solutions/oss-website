@@ -20,27 +20,24 @@ describe('homepage', () => {
     ).toBeInTheDocument()
     expect(
       screen.getByText(
-        'NIPE Open Source maintains focused libraries and migration tools in public, with documentation and source kept close to each project.',
+        'Small, independently useful libraries and developer tools for browser and application problems that should not need to be rebuilt from scratch.',
       ),
     ).toBeInTheDocument()
   })
 
-  it('uses the canonical project categories in the ecosystem map', () => {
+  it('shows the independent projects in the hero constellation', () => {
     render(<Home />)
 
-    const ecosystemMap = screen.getByRole('img', {
-      name: 'NIPE Open Source connects UI & Interaction, Runtime, and Tooling projects.',
+    const constellation = screen.getByRole('navigation', {
+      name: 'NIPE Open Source projects',
     })
-
-    for (const category of ['UI & Interaction', 'Runtime', 'Tooling']) {
-      expect(within(ecosystemMap).getByText(category)).toBeInTheDocument()
-    }
+    expect(within(constellation).getAllByRole('link')).toHaveLength(7)
     expect(
-      within(ecosystemMap).queryByText('Interface'),
+      screen.queryByRole('img', {
+        name: /connects UI & Interaction, Runtime, and Tooling/,
+      }),
     ).not.toBeInTheDocument()
-    expect(
-      within(ecosystemMap).queryByText('Migration'),
-    ).not.toBeInTheDocument()
+    expect(screen.getByText(/do not require each other/i)).toBeInTheDocument()
   })
 
   it('renders only populated project categories and each published project once', () => {
@@ -85,6 +82,7 @@ describe('homepage', () => {
 
   it('shows the verified description and status of every published project', () => {
     render(<Home />)
+    const directory = screen.getByRole('region', { name: 'Projects' })
 
     expect(
       screen.getByText(
@@ -107,9 +105,9 @@ describe('homepage', () => {
       ),
     ).toBeInTheDocument()
 
-    expect(screen.getAllByText('Stable')).toHaveLength(2)
-    expect(screen.getByText('Beta')).toBeInTheDocument()
-    expect(screen.getByText('Alpha')).toBeInTheDocument()
+    expect(within(directory).getAllByText('Stable')).toHaveLength(2)
+    expect(within(directory).getAllByText('Beta')).toHaveLength(1)
+    expect(within(directory).getAllByText('Alpha')).toHaveLength(4)
   })
 
   it('routes every project to its documentation, source, and published package', () => {

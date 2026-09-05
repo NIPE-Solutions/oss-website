@@ -1,4 +1,4 @@
-import { EcosystemMap } from '@/components/ecosystem-map'
+import { ProjectConstellation } from '@/components/project-constellation'
 import { siteConfig } from '@/lib/site'
 
 export function Hero() {
@@ -13,14 +13,18 @@ export function Hero() {
             {taglineRest.join(' ')}
           </h1>
           <p>
-            NIPE Open Source maintains focused libraries and migration tools in
-            public, with documentation and source kept close to each project.
+            Small, independently useful libraries and developer tools for
+            browser and application problems that should not need to be rebuilt
+            from scratch.
+          </p>
+          <p className="hero__independence">
+            These projects compose, but they do not require each other.
           </p>
           <a className="text-link" href="#projects">
             Explore the projects
           </a>
         </div>
-        <EcosystemMap />
+        <ProjectConstellation />
       </div>
     </section>
   )

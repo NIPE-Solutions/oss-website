@@ -3,20 +3,11 @@ import type { CSSProperties } from 'react'
 import { CodeExample } from '@/components/code-example'
 import { ExternalLink } from '@/components/external-link'
 import { InstallCommand } from '@/components/install-command'
-import type { OpenSourceProject, ProjectStatus } from '@/content/project-types'
+import { projectStatusLabels } from '@/content/project-status'
+import type { OpenSourceProject } from '@/content/project-types'
 
 interface ProjectDetailProps {
   readonly project: OpenSourceProject
-}
-
-const statusLabels: Record<ProjectStatus, string> = {
-  stable: 'Stable',
-  beta: 'Beta',
-  alpha: 'Alpha',
-  preview: 'Preview',
-  development: 'Development',
-  maintenance: 'Maintenance',
-  archived: 'Archived',
 }
 
 export function ProjectDetail({ project }: ProjectDetailProps) {
@@ -36,7 +27,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           <div className="project-detail__title-row">
             <h1>{project.name}</h1>
             <span className="project-status">
-              {statusLabels[project.status]}
+              {projectStatusLabels[project.status]}
             </span>
           </div>
           <p className="project-detail__summary">{project.description}</p>
