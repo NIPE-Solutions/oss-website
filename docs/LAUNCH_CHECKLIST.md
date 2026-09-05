@@ -30,9 +30,9 @@ passed `npm run check` with 107 tests and a production build, plus 66 browser
 E2E tests. The protected preview was inspected before production for indexing,
 canonical, header, route, and 404 behavior.
 
-Final local review of application commit `63414a1` passed `npm run check` with
-133 unit tests, 83 deterministic link destinations, registry validation, and
-an 18-page production build; all 128 Chromium E2E tests passed. A CI and
+Final local review of application commit `63414a1` and its copy corrections
+passed `npm run check` with 134 unit tests, 83 deterministic link destinations,
+registry validation, and an 18-page production build; all 128 Chromium E2E tests passed. A CI and
 production rerun remains required after this branch is published.
 
 ## Manual gates

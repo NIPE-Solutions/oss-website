@@ -19,7 +19,7 @@ This verdict is an engineering assessment, not a claim of legal compliance.
 ## Automated evidence
 
 - `npm run check`: passed formatting, zero-warning lint, typecheck, 13 Vitest
-  files / 133 tests, seven-entry registry validation, 83 deterministic link
+  files / 134 tests, seven-entry registry validation, 83 deterministic link
   destinations, and the 18-page production build.
 - `npm run test:e2e`: 128 Chromium tests passed.
 - Axe reported no serious or critical violations on the homepage and all seven
