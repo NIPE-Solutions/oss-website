@@ -1,164 +1,105 @@
-# Launch-polish final audit
+# Expanded-ecosystem launch audit
 
-> Historical audit note: this document records the 2026-09-04 three-project
-> launch-polish baseline. React Swipe Actions became a public Alpha on
-> 2026-09-05; its current evidence and publication decision are recorded in
-> [launch-polish-sources.md](./launch-polish-sources.md) and
-> [project-sources.md](./project-sources.md). Statements below about its hidden
-> state describe the earlier snapshot and are no longer the current registry
-> state.
-
-Audited on **2026-09-04 at 23:04 CEST** in Europe/Vienna against the
-launch-polish worktree and the production origin
-`https://opensource.nipesolutions.com`.
+Audited on **2026-09-05** in Europe/Vienna against the seven-project registry
+and the production origin `https://opensource.nipesolutions.com`.
 
 ## Verdict
 
-**NOT READY.** The application, deterministic checks, production origin, and
-project documentation domains are healthy, but the prominent
-`https://nipesolutions.com` destination is not safe to launch as linked: its
-server presents a `*.netlify.app` certificate that does not cover
-`nipesolutions.com`. Fix that certificate/host mapping or remove the public link,
-then repeat the live audit. npm's web frontend also rejects this automated live
-checker with HTTP 403, so the three package pages remain a documented manual
-browser gate rather than a deterministic failure.
+**READY WITH MANUAL ITEMS.** The application, deterministic checks, project
+routes, canonical metadata, responsive layouts, and accessibility checks are
+healthy. Launch still requires owner/legal review, normal-browser confirmation
+of the four published npm pages, and correction of the `nipesolutions.com` TLS
+configuration. The apex currently presents a Netlify certificate that does not
+cover the hostname.
 
-This verdict does not claim legal compliance. Owner/legal review and the manual
-repository settings in the launch checklist remain open.
+This verdict is an engineering assessment, not a claim of legal compliance.
 
-## Fresh automated gate
+## Automated evidence
 
-The exact clean sequence `npm ci && npm run check && npm run test:e2e && npm
-run check:links` passed after the final code and audit edits:
+- `npm run check`: passed formatting, zero-warning lint, typecheck, 13 Vitest
+  files / 132 tests, seven-entry registry validation, 84 deterministic link
+  destinations, and the 18-page production build.
+- `npm run test:e2e`: 127 Chromium tests passed.
+- Axe reported no serious or critical violations on the homepage and all seven
+  project pages in both light and dark themes. Impressum, Privacy,
+  Contributing, and Security also passed.
+- Browser coverage verifies seven keyboard-focusable constellation links, the
+  native desktop project disclosure, the mobile Projects fallback, status text,
+  ordered headings, visible focus, the skip link, reduced motion, support
+  destinations, sitemap routes, unique project OG text, and production
+  canonicals/OG URLs.
+- Every project detail route was checked at 375, 430, 768, 1024, 1366, 1440,
+  and 1920 CSS pixels. Code regions remain keyboard-focusable and project
+  actions, footer content, and page width remain contained.
 
-- `npm ci`: 456 packages installed, 0 vulnerabilities reported. npm emitted
-  informational deprecation/install-script-policy warnings; no install failed.
-- `npm run check`: formatting, zero-warning lint, typecheck, 10 Vitest files / 106
-  tests, four-entry registry validation, 46-destination deterministic link
-  audit, and the 14-page production build passed.
-- `npm run test:e2e`: 66 Chromium tests passed.
-- The explicit final `npm run check:links`: 46 deterministic destinations
-  passed again.
+## Changes found by the audit
 
-## Changes made by this pass
+The first red browser run exposed three production gaps:
 
-- Added browser coverage for canonical category and lifecycle labels, explicit
-  public selection, hidden-project absence, configured evidence/support
-  destinations, keyboard activation, visible focus, skip-link focus transfer,
-  reduced motion, legal routes, and light/dark accent contrast.
-- Added component regressions that render a public project with
-  `{ package, published: false }` and require both the homepage project entry and
-  detail page to suppress npm/install actions while preserving other project
-  destinations. The live registry intentionally has no such public entry.
-- Added responsive coverage for the homepage and all three public project pages
-  at 375, 430, 768, 1024, 1366, 1440, and 1920 CSS pixels. The checks bound page,
-  hero, project, detail-section, and footer height; require no page overflow;
-  and keep source/code controls operable.
-- Fixed a hidden-project metadata leak. A rejected dynamic project route
-  returned HTTP 404 but inherited the homepage canonical; missing project
-  metadata now explicitly clears inherited canonical and robots values.
-- Fixed a footer overflow found in the supplemental 812×375 landscape review by
-  stacking the footer's two primary columns below 60rem. No visual redesign,
-  new decoration, animation, or dependency was introduced.
+1. the seven-project footer exceeded its intended narrow-screen bound;
+2. the mobile constellation made the hero roughly 1,100px tall;
+3. project pages supplied canonical links and OG text but no explicit OG URL.
 
-Both production fixes followed a red/green cycle: the hidden-route browser and
-unit assertions failed before the metadata change, and the 812×375 responsive
-test failed with 116px of overflow before the footer breakpoint change. The
-false-publication component tests were mutation-checked: weakening each
-`npm.published` guard made its focused test fail before the guarded
-implementation was restored.
-
-## Accessibility and interaction evidence
-
-- Axe reported no serious or critical violations on the homepage, all three
-  project pages, Impressum, Privacy, Contributing, and Security.
-- Keyboard tests cover the ordered primary navigation, skip link, mobile Enter
-  activation, a contextual project evidence source, a configured support link,
-  and both horizontal code regions on every project page at 375px.
-- Focused source links retain a 3px visible outline and remain unobscured after
-  scrolling into view. Source and support destinations activate with Enter.
-- Reduced-motion emulation changes document scrolling to `auto` and reduces the
-  transition token to `0.01ms`.
-- Project accent text is at least 4.59:1 in light mode and 6.79:1 in dark mode.
-  Project visual boundaries are at least 5.02:1 in light mode and 6.18:1 in dark
-  mode. NIPE red text/surface pairs measure 6.50:1 light and 6.53:1 dark; focus
-  indicators measure 5.72:1 light and 7.23:1 dark.
+The final implementation keeps the footer in two columns on narrow screens,
+tightens only the mobile hero spacing and motif height, and adds an explicit
+production `openGraph.url` through the shared metadata helper. No dependency,
+continuous animation, tracking service, or third-party asset was added.
 
 ## Responsive and visual evidence
 
-Twenty-eight full-page captures were reviewed: homepage and React Spring Bottom
-Sheet detail, each in light and dark themes at all seven target widths. A
-separate dark 812×375 landscape capture was reviewed after the footer fix.
+Fifty-six full-page captures were reviewed: the homepage plus React Anchored
+Layer, React Pull to Refresh, and React Viewport detail pages, in light and dark
+themes at all seven target widths.
 
-| Width | Homepage height | Tallest detail page | Result                                                                   |
-| ----: | --------------: | ------------------: | ------------------------------------------------------------------------ |
-|   375 |          5853px |              3596px | No page overflow; single-column editorial flow and footer remain usable. |
-|   430 |          5898px |              3561px | No page overflow; project links and code regions remain contained.       |
-|   768 |          5810px |              3157px | No page overflow; breakpoint transition remains coherent.                |
-|  1024 |          4211px |              3075px | No page overflow; two-column project entries remain balanced.            |
-|  1366 |          4464px |              3212px | No page overflow; readable measure and restrained whitespace preserved.  |
-|  1440 |          4554px |              3243px | No page overflow; current editorial baseline preserved.                  |
-|  1920 |          4735px |              3397px | No page overflow; content remains deliberately width-constrained.        |
+| Width | Homepage | Tallest new detail |  Hero | Result                                                  |
+| ----: | -------: | -----------------: | ----: | ------------------------------------------------------- |
+|   375 |   8382px |             4036px | 899px | Two-column project strip; no clipping or overflow.      |
+|   430 |   8281px |             3948px | 876px | Compact constellation and contained footer.             |
+|   768 |   8008px |             3740px | 843px | Mobile-to-desktop transition remains coherent.          |
+|  1024 |   5896px |             3492px | 755px | Constellation and directory retain clear hierarchy.     |
+|  1366 |   6092px |             3607px | 782px | Editorial rhythm and project accents remain restrained. |
+|  1440 |   6146px |             3629px | 788px | Detail actions and code examples remain contained.      |
+|  1920 |   6281px |             3683px | 823px | Content stays deliberately width-constrained.           |
 
-The reviewed pages retain the established asymmetric editorial layout, local
-project accents, CSS-drawn diagrams, restrained rules, system typography, and
-quiet source links. No clipping, overlap, illegible theme transition, excessive
-motion, SaaS-card treatment, extra decoration, or unjustified height increase
-was found. At 812×375 after the fix, both homepage and representative detail
-reported `scrollWidth === innerWidth` and a 332px footer.
+The constellation reads as independent project discovery, not a dependency
+graph. The directory remains an editorial sequence rather than a generic card
+grid. Motifs stay distinct, status remains textual, and simultaneous accent
+intensity remains controlled in both themes. The homepage assessment is
+**WELL BALANCED**.
 
-## Registry, content, legal, and privacy reconciliation
+## Registry, privacy, and source state
 
-- Public categories are exactly `UI & Interaction`, `Runtime`, and `Tooling`;
-  rendered statuses are `Stable`, `Stable`, and `Beta` for the three public
-  projects.
-- React Swipe Actions remains hidden, has no public route, sitemap entry,
-  canonical, support destination, npm destination, footer entry, or structured
-  public surface. Its source audit does not establish a package identity.
-- Published npm/install actions remain gated by the explicit Boolean
-  publication flag. The configured package versions were rechecked with
-  `npm view` as
-  `5.0.1`, `2.0.1`, and `2.0.0-beta.1`.
-- Homepage/project copy remains reconciled with
-  [`launch-polish-sources.md`](./launch-polish-sources.md) and
-  [`project-sources.md`](./project-sources.md). The repeated phrase scan found no
-  placeholder text, fake social proof, vanity metrics, or generic marketing
-  claims. Matches for `transform` were CSS properties; `analytics` occurs only
-  in the accurate privacy disclosure that this site does not run analytics.
-- A fresh local browser context loaded only same-origin resources, created no
-  cookies, local/session storage, or IndexedDB databases, and honored reduced
-  motion. The four reported font faces are device system faces; no external font
-  origin was requested.
-- Impressum and Privacy continue to identify `NIPE Solutions e.U.` and the
-  documented controller/hosting facts. Final owner/legal review remains a
-  manual gate.
+- Public categories remain exactly `UI & Interaction`, `Runtime`, and
+  `Tooling`.
+- Status is explicit: Bottom Sheet and Readonly View are Stable; the codemod is
+  Beta; Swipe Actions, Anchored Layer, Pull to Refresh, and Viewport are Alpha.
+- npm/install UI is controlled by explicit publication state. Anchored Layer,
+  Pull to Refresh, and Viewport expose no npm/install action.
+- The website remains analytics-free, loads no third-party runtime assets, and
+  adds no non-essential storage or cookies. Existing Privacy wording remains
+  consistent with the implementation.
+- Legal pages consistently identify `NIPE Solutions e.U.`. Owner/legal review
+  remains required.
 
-## Link and deployment evidence
+## Live-source findings
 
-- The deterministic static audit validates all configured URL shapes and public
-  routes without network access.
-- `https://opensource.nipesolutions.com/` returned HTTP 200 over a valid
-  hostname-matching Let's Encrypt certificate and included CSP, HSTS,
-  `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, and
-  `X-Frame-Options` headers.
-- `https://react-spring-bottom-sheet.nipesolutions.com/` and
-  `https://readonly-view.nipesolutions.com/` returned HTTP 200 with valid
-  hostname-matching certificates.
-- `https://nipesolutions.com/` failed certificate verification. The endpoint
-  presented a certificate whose subject/SANs cover `*.netlify.app` and
-  `netlify.app`, not `nipesolutions.com`.
-- The three `www.npmjs.com/package/...` endpoints returned HTTP 403 to the live
-  script's HEAD and ranged-GET strategy. Because `npm view` confirms the
-  configured versions but does not exercise the browser pages, a human must open
-  all three package links and confirm their visible package state before launch.
+`npm run check:links:live` completed its audit and reported only the documented
+external gates:
+
+- `https://nipesolutions.com` failed certificate hostname verification because
+  the server presented a `*.netlify.app` / `netlify.app` certificate.
+- The four published `www.npmjs.com/package/...` pages returned HTTP 403 to the
+  automated checker. Registry publication evidence comes from the package
+  audit; confirm the web pages in a normal browser before launch.
+- Configured project repositories and documentation/support destinations
+  otherwise resolved. React Viewport deliberately links to its commit-pinned
+  README while the intended documentation hostname is unavailable.
 
 ## Remaining launch actions
 
-1. Correct the `nipesolutions.com` TLS/host configuration or remove the link;
-   rerun `npm run check:links:live` afterward.
-2. Open and verify all three npm package pages in a normal browser.
-3. Complete the GitHub About description, website, topics, optional private
-   vulnerability reporting, and Discussions decisions in
-   [`LAUNCH_CHECKLIST.md`](../LAUNCH_CHECKLIST.md).
-4. Record final owner/legal review and repeat production checks after deploying
-   the reviewed commit.
+1. Correct the `nipesolutions.com` certificate/host mapping or remove the link,
+   then rerun the live audit.
+2. Open the four published npm package pages in a normal browser.
+3. Complete repository About metadata and security/discussion decisions listed
+   in `docs/LAUNCH_CHECKLIST.md`.
+4. Record owner/legal approval and repeat production smoke checks after deploy.

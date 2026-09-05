@@ -75,7 +75,7 @@ describe('project detail routes', () => {
       ),
     )
 
-    expect(metadata).toEqual([
+    const expectedMetadata = [
       {
         title: 'React Spring Bottom Sheet',
         description:
@@ -139,7 +139,18 @@ describe('project detail routes', () => {
             'https://opensource.nipesolutions.com/projects/flex-layout-codemod',
         },
       },
-    ])
+    ]
+
+    expect(metadata).toEqual(
+      expectedMetadata.map((entry) => ({
+        ...entry,
+        openGraph: {
+          title: entry.title,
+          description: entry.description,
+          url: entry.alternates.canonical,
+        },
+      })),
+    )
   })
 
   it.each(publicProjects)(

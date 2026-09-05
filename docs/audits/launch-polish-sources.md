@@ -1,61 +1,61 @@
-# Launch-polish source decisions
+# Expanded-ecosystem source decisions
 
-Observed on **2026-09-04 at 22:07 CEST** and updated for React Swipe Actions on **2026-09-05** in Europe/Vienna. This is the registry-migration and copy-edit handoff from the full [project source audit](./project-sources.md). It separates released evidence from newer default-branch work so the site does not present unreleased capabilities as npm package behavior.
+Observed on **2026-09-05** in Europe/Vienna. Repository documentation and
+package metadata remain the technical sources of truth; the ecosystem site
+summarizes them.
 
 ## Registry decisions
 
-| Project                     | Source state                                                                                                                                                                                                                                                                                                         | Category         | Lifecycle | Visibility | npm                                                                                                         |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | --------- | ---------- | ----------------------------------------------------------------------------------------------------------- |
-| React Spring Bottom Sheet   | [`main@465d32f`](https://github.com/NIPE-Solutions/react-spring-bottom-sheet/commit/465d32fe2caf52f4d708e3a81d8fdff04350bfbe); released [`v5.0.1@0af4051`](https://github.com/NIPE-Solutions/react-spring-bottom-sheet/releases/tag/v5.0.1)                                                                          | UI & Interaction | `stable`  | `public`   | `@nipe-solutions/react-spring-bottom-sheet@5.0.1`; published; npm `latest` (`next` remains `5.0.0-alpha.0`) |
-| Readonly View               | [`main@8ab6b2d`](https://github.com/NIPE-Solutions/readonly-view/commit/8ab6b2d6031209926d49830d251b2b630608c2f7); released [`v2.0.1@5941a8b`](https://github.com/NIPE-Solutions/readonly-view/releases/tag/v2.0.1)                                                                                                  | Runtime          | `stable`  | `public`   | `@nipe-solutions/readonly-view@2.0.1`; published; npm `latest`                                              |
-| Angular Flex-Layout Codemod | [`main@72a4960`](https://github.com/NIPE-Solutions/flex-layout-migrator/commit/72a4960a738ba4f059afb28c9f1a0b30d827572b); released [`v2.0.0-beta.1@c6f12d8`](https://github.com/NIPE-Solutions/flex-layout-migrator/releases/tag/v2.0.0-beta.1); default branch is 15 commits ahead and includes unreleased behavior | Tooling          | `beta`    | `public`   | `@nipe-solutions/flex-layout-codemod@2.0.0-beta.1`; published; npm `latest` and `beta`                      |
-| React Swipe Actions         | [`main@6cf9c5c`](https://github.com/NIPE-Solutions/react-swipe-actions/commit/6cf9c5ccd7608158455ba86963fb4d5610690e53); public documentation and MIT source; no GitHub tag or release yet                                                                                                                           | UI & Interaction | `alpha`   | `public`   | `@nipe-solutions/react-swipe-actions@0.1.0-alpha.0`; published; npm `latest` and `alpha`                    |
+| Project                     | Audited source                                                                                                                                     | Category         | Status | npm state                                                     |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------ | ------------------------------------------------------------- |
+| React Spring Bottom Sheet   | [`main@465d32f`](https://github.com/NIPE-Solutions/react-spring-bottom-sheet/commit/465d32fe2caf52f4d708e3a81d8fdff04350bfbe), released `v5.0.1`   | UI & Interaction | Stable | `@nipe-solutions/react-spring-bottom-sheet@5.0.1`, published  |
+| React Swipe Actions         | [`main@1c798c2`](https://github.com/NIPE-Solutions/react-swipe-actions/commit/1c798c20878165cb2a3702ea18f4967834551b63)                            | UI & Interaction | Alpha  | `@nipe-solutions/react-swipe-actions`, alpha published        |
+| React Anchored Layer        | [`main@93c83bd`](https://github.com/NIPE-Solutions/react-anchored-layer/commit/93c83bd2cd569bfdc2c5bd128f1f3add39ae7696)                           | UI & Interaction | Alpha  | package name reserved in source; not published                |
+| React Pull to Refresh       | [`main@3e7b232`](https://github.com/NIPE-Solutions/react-pull-to-refresh/commit/3e7b232a23b59e7e44ca0a6b8a13d3d02f839b18)                          | UI & Interaction | Alpha  | package name reserved in source; not published                |
+| React Viewport              | [`main@08a4b3a`](https://github.com/NIPE-Solutions/react-viewport/commit/08a4b3a2353d934835eb1054dd6ddadef2370e65)                                 | UI & Interaction | Alpha  | package name reserved in source; not published                |
+| Readonly View               | [`main@8ab6b2d`](https://github.com/NIPE-Solutions/readonly-view/commit/8ab6b2d6031209926d49830d251b2b630608c2f7), released `v2.0.1`               | Runtime          | Stable | `@nipe-solutions/readonly-view@2.0.1`, published              |
+| Angular Flex-Layout Codemod | [`main@72a4960`](https://github.com/NIPE-Solutions/flex-layout-migrator/commit/72a4960a738ba4f059afb28c9f1a0b30d827572b), released `v2.0.0-beta.1` | Tooling          | Beta   | `@nipe-solutions/flex-layout-codemod@2.0.0-beta.1`, published |
 
-Use explicit `visibility` and lifecycle values. npm identity and publication are independent fields; only `published: true` may enable install or npm UI. Swipe Actions is intentionally public as an alpha and must be labelled accordingly.
+All seven repositories are intentionally public. Alpha denotes an early public
+release or public development surface whose API/browser behavior can still
+change. npm identity and publication are independent fields; only
+`npm.published: true` enables install and npm links.
 
-## Configured support surfaces
+React Viewport stays under **UI & Interaction** because developers encounter it
+as browser/UI geometry: layout viewport, visual viewport, keyboard occlusion,
+and safe areas. Its dedicated hostname remains unavailable, so the current
+documentation destination is the audited, commit-pinned README.
 
-| Project                     | Documentation                                                                               | Issues                                                          | Discussions                                                         | Security                                                                         | Decision notes                                                                                                                                                                              |
-| --------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| React Spring Bottom Sheet   | <https://react-spring-bottom-sheet.nipesolutions.com>                                       | None                                                            | None                                                                | None                                                                             | The manifest's `bugs` URL points to repository Issues, but Issues are disabled. There is no `SECURITY.md`, and private vulnerability reporting is disabled. Do not derive fallback actions. |
-| Readonly View               | <https://readonly-view.nipesolutions.com>                                                   | <https://github.com/NIPE-Solutions/readonly-view/issues>        | None                                                                | <https://github.com/NIPE-Solutions/readonly-view/security/policy>                | `SECURITY.md` requests private reporting, but that feature is disabled. Link the policy without describing private reporting as operational.                                                |
-| Angular Flex-Layout Codemod | <https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/docs/SUPPORT.md> | <https://github.com/NIPE-Solutions/flex-layout-migrator/issues> | None                                                                | <https://github.com/NIPE-Solutions/flex-layout-migrator/security/advisories/new> | The support guide names Issues and private reporting. Private vulnerability reporting is enabled. Discussions are enabled as a feature but are not configured as a support route.           |
-| React Swipe Actions         | <https://react-swipe-actions.nipesolutions.com>                                             | <https://github.com/NIPE-Solutions/react-swipe-actions/issues>  | <https://github.com/NIPE-Solutions/react-swipe-actions/discussions> | <https://github.com/NIPE-Solutions/react-swipe-actions/security/advisories/new>  | The repository documents Issues for non-security bugs and private vulnerability reporting; Discussions are enabled and intentionally exposed.                                               |
+## Responsibility and limitation checks
 
-These are the only support URLs approved for the registry migration. Contribution links may remain elsewhere when directly sourced, but UI must not construct Issues, Discussions, Security, or Documentation destinations from repository names.
+- Bottom Sheet copy uses the released v5 compound API and accessibility,
+  gesture, snap-point, and browser documentation. It does not describe v4.
+- Readonly View keeps the ownership distinction: the source remains mutable;
+  the lazy, deeply readonly view remains live. It is not presented as state
+  management, immutable storage, an Immer replacement, or a security sandbox.
+- The codemod is Beta and review-first. Copy does not promise automatic,
+  risk-free, or complete migration.
+- Swipe Actions reflects measured sides, gesture/keyboard/RTL behavior, and
+  optional full swipe from the audited Alpha source.
+- Anchored Layer owns portal positioning and anchor tracking, while dismissal,
+  focus, menus, comboboxes, dropdowns, and other interaction semantics remain
+  application-owned.
+- Pull to Refresh owns gesture arbitration, resistance, threshold hysteresis,
+  and refresh commitment, while applications own feed data. Native browser
+  refresh and physical-device QA boundaries remain explicit.
+- Viewport separates layout/visual geometry and documents conservative keyboard
+  heuristics, SSR state, safe areas, and pending physical-device QA. No universal
+  browser-support claim is made.
 
-## Purpose and claim sources
+## Support and legal decisions
 
-### React Spring Bottom Sheet
+Support destinations are stored explicitly per project. The UI never invents
+Issues, Discussions, Security, or Documentation URLs. React Spring Bottom Sheet
+therefore exposes only its configured docs route; React Viewport points to its
+commit-pinned README; and Discussions appear only for Swipe Actions.
 
-- Purpose: bottom-anchored React modal surfaces that coordinate named snap points, gestures, nested scrolling, and accessible dialog behavior. Source: released [v5 rationale](https://github.com/NIPE-Solutions/react-spring-bottom-sheet/blob/v5.0.1/README.md#why-version-5).
-- Capabilities: compound API and controlled/uncontrolled state from the released [README](https://github.com/NIPE-Solutions/react-spring-bottom-sheet/blob/v5.0.1/README.md); accessible modal behavior from the released [changelog](https://github.com/NIPE-Solutions/react-spring-bottom-sheet/blob/v5.0.1/CHANGELOG.md#500-2026-09-03); gesture, nested-scroll, reduced-motion, and browser support from [Why version 5](https://github.com/NIPE-Solutions/react-spring-bottom-sheet/blob/v5.0.1/README.md#why-version-5).
-- Limitation: describe it as an independently maintained continuation in the original fork network. Source: released [project lineage](https://github.com/NIPE-Solutions/react-spring-bottom-sheet/blob/v5.0.1/README.md#project-lineage).
-- Copy decision: keep the React 19 and v5 framing. Do not restore v4 APIs or imply that NIPE publishes the original package.
-
-### Readonly View
-
-- Purpose: an ownership boundary where an owner may continue mutating source data while consumers receive a live view that cannot mutate through that view. Source: released [ownership model](https://github.com/NIPE-Solutions/readonly-view/blob/v2.0.1/README.md#ownership-mental-model).
-- Capabilities: lazy/live/deeply-readonly behavior from the released [guarantees](https://github.com/NIPE-Solutions/readonly-view/blob/v2.0.1/README.md#guarantees); shared-reference and cycle identity from [guarantees and non-guarantees](https://github.com/NIPE-Solutions/readonly-view/blob/v2.0.1/docs/guarantees.md); supported values from the [support matrix](https://github.com/NIPE-Solutions/readonly-view/blob/v2.0.1/docs/supported-types.md).
-- Limitation: the source remains mutable, and the package is not an immutable snapshot, owner-mutation guard, state manager, Immer replacement, or security sandbox. Source: released [when not to use it](https://github.com/NIPE-Solutions/readonly-view/blob/v2.0.1/README.md#when-not-to-use-it).
-- Copy correction: prefer “deeply readonly, lazy, live view of owner-controlled mutable data.” Never shorten this to an immutability claim.
-
-### Angular Flex-Layout Codemod
-
-- Purpose: make Angular Flex-Layout removal reviewable by converting cases that can be proved safe and reporting unsupported work. Source: released [current scope](https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/README.md#current-scope).
-- Capabilities: Angular-aware source-range edits and safe Tailwind conversions from the released [current scope](https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/README.md#current-scope); exact supported inputs from the released [compatibility reference](https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/docs/compatibility.md); dry-run planning, schema-version `1` reports, exit codes, and unresolved diagnostics from the released [CLI workflow](https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/README.md#cli-workflow).
-- Limitation: `v2.0.0-beta.1` is not production-ready coverage; dynamic bindings and other unsafe or unsupported inputs may remain for review. Source: released [current scope](https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/README.md#current-scope).
-- Copy correction: use lifecycle `beta`, not `prerelease`. Keep public examples pinned to the released `--dry-run` and schema-version `1` behavior. Default-branch planning-by-default, `--write`, schema-version `2`, native CSS, Grid, orientation/print, and responsive-image behavior are not yet published and must not enter package copy.
-
-### React Swipe Actions
-
-- Purpose: supply composable row interaction while applications own list data and side effects. Source: audited [`main@6cf9c5c` README](https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md).
-- Capabilities: measured leading and trailing actions, controlled and uncontrolled state, full-swipe activation, group coordination, keyboard/focus behavior, and logical RTL sides. Sources: the audited [row API](https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md#start-with-the-row-api) and [interaction guide](https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/docs/guides/interaction-accessibility.md).
-- Limitation: the `0.1` line is alpha and excludes generic gesture hooks, nested swipe roots, portals, React Native, `asChild`, and application list lifecycle behavior. Source: audited [platform and alpha boundaries](https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md#state-accessibility-and-platforms).
-- Copy decision: expose the project publicly as `alpha`; link its dedicated site as Documentation and retain the local ecosystem overview route.
-
-## Legal source recheck
-
-The Bottom Sheet [Impressum](https://react-spring-bottom-sheet.nipesolutions.com/impressum/) and [Privacy page](https://react-spring-bottom-sheet.nipesolutions.com/privacy/) returned HTTP `200`. The operator values match [`website/content/legal.ts@465d32f`](https://github.com/NIPE-Solutions/react-spring-bottom-sheet/blob/465d32fe2caf52f4d708e3a81d8fdff04350bfbe): NIPE Solutions e.U.; proprietor Nicholas Petrasek; Achtergasse 10, 1230 Wien, Austria / Österreich; `office@nipesolutions.com`; `+43 676 9654266`; VAT ID `ATU78464412`; register number `FN 585066t`; Handelsgericht Wien; Magistratisches Bezirksamt für den 23. Bezirk; Wirtschaftskammer Wien; and the recorded IT-services trade. The live Impressum additionally states the registered office as Wien.
-
-The privacy page still describes Vercel hosting and subprocessors, technically necessary request/server/security logs, no intentional non-essential cookies, no product analytics, outbound destinations applying their own terms, and the Austrian Data Protection Authority. These facts are source evidence, not legal approval. Owner/legal review remains required before production copy is treated as final.
+The canonical legal source remains the Bottom Sheet website and audited NIPE
+legal content: `NIPE Solutions e.U.`, proprietor Nicholas Petrasek,
+Achtergasse 10, 1230 Wien, Austria, with the registered company identifiers
+already recorded in the site legal module. This source record is evidence, not
+legal approval; owner/legal review remains required before launch.

@@ -6,6 +6,9 @@ const projects = [
   'readonly-view',
   'flex-layout-codemod',
   'react-swipe-actions',
+  'react-anchored-layer',
+  'react-pull-to-refresh',
+  'react-viewport',
 ] as const
 
 for (const slug of projects) {
@@ -17,8 +20,45 @@ for (const slug of projects) {
       'href',
       `${origin}${path}`,
     )
+    await expect(page.locator('meta[property="og:title"]')).toHaveCount(1)
+    await expect(page.locator('meta[property="og:description"]')).toHaveCount(1)
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+      'content',
+      `${origin}${path}`,
+    )
   })
 }
+
+test('publishes unique OpenGraph titles and descriptions for every project', async ({
+  page,
+}) => {
+  const titles: string[] = []
+  const descriptions: string[] = []
+  const images: string[] = []
+
+  for (const slug of projects) {
+    await page.goto(`/projects/${slug}`)
+    titles.push(
+      (await page
+        .locator('meta[property="og:title"]')
+        .getAttribute('content'))!,
+    )
+    descriptions.push(
+      (await page
+        .locator('meta[property="og:description"]')
+        .getAttribute('content'))!,
+    )
+    images.push(
+      (await page
+        .locator('meta[property="og:image"]')
+        .getAttribute('content'))!,
+    )
+  }
+
+  expect(new Set(titles).size).toBe(projects.length)
+  expect(new Set(descriptions).size).toBe(projects.length)
+  expect(new Set(images).size).toBe(projects.length)
+})
 
 test('missing routes are noindex and do not inherit the homepage canonical', async ({
   page,
@@ -57,6 +97,7 @@ test('publishes only explicit public project routes in the sitemap', async ({
   for (const slug of projects) {
     expect(sitemap).toContain(`${origin}/projects/${slug}`)
   }
+  expect(sitemap.match(/<loc>[^<]*\/projects\//g)).toHaveLength(projects.length)
 })
 
 test('publishes Swipe Actions with canonical metadata and package links', async ({

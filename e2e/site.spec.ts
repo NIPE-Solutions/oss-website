@@ -43,8 +43,39 @@ const projects = [
     documentation: 'https://react-swipe-actions.nipesolutions.com',
     repository: 'https://github.com/NIPE-Solutions/react-swipe-actions',
     purposeSource:
-      'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md',
+      'https://github.com/NIPE-Solutions/react-swipe-actions/blob/1c798c20878165cb2a3702ea18f4967834551b63/README.md',
     npm: 'https://www.npmjs.com/package/@nipe-solutions/react-swipe-actions',
+  },
+  {
+    name: 'React Anchored Layer',
+    path: '/projects/react-anchored-layer',
+    category: 'UI & Interaction',
+    status: 'Alpha',
+    documentation: 'https://react-anchored-layer.nipesolutions.com',
+    repository: 'https://github.com/NIPE-Solutions/react-anchored-layer',
+    purposeSource:
+      'https://github.com/NIPE-Solutions/react-anchored-layer/blob/93c83bd2cd569bfdc2c5bd128f1f3add39ae7696/README.md#responsibility',
+  },
+  {
+    name: 'React Pull to Refresh',
+    path: '/projects/react-pull-to-refresh',
+    category: 'UI & Interaction',
+    status: 'Alpha',
+    documentation: 'https://react-pull-to-refresh.nipesolutions.com',
+    repository: 'https://github.com/NIPE-Solutions/react-pull-to-refresh',
+    purposeSource:
+      'https://github.com/NIPE-Solutions/react-pull-to-refresh/blob/3e7b232a23b59e7e44ca0a6b8a13d3d02f839b18/README.md#why-this-exists',
+  },
+  {
+    name: 'React Viewport',
+    path: '/projects/react-viewport',
+    category: 'UI & Interaction',
+    status: 'Alpha',
+    documentation:
+      'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md',
+    repository: 'https://github.com/NIPE-Solutions/react-viewport',
+    purposeSource:
+      'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md#nipe-solutionsreact-viewport',
   },
 ] as const
 
@@ -89,6 +120,42 @@ const configuredSupportLinks = [
   [
     'React Swipe Actions security',
     'https://github.com/NIPE-Solutions/react-swipe-actions/security/advisories/new',
+  ],
+  [
+    'React Anchored Layer documentation',
+    'https://react-anchored-layer.nipesolutions.com',
+  ],
+  [
+    'React Anchored Layer issues',
+    'https://github.com/NIPE-Solutions/react-anchored-layer/issues',
+  ],
+  [
+    'React Anchored Layer security',
+    'https://github.com/NIPE-Solutions/react-anchored-layer/security/policy',
+  ],
+  [
+    'React Pull to Refresh documentation',
+    'https://react-pull-to-refresh.nipesolutions.com',
+  ],
+  [
+    'React Pull to Refresh issues',
+    'https://github.com/NIPE-Solutions/react-pull-to-refresh/issues',
+  ],
+  [
+    'React Pull to Refresh security',
+    'https://github.com/NIPE-Solutions/react-pull-to-refresh/security/policy',
+  ],
+  [
+    'React Viewport documentation',
+    'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md',
+  ],
+  [
+    'React Viewport issues',
+    'https://github.com/NIPE-Solutions/react-viewport/issues',
+  ],
+  [
+    'React Viewport security',
+    'https://github.com/NIPE-Solutions/react-viewport/security/policy',
   ],
 ] as const
 
@@ -135,22 +202,69 @@ test('renders only canonical category and lifecycle labels for public projects',
   await expect(page.getByRole('heading', { name: 'Migration' })).toHaveCount(0)
 })
 
+test('constellation exposes every project to keyboard discovery', async ({
+  page,
+}) => {
+  await page.goto('/')
+  const constellation = page.getByRole('navigation', {
+    name: 'NIPE Open Source projects',
+  })
+  await expect(constellation.getByRole('link')).toHaveCount(7)
+
+  for (const project of projects) {
+    const link = constellation.getByRole('link', {
+      name: `${project.name} ${project.status}`,
+    })
+    await link.focus()
+    await expect(link).toBeFocused()
+    await expect(link).toHaveAttribute('href', project.path)
+  }
+})
+
+test('desktop project disclosure supports keyboard discovery and navigation', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1366, height: 900 })
+  await page.goto('/')
+
+  const disclosure = page.locator('.project-menu > summary')
+  await disclosure.focus()
+  await expect(disclosure).toBeFocused()
+  await page.keyboard.press('Enter')
+  await expect(page.locator('.project-menu')).toHaveAttribute('open', '')
+
+  const panel = page.locator('.project-menu__panel')
+  await expect(panel.getByRole('link')).toHaveCount(7)
+  await panel
+    .getByRole('link', { name: 'React Anchored Layer', exact: true })
+    .focus()
+  await page.keyboard.press('Enter')
+  await expect(page).toHaveURL('/projects/react-anchored-layer')
+})
+
 test('primary navigation works with keyboard only', async ({ page }) => {
   await page.goto('/')
 
-  const expectedLinks = [
-    ['Skip to content', '#main-content'],
-    ['NIPE Open Source home', '/'],
-    ['Projects', '/#projects'],
-    ['Principles', '/#principles'],
-    ['GitHub', 'https://github.com/NIPE-Solutions'],
-    ['NIPE Solutions', 'https://nipesolutions.com'],
+  const expectedControls = [
+    { name: 'Skip to content', href: '#main-content' },
+    { name: 'NIPE Open Source home', href: '/' },
+    { name: 'Projects' },
+    { name: 'Principles', href: '/#principles' },
+    { name: 'GitHub', href: 'https://github.com/NIPE-Solutions' },
+    { name: 'NIPE Solutions', href: 'https://nipesolutions.com' },
   ] as const
 
-  for (const [name, href] of expectedLinks) {
+  for (const control of expectedControls) {
     await page.keyboard.press('Tab')
-    await expect(page.locator(':focus')).toHaveAccessibleName(name)
-    await expect(page.locator(':focus')).toHaveAttribute('href', href)
+    await expect(page.locator(':focus')).toHaveAccessibleName(control.name)
+    if ('href' in control) {
+      await expect(page.locator(':focus')).toHaveAttribute('href', control.href)
+    } else {
+      await expect(page.locator(':focus')).toHaveJSProperty(
+        'tagName',
+        'SUMMARY',
+      )
+    }
   }
 })
 
@@ -167,6 +281,7 @@ test.describe('mobile primary navigation', () => {
     const principles = navigation.getByRole('link', { name: 'Principles' })
 
     await expect(navigation).toBeVisible()
+    await expect(page.locator('.project-menu')).toBeHidden()
     await projects.tap()
     await expect(page).toHaveURL('/#projects')
 
@@ -292,11 +407,11 @@ test('reduced motion disables smooth scrolling and transition duration', async (
         scrollBehavior: getComputedStyle(document.documentElement)
           .scrollBehavior,
         transitionDuration: getComputedStyle(
-          document.querySelector('.skip-link')!,
+          document.querySelector('.project-motif__surface')!,
         ).transitionDuration,
       })),
     )
-    .toEqual({ scrollBehavior: 'auto', transitionDuration: '1e-05s' })
+    .toEqual({ scrollBehavior: 'auto', transitionDuration: '0s' })
 })
 
 test('external links retain their verified destinations', async ({ page }) => {
@@ -329,9 +444,12 @@ test('external links retain their verified destinations', async ({ page }) => {
     await expect(
       page.getByRole('link', { name: 'Source for purpose' }),
     ).toHaveAttribute('href', project.purposeSource)
-    await expect(
-      actions.getByRole('link', { name: 'npm package' }),
-    ).toHaveAttribute('href', project.npm)
+    const npmLink = actions.getByRole('link', { name: 'npm package' })
+    if ('npm' in project) {
+      await expect(npmLink).toHaveAttribute('href', project.npm)
+    } else {
+      await expect(npmLink).toHaveCount(0)
+    }
   }
 })
 
