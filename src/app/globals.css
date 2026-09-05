@@ -1323,52 +1323,23 @@ a:hover {
   font-size: var(--text-lg);
 }
 
+@media (max-width: 79rem) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr) 34rem;
+    gap: clamp(var(--space-xl), 4vw, var(--space-2xl));
+  }
+}
+
 @media (max-width: 60rem) {
   .site-footer__inner {
     grid-template-columns: 1fr;
     gap: var(--space-md);
   }
 
-  .project-constellation {
-    min-block-size: 34rem;
-  }
-
-  .project-constellation__hub {
-    inline-size: 5.25rem;
-    block-size: 5.25rem;
-    font-size: var(--text-xs);
-  }
-
-  .project-node {
-    inline-size: 8.75rem;
-  }
-
-  .project-node .project-motif {
-    min-block-size: 3.5rem;
-  }
-
-  .project-node--bottom-sheet {
-    inset-inline-start: 0;
-  }
-
-  .project-node--swipe-actions {
-    inset-block-start: var(--space-md);
-  }
-
-  .project-node--anchored-layer {
-    inset-block-start: 9rem;
-  }
-
-  .project-node--pull-to-refresh {
-    inset-block-start: 10.75rem;
-  }
-
-  .project-node--viewport {
-    inset-block-end: 7rem;
-  }
-
-  .project-node--readonly-view {
-    inset-block-end: 5.5rem;
+  .hero__inner {
+    min-block-size: 0;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
   }
 }
 
@@ -1577,6 +1548,7 @@ a:hover {
   .skip-link,
   .primary-navigation,
   .footer-navigation,
+  .project-constellation,
   .project-entry__visual {
     display: none;
   }
