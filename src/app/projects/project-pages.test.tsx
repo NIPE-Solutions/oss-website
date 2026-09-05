@@ -56,7 +56,7 @@ describe('project detail routes', () => {
     },
   ] as const
 
-  it('generates one static route for every published project', () => {
+  it('generates one static route for every public project', () => {
     expect(generateStaticParams()).toEqual([
       { slug: 'react-spring-bottom-sheet' },
       { slug: 'react-swipe-actions' },
