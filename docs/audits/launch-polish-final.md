@@ -1,31 +1,34 @@
 # Expanded-ecosystem launch audit
 
 Audited on **2026-09-05** in Europe/Vienna against the seven-project registry
-and the production origin `https://opensource.nipesolutions.com`.
+and the production origin `https://opensource.nipesolutions.com`. The final
+review corrections apply to application commit `63414a1`; production deployment
+of this expanded-ecosystem branch remains a manual gate.
 
 ## Verdict
 
 **READY WITH MANUAL ITEMS.** The application, deterministic checks, project
 routes, canonical metadata, responsive layouts, and accessibility checks are
 healthy. Launch still requires owner/legal review, normal-browser confirmation
-of the four published npm pages, and correction of the `nipesolutions.com` TLS
-configuration. The apex currently presents a Netlify certificate that does not
-cover the hostname.
+of the four published npm pages, GitHub metadata decisions, and deployment-time
+production checks. The TLS-broken `nipesolutions.com` destination was removed
+from navigation and structured data rather than shipped as a broken link.
 
 This verdict is an engineering assessment, not a claim of legal compliance.
 
 ## Automated evidence
 
 - `npm run check`: passed formatting, zero-warning lint, typecheck, 13 Vitest
-  files / 132 tests, seven-entry registry validation, 84 deterministic link
+  files / 133 tests, seven-entry registry validation, 83 deterministic link
   destinations, and the 18-page production build.
-- `npm run test:e2e`: 127 Chromium tests passed.
+- `npm run test:e2e`: 128 Chromium tests passed.
 - Axe reported no serious or critical violations on the homepage and all seven
   project pages in both light and dark themes. Impressum, Privacy,
   Contributing, and Security also passed.
 - Browser coverage verifies seven keyboard-focusable constellation links, the
-  native desktop project disclosure, the mobile Projects fallback, status text,
-  ordered headings, visible focus, the skip link, reduced motion, support
+  desktop project disclosure including navigation and Escape dismissal, the
+  mobile Projects fallback, status text, ordered headings, visible focus, the
+  skip link, reduced motion, support
   destinations, sitemap routes, unique project OG text, and production
   canonicals/OG URLs.
 - Every project detail route was checked at 375, 430, 768, 1024, 1366, 1440,
@@ -83,11 +86,12 @@ intensity remains controlled in both themes. The homepage assessment is
 
 ## Live-source findings
 
-`npm run check:links:live` completed its audit and reported only the documented
-external gates:
+The live link audit no longer includes a NIPE company-homepage destination.
+Read-only investigation found no verified working canonical replacement: both
+the apex and `www` host fail TLS hostname validation, alternate host spellings
+do not resolve, and the GitHub organization exposes no website URL. Remaining
+external gates are:
 
-- `https://nipesolutions.com` failed certificate hostname verification because
-  the server presented a `*.netlify.app` / `netlify.app` certificate.
 - The four published `www.npmjs.com/package/...` pages returned HTTP 403 to the
   automated checker. Registry publication evidence comes from the package
   audit; confirm the web pages in a normal browser before launch.
@@ -97,9 +101,11 @@ external gates:
 
 ## Remaining launch actions
 
-1. Correct the `nipesolutions.com` certificate/host mapping or remove the link,
-   then rerun the live audit.
-2. Open the four published npm package pages in a normal browser.
-3. Complete repository About metadata and security/discussion decisions listed
+1. Deploy application commit `63414a1` (or its documentation-only successor)
+   and repeat the production smoke checks.
+2. Repair and independently verify `nipesolutions.com` before restoring the
+   company-homepage link.
+3. Open the four published npm package pages in a normal browser.
+4. Complete repository About metadata and security/discussion decisions listed
    in `docs/LAUNCH_CHECKLIST.md`.
-4. Record owner/legal approval and repeat production smoke checks after deploy.
+5. Record owner/legal approval after deploy.

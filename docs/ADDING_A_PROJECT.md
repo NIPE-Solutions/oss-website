@@ -22,7 +22,8 @@ optional support URLs directly in `support` (`issues`, `discussions`,
 
 Use a dedicated `visual` motif and accent token for each public project. The
 same registry entry places that motif in the hero constellation, homepage
-directory, project detail page, and Open Graph image. Set `order` deliberately:
+directory, and project detail page. Open Graph images use project accent and
+text metadata, but do not currently render the motif. Set `order` deliberately:
 it controls the constellation and directory narrative rather than indicating
 quality or adoption. Check accent text, links, focus rings, and motif edges in
 both themes before publishing the entry.
