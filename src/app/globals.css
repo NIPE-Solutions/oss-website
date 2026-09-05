@@ -1522,8 +1522,8 @@ a:hover {
   .hero__inner {
     min-block-size: 0;
     grid-template-columns: 1fr;
-    gap: var(--space-lg);
-    padding-block: var(--space-lg);
+    gap: var(--space-md);
+    padding-block: var(--space-md);
   }
 
   .hero h1 {
@@ -1573,7 +1573,7 @@ a:hover {
   }
 
   .hero__copy p {
-    margin-block-start: var(--space-lg);
+    margin-block-start: var(--space-md);
     font-size: var(--text-base);
   }
 
@@ -1582,7 +1582,7 @@ a:hover {
   }
 
   .hero__copy .text-link {
-    margin-block-start: var(--space-md);
+    margin-block-start: var(--space-sm);
   }
 
   .section-introduction,
@@ -1653,6 +1653,7 @@ a:hover {
 
   .hero h1 {
     font-size: clamp(2.25rem, 11vw, 4rem);
+    line-height: 0.92;
   }
 
   .project-entry__heading {
