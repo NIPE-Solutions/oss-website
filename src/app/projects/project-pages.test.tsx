@@ -8,12 +8,63 @@ import Page, { generateMetadata, generateStaticParams } from './[slug]/page'
 afterEach(cleanup)
 
 describe('project detail routes', () => {
+  const newProjectDetails = [
+    {
+      slug: 'react-anchored-layer',
+      name: 'React Anchored Layer',
+      purpose:
+        'It exists to keep arbitrary portal content aligned with an anchor while the application retains ownership of interaction and accessibility semantics.',
+      capabilities: [
+        'Portal and anchor tracking',
+        'Collision and measurement ownership',
+      ],
+      limitation: 'Application-owned interaction semantics',
+      example:
+        "import { AnchoredLayer } from '@nipe-solutions/react-anchored-layer'",
+      documentation: 'https://react-anchored-layer.nipesolutions.com',
+      repository: 'https://github.com/NIPE-Solutions/react-anchored-layer',
+    },
+    {
+      slug: 'react-pull-to-refresh',
+      name: 'React Pull to Refresh',
+      purpose:
+        'It exists to coordinate downward intent, the active scroll boundary, resistance, threshold hysteresis, exactly-once refresh commitment, and settling while applications own data and errors.',
+      capabilities: [
+        'Scroll-boundary and direction arbitration',
+        'Resistance and threshold hysteresis',
+      ],
+      limitation: 'Native refresh and device QA boundaries',
+      example:
+        "import { PullToRefresh } from '@nipe-solutions/react-pull-to-refresh'",
+      documentation: 'https://react-pull-to-refresh.nipesolutions.com',
+      repository: 'https://github.com/NIPE-Solutions/react-pull-to-refresh',
+    },
+    {
+      slug: 'react-viewport',
+      name: 'React Viewport',
+      purpose:
+        'It exists for React behavior that needs measured viewport geometry or an explicit distinction between layout and visual viewports when CSS alone cannot express it.',
+      capabilities: [
+        'Separate layout and visual geometry',
+        'Conservative keyboard and safe-area state',
+      ],
+      limitation: 'Heuristic and physical-device boundaries',
+      example: "from '@nipe-solutions/react-viewport'",
+      documentation:
+        'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md',
+      repository: 'https://github.com/NIPE-Solutions/react-viewport',
+    },
+  ] as const
+
   it('generates one static route for every published project', () => {
     expect(generateStaticParams()).toEqual([
       { slug: 'react-spring-bottom-sheet' },
+      { slug: 'react-swipe-actions' },
+      { slug: 'react-anchored-layer' },
+      { slug: 'react-pull-to-refresh' },
+      { slug: 'react-viewport' },
       { slug: 'readonly-view' },
       { slug: 'flex-layout-codemod' },
-      { slug: 'react-swipe-actions' },
     ])
   })
 
@@ -35,6 +86,42 @@ describe('project detail routes', () => {
         },
       },
       {
+        title: 'React Swipe Actions',
+        description:
+          'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
+        alternates: {
+          canonical:
+            'https://opensource.nipesolutions.com/projects/react-swipe-actions',
+        },
+      },
+      {
+        title: 'React Anchored Layer',
+        description:
+          'Anchored floating layers for React that keep arbitrary portal content aligned through scroll, resize, and layout changes.',
+        alternates: {
+          canonical:
+            'https://opensource.nipesolutions.com/projects/react-anchored-layer',
+        },
+      },
+      {
+        title: 'React Pull to Refresh',
+        description:
+          'Pull-to-refresh for React with scroll arbitration, resistance, threshold hysteresis, and an application-owned refresh lifecycle.',
+        alternates: {
+          canonical:
+            'https://opensource.nipesolutions.com/projects/react-pull-to-refresh',
+        },
+      },
+      {
+        title: 'React Viewport',
+        description:
+          'Reactive React geometry for layout and visual viewports, keyboard occlusion, and safe areas.',
+        alternates: {
+          canonical:
+            'https://opensource.nipesolutions.com/projects/react-viewport',
+        },
+      },
+      {
         title: 'Readonly View',
         description:
           'A deeply readonly, lazy, live view of owner-controlled mutable data for JavaScript and TypeScript.',
@@ -50,15 +137,6 @@ describe('project detail routes', () => {
         alternates: {
           canonical:
             'https://opensource.nipesolutions.com/projects/flex-layout-codemod',
-        },
-      },
-      {
-        title: 'React Swipe Actions',
-        description:
-          'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
-        alternates: {
-          canonical:
-            'https://opensource.nipesolutions.com/projects/react-swipe-actions',
         },
       },
     ])
@@ -97,6 +175,11 @@ describe('project detail routes', () => {
                 ? 'Alpha'
                 : project.status,
         ),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('img', {
+          name: `${project.name} concept illustration`,
+        }),
       ).toBeInTheDocument()
 
       const claims = screen.getByRole('region', { name: 'Capabilities' })
@@ -157,17 +240,76 @@ describe('project detail routes', () => {
       expect(
         within(actions).getByRole('link', { name: 'Source' }),
       ).toHaveAttribute('href', project.repository)
+      if (project.npm?.published) {
+        expect(
+          within(actions).getByRole('link', { name: 'npm package' }),
+        ).toHaveAttribute(
+          'href',
+          `https://www.npmjs.com/package/${project.npm.package}`,
+        )
+        const installCommand = screen.getByText(
+          `npm install ${project.npm.package}`,
+        )
+        expect(installCommand).toBeInTheDocument()
+        expect(installCommand.closest('pre')).toHaveAttribute('tabindex', '0')
+      } else {
+        expect(
+          within(actions).queryByRole('link', { name: 'npm package' }),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText(/^npm install /)).not.toBeInTheDocument()
+      }
+
       expect(
-        within(actions).getByRole('link', { name: 'npm package' }),
-      ).toHaveAttribute(
-        'href',
-        `https://www.npmjs.com/package/${project.npm?.package}`,
-      )
-      const installCommand = screen.getByText(
-        `npm install ${project.npm?.package}`,
-      )
-      expect(installCommand).toBeInTheDocument()
-      expect(installCommand.closest('pre')).toHaveAttribute('tabindex', '0')
+        screen.getByRole('link', { name: 'Explore other projects' }),
+      ).toHaveAttribute('href', '/#projects')
+    },
+  )
+
+  it.each(newProjectDetails)(
+    'renders a complete public Alpha evaluation route for $name',
+    async (expected) => {
+      render(await Page({ params: Promise.resolve({ slug: expected.slug }) }))
+
+      expect(
+        screen.getByRole('heading', { level: 1, name: expected.name }),
+      ).toBeInTheDocument()
+      expect(screen.getByText('Alpha')).toBeInTheDocument()
+      expect(screen.getByText(expected.purpose)).toBeInTheDocument()
+      for (const capability of expected.capabilities) {
+        const heading = screen.getByRole('heading', { name: capability })
+        expect(heading).toBeInTheDocument()
+        expect(
+          within(heading.closest('li') as HTMLElement).getByRole('link', {
+            name: `Source for ${capability}`,
+          }),
+        ).toBeInTheDocument()
+      }
+      expect(
+        screen.getByRole('heading', { name: expected.limitation }),
+      ).toBeInTheDocument()
+      expect(screen.getByText(new RegExp(expected.example))).toBeInTheDocument()
+
+      const actions = screen.getByRole('navigation', {
+        name: `${expected.name} actions`,
+      })
+      expect(
+        within(actions).getByRole('link', { name: 'Documentation' }),
+      ).toHaveAttribute('href', expected.documentation)
+      expect(
+        within(actions).getByRole('link', { name: 'Source' }),
+      ).toHaveAttribute('href', expected.repository)
+      expect(
+        within(actions).queryByRole('link', { name: 'npm package' }),
+      ).not.toBeInTheDocument()
+      expect(screen.queryByText(/^npm install /)).not.toBeInTheDocument()
+      expect(
+        screen.getByRole('link', { name: 'Explore other projects' }),
+      ).toHaveAttribute('href', '/#projects')
+      expect(
+        screen.getByRole('img', {
+          name: `${expected.name} concept illustration`,
+        }),
+      ).toBeInTheDocument()
     },
   )
 

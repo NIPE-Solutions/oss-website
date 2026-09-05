@@ -616,6 +616,25 @@ a:hover {
   padding-block: var(--space-3xl) var(--space-2xl);
 }
 
+.project-detail__header-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(16rem, 5fr);
+  align-items: center;
+  gap: clamp(var(--space-xl), 5vw, var(--space-3xl));
+}
+
+.project-detail__intro {
+  min-inline-size: 0;
+}
+
+.project-detail__header .project-visual {
+  inline-size: 100%;
+}
+
+.project-detail__header .project-motif {
+  min-block-size: clamp(12rem, 21vw, 17rem);
+}
+
 .project-detail__eyebrow {
   margin: 0 0 var(--space-lg);
   color: var(--project-accent);
@@ -654,7 +673,8 @@ a:hover {
 }
 
 .project-detail__content > section,
-.project-detail__actions {
+.project-detail__actions,
+.project-detail__ecosystem {
   border-block-start: var(--border-thin) solid var(--rule);
   padding-block: var(--space-xl);
 }
@@ -735,18 +755,24 @@ a:hover {
   line-height: 1.6;
 }
 
-.project-detail__actions {
+.project-detail__actions,
+.project-detail__ecosystem {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm) var(--space-lg);
 }
 
-.project-detail__actions a {
+.project-detail__actions a,
+.project-detail__ecosystem a {
   min-block-size: 2.75rem;
   display: inline-flex;
   align-items: center;
   font-size: var(--text-sm);
   font-weight: 700;
+}
+
+.project-detail__ecosystem a {
+  color: var(--project-accent);
 }
 
 .project-entry nav {
@@ -1456,6 +1482,14 @@ a:hover {
     min-block-size: 0;
     grid-template-columns: 1fr;
     gap: var(--space-2xl);
+  }
+
+  .project-detail__header-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .project-detail__header .project-visual {
+    max-inline-size: 32rem;
   }
 }
 
