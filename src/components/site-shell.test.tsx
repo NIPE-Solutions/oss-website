@@ -83,7 +83,7 @@ describe('site shell', () => {
     }
   })
 
-  it('routes primary navigation to principles and NIPE destinations', () => {
+  it('routes primary navigation to principles and the GitHub organization', () => {
     render(
       <SiteShell>
         <h1>Directory</h1>
@@ -99,8 +99,8 @@ describe('site shell', () => {
       within(navigation).getByRole('link', { name: 'GitHub' }),
     ).toHaveAttribute('href', 'https://github.com/NIPE-Solutions')
     expect(
-      within(navigation).getByRole('link', { name: 'NIPE Solutions' }),
-    ).toHaveAttribute('href', 'https://nipesolutions.com')
+      within(navigation).queryByRole('link', { name: 'NIPE Solutions' }),
+    ).not.toBeInTheDocument()
   })
 
   it('groups registry projects, resources, NIPE, and legal routes in the footer', () => {
@@ -128,8 +128,8 @@ describe('site shell', () => {
       within(navigation).getByRole('link', { name: 'Security' }),
     ).toHaveAttribute('href', '/security')
     expect(
-      within(navigation).getByRole('link', { name: 'NIPE Solutions' }),
-    ).toHaveAttribute('href', 'https://nipesolutions.com')
+      within(navigation).queryByRole('link', { name: 'NIPE Solutions' }),
+    ).not.toBeInTheDocument()
     expect(
       within(navigation).getByRole('link', { name: 'GitHub' }),
     ).toHaveAttribute('href', 'https://github.com/NIPE-Solutions')

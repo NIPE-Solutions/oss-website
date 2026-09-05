@@ -240,6 +240,23 @@ test('desktop project disclosure supports keyboard discovery and navigation', as
     .focus()
   await page.keyboard.press('Enter')
   await expect(page).toHaveURL('/projects/react-anchored-layer')
+  await expect(page.locator('.project-menu')).not.toHaveAttribute('open', '')
+  await expect(page.locator('.project-menu__panel')).toBeHidden()
+})
+
+test('desktop project disclosure dismisses with Escape', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 900 })
+  await page.goto('/')
+
+  const disclosure = page.locator('.project-menu > summary')
+  await disclosure.focus()
+  await page.keyboard.press('Enter')
+  await expect(page.locator('.project-menu')).toHaveAttribute('open', '')
+
+  await page.keyboard.press('Escape')
+
+  await expect(page.locator('.project-menu')).not.toHaveAttribute('open', '')
+  await expect(disclosure).toBeFocused()
 })
 
 test('primary navigation works with keyboard only', async ({ page }) => {
@@ -251,7 +268,6 @@ test('primary navigation works with keyboard only', async ({ page }) => {
     { name: 'Projects' },
     { name: 'Principles', href: '/#principles' },
     { name: 'GitHub', href: 'https://github.com/NIPE-Solutions' },
-    { name: 'NIPE Solutions', href: 'https://nipesolutions.com' },
   ] as const
 
   for (const control of expectedControls) {
@@ -419,7 +435,6 @@ test('external links retain their verified destinations', async ({ page }) => {
 
   const expectedHomepageLinks = [
     ['GitHub', 'https://github.com/NIPE-Solutions'],
-    ['NIPE Solutions', 'https://nipesolutions.com'],
   ] as const
 
   for (const [name, href] of expectedHomepageLinks) {

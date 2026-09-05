@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+import { ProjectMenuDisclosure } from '@/components/project-menu-disclosure'
 import { projectStatusLabels } from '@/content/project-status'
 import { projectCategories, publicProjects } from '@/content/projects'
 
@@ -14,7 +15,7 @@ export function ProjectMenu() {
     .filter(({ projects }) => projects.length > 0)
 
   return (
-    <details className="project-menu">
+    <ProjectMenuDisclosure>
       <summary>Projects</summary>
       <div className="project-menu__panel">
         {populatedCategories.map((category) => (
@@ -35,6 +36,6 @@ export function ProjectMenu() {
           </section>
         ))}
       </div>
-    </details>
+    </ProjectMenuDisclosure>
   )
 }

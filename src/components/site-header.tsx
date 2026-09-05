@@ -27,7 +27,6 @@ export function SiteHeader() {
           <ExternalLink href={siteConfig.githubOrganization}>
             GitHub
           </ExternalLink>
-          <ExternalLink href={siteConfig.nipeUrl}>NIPE Solutions</ExternalLink>
         </nav>
       </div>
     </header>

@@ -25,9 +25,6 @@ export function SiteFooter() {
           </div>
           <div>
             <h2>NIPE</h2>
-            <ExternalLink href={siteConfig.nipeUrl}>
-              NIPE Solutions
-            </ExternalLink>
             <ExternalLink href={siteConfig.githubOrganization}>
               GitHub
             </ExternalLink>
