@@ -100,23 +100,32 @@ describe('page metadata', () => {
 
     expect(projectMetadata.map(({ title }) => title)).toEqual([
       'React Spring Bottom Sheet',
+      'React Swipe Actions',
+      'React Anchored Layer',
+      'React Pull to Refresh',
+      'React Viewport',
       'Readonly View',
       'Angular Flex-Layout Codemod',
-      'React Swipe Actions',
     ])
     expect(projectMetadata.map(({ description }) => description)).toEqual([
       'Accessible React 19 bottom sheets with a compound Sheet API, named snap points, and separately exported styles.',
+      'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
+      'Anchored floating layers for React that keep arbitrary portal content aligned through scroll, resize, and layout changes.',
+      'Pull-to-refresh for React with scroll arbitration, resistance, threshold hysteresis, and an application-owned refresh lifecycle.',
+      'Reactive React geometry for layout and visual viewports, keyboard occlusion, and safe areas.',
       'A deeply readonly, lazy, live view of owner-controlled mutable data for JavaScript and TypeScript.',
       'A beta Angular template codemod for Flex-Layout to Tailwind CSS v4 migrations.',
-      'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
     ])
     expect(
       projectMetadata.map(({ alternates }) => alternates?.canonical),
     ).toEqual([
       'https://opensource.nipesolutions.com/projects/react-spring-bottom-sheet',
+      'https://opensource.nipesolutions.com/projects/react-swipe-actions',
+      'https://opensource.nipesolutions.com/projects/react-anchored-layer',
+      'https://opensource.nipesolutions.com/projects/react-pull-to-refresh',
+      'https://opensource.nipesolutions.com/projects/react-viewport',
       'https://opensource.nipesolutions.com/projects/readonly-view',
       'https://opensource.nipesolutions.com/projects/flex-layout-codemod',
-      'https://opensource.nipesolutions.com/projects/react-swipe-actions',
     ])
   })
 })
@@ -128,12 +137,21 @@ describe('discovery routes', () => {
       {
         url: 'https://opensource.nipesolutions.com/projects/react-spring-bottom-sheet',
       },
+      {
+        url: 'https://opensource.nipesolutions.com/projects/react-swipe-actions',
+      },
+      {
+        url: 'https://opensource.nipesolutions.com/projects/react-anchored-layer',
+      },
+      {
+        url: 'https://opensource.nipesolutions.com/projects/react-pull-to-refresh',
+      },
+      {
+        url: 'https://opensource.nipesolutions.com/projects/react-viewport',
+      },
       { url: 'https://opensource.nipesolutions.com/projects/readonly-view' },
       {
         url: 'https://opensource.nipesolutions.com/projects/flex-layout-codemod',
-      },
-      {
-        url: 'https://opensource.nipesolutions.com/projects/react-swipe-actions',
       },
       { url: 'https://opensource.nipesolutions.com/contributing' },
       { url: 'https://opensource.nipesolutions.com/security' },
