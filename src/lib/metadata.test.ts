@@ -34,6 +34,7 @@ import {
   createRobotsMetadata,
   createSecurityHeaders,
 } from '@/lib/metadata'
+import { siteConfig } from '@/lib/site'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 afterEach(() => {
@@ -42,6 +43,15 @@ afterEach(() => {
 })
 
 describe('page metadata', () => {
+  it('uses the expanded ecosystem positioning', () => {
+    expect(siteConfig.title).toBe(
+      'NIPE Open Source — Focused primitives and tools for the web',
+    )
+    expect(siteConfig.description).toContain('React interaction primitives')
+    expect(siteConfig.description).toContain('runtime utilities')
+    expect(siteConfig.description).toContain('developer tooling')
+  })
+
   it('keeps canonical URLs on the production origin', () => {
     expect(
       createPageMetadata({
@@ -68,12 +78,10 @@ describe('page metadata', () => {
     ]
 
     expect(homeMetadata.title).toEqual({
-      default: 'NIPE Open Source',
-      template: '%s | NIPE Open Source',
+      default: siteConfig.title,
+      template: `%s | ${siteConfig.name}`,
     })
-    expect(homeMetadata.description).toBe(
-      'Focused primitives and tools for the web.',
-    )
+    expect(homeMetadata.description).toBe(siteConfig.description)
     expect(routeMetadata.slice(1).map(({ title }) => title)).toEqual([
       'Contributing',
       'Security',
@@ -158,6 +166,9 @@ describe('discovery routes', () => {
       { url: 'https://opensource.nipesolutions.com/impressum' },
       { url: 'https://opensource.nipesolutions.com/privacy' },
     ])
+    expect(
+      sitemap().filter(({ url }) => url.includes('/projects/')),
+    ).toHaveLength(publicProjects.length)
   })
 
   it('prevents indexing and crawling outside production', () => {
@@ -201,9 +212,9 @@ describe('structured data', () => {
     expect(createWebsiteStructuredData()).toEqual({
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: 'NIPE Open Source',
+      name: siteConfig.name,
       url: 'https://opensource.nipesolutions.com/',
-      description: 'Focused primitives and tools for the web.',
+      description: siteConfig.description,
     })
     expect(createOrganizationStructuredData()).toEqual({
       '@context': 'https://schema.org',
@@ -215,7 +226,7 @@ describe('structured data', () => {
     })
   })
 
-  it('adds factual SoftwareSourceCode data to each published project page', async () => {
+  it('adds factual SoftwareSourceCode data to each public project page', async () => {
     for (const project of publicProjects) {
       expect(createProjectStructuredData(project)).toEqual({
         '@context': 'https://schema.org',
@@ -243,6 +254,16 @@ describe('structured data', () => {
         createProjectStructuredData(project),
       )
       cleanup()
+    }
+  })
+
+  it('does not infer versions, downloads, or operating-system support', () => {
+    for (const project of publicProjects) {
+      const data = createProjectStructuredData(project)
+
+      expect(data).not.toHaveProperty('softwareVersion')
+      expect(data).not.toHaveProperty('downloadUrl')
+      expect(data).not.toHaveProperty('operatingSystem')
     }
   })
 })

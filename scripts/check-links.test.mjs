@@ -10,6 +10,8 @@ import {
   validateStaticLinks,
 } from './check-links.mjs'
 
+import { projects } from '../src/content/projects.ts'
+
 describe('link audit', () => {
   it('extracts URL-valued configuration that is passed to link components', () => {
     const source = `
@@ -102,6 +104,27 @@ describe('link audit', () => {
       'https://example.com/unpublished/source',
       'https://example.com/unpublished/purpose',
     ])
+  })
+
+  it('collects all public project routes and omits unpublished npm destinations', () => {
+    const links = collectProjectLinks(projects).map(({ href }) => href)
+    const publicProjects = projects.filter(
+      ({ visibility }) => visibility === 'public',
+    )
+
+    expect(links.filter((href) => href.startsWith('/projects/'))).toEqual(
+      publicProjects.map(({ slug }) => `/projects/${slug}`),
+    )
+
+    for (const project of publicProjects) {
+      const npmUrl = project.npm
+        ? `https://www.npmjs.com/package/${project.npm.package}`
+        : undefined
+
+      if (npmUrl) {
+        expect(links.includes(npmUrl)).toBe(project.npm?.published === true)
+      }
+    }
   })
 
   it('validates internal routes and URL schemes without contacting the network', () => {

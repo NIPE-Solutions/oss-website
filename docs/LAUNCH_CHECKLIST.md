@@ -48,6 +48,20 @@ canonical, header, route, and 404 behavior.
       test it only if the owner chooses it.
 - [ ] Configure GitHub Discussions only if the project will use them; otherwise
       do not imply a Discussions support route.
+- [ ] For **React Anchored Layer**, publish and browser-check the npm package
+      before setting `npm.published` to `true`; complete its GitHub About
+      description, website, and topics.
+- [ ] For **React Pull to Refresh**, publish and browser-check the npm package
+      before setting `npm.published` to `true`; complete its GitHub About
+      description, website, and topics.
+- [ ] For **React Viewport**, publish and browser-check the npm package before
+      setting `npm.published` to `true`; complete its GitHub About description,
+      website, and topics.
+- [ ] Verify `react-viewport.nipesolutions.com` DNS, TLS, production content,
+      canonical metadata, and ownership before using it as the documentation
+      destination. Keep the commit-pinned README fallback until that check
+      passes, then update both `documentation` and `support.documentation` in
+      the registry.
 
 GitHub metadata, vulnerability reporting, and Discussions are manual settings:
 this repository does not update them automatically.

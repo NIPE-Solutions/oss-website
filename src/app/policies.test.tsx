@@ -6,6 +6,7 @@ import ImpressumPage from '@/app/impressum/page'
 import NotFound, { metadata as notFoundMetadata } from '@/app/not-found'
 import PrivacyPage from '@/app/privacy/page'
 import SecurityPage from '@/app/security/page'
+import { publicProjects } from '@/content/projects'
 
 afterEach(cleanup)
 
@@ -173,6 +174,18 @@ describe('project support routes', () => {
       'href',
       'https://github.com/NIPE-Solutions/react-swipe-actions/discussions',
     )
+
+    for (const project of publicProjects) {
+      for (const [kind, href] of Object.entries(project.support ?? {})) {
+        if (kind === 'security') continue
+
+        expect(
+          within(directory).getByRole('link', {
+            name: `${project.name} ${kind}`,
+          }),
+        ).toHaveAttribute('href', href)
+      }
+    }
   })
 
   it('uses only verified project-specific security destinations', () => {
@@ -201,6 +214,18 @@ describe('project support routes', () => {
       'href',
       'https://github.com/NIPE-Solutions/react-swipe-actions/security/advisories/new',
     )
+
+    for (const project of publicProjects) {
+      const link = screen.queryByRole('link', {
+        name: `${project.name} security`,
+      })
+
+      if (project.support?.security) {
+        expect(link).toHaveAttribute('href', project.support.security)
+      } else {
+        expect(link).not.toBeInTheDocument()
+      }
+    }
   })
 })
 

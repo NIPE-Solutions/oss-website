@@ -2,7 +2,7 @@ import { ProjectConstellation } from '@/components/project-constellation'
 import { siteConfig } from '@/lib/site'
 
 export function Hero() {
-  const [taglineLead, ...taglineRest] = siteConfig.description.split(' ')
+  const [taglineLead, ...taglineRest] = siteConfig.tagline.split(' ')
 
   return (
     <section className="hero" aria-labelledby="hero-heading">

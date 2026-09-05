@@ -24,7 +24,7 @@ export function createWebsiteStructuredData() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: siteConfig.title,
+    name: siteConfig.name,
     url: productionUrl('/'),
     description: siteConfig.description,
   } as const
