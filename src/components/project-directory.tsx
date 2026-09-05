@@ -26,18 +26,20 @@ export function ProjectDirectory() {
           </p>
         </header>
 
-        {populatedCategories.map((category) => (
-          <section
-            className="project-category"
-            key={category.id}
-            aria-labelledby={`${category.id}-heading`}
-          >
-            <h3 id={`${category.id}-heading`}>{category.label}</h3>
-            {category.projects.map((project) => (
-              <ProjectEntry key={project.slug} project={project} />
-            ))}
-          </section>
-        ))}
+        <div className="project-directory__categories">
+          {populatedCategories.map((category) => (
+            <section
+              className="project-category"
+              key={category.id}
+              aria-labelledby={`${category.id}-heading`}
+            >
+              <h3 id={`${category.id}-heading`}>{category.label}</h3>
+              {category.projects.map((project) => (
+                <ProjectEntry key={project.slug} project={project} />
+              ))}
+            </section>
+          ))}
+        </div>
       </div>
     </section>
   )

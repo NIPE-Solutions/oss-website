@@ -1,4 +1,10 @@
-import { cleanup, render, screen, within } from '@testing-library/react'
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { SiteShell } from '@/app/layout'
@@ -28,7 +34,56 @@ describe('site shell', () => {
     expect(screen.getByRole('contentinfo')).toBeInTheDocument()
   })
 
-  it('routes primary navigation to the directory, principles, and NIPE destinations', () => {
+  it('provides project discovery with a compact-layout directory fallback', () => {
+    render(
+      <SiteShell>
+        <h1>Directory</h1>
+      </SiteShell>,
+    )
+
+    const navigation = screen.getByRole('navigation', { name: 'Primary' })
+    const summary = within(navigation).getByText('Projects', {
+      selector: 'summary',
+    })
+    const disclosure = summary.closest('details')
+    expect(disclosure).not.toBeNull()
+    fireEvent.click(summary)
+
+    expect(
+      within(navigation).getByRole('link', { name: 'Projects' }),
+    ).toHaveAttribute('href', '/#projects')
+
+    for (const project of [
+      {
+        name: 'React Spring Bottom Sheet',
+        href: '/projects/react-spring-bottom-sheet',
+      },
+      {
+        name: 'React Swipe Actions',
+        href: '/projects/react-swipe-actions',
+      },
+      {
+        name: 'React Anchored Layer',
+        href: '/projects/react-anchored-layer',
+      },
+      {
+        name: 'React Pull to Refresh',
+        href: '/projects/react-pull-to-refresh',
+      },
+      { name: 'React Viewport', href: '/projects/react-viewport' },
+      { name: 'Readonly View', href: '/projects/readonly-view' },
+      {
+        name: 'Angular Flex-Layout Codemod',
+        href: '/projects/flex-layout-codemod',
+      },
+    ]) {
+      expect(
+        within(disclosure!).getByRole('link', { name: project.name }),
+      ).toHaveAttribute('href', project.href)
+    }
+  })
+
+  it('routes primary navigation to principles and NIPE destinations', () => {
     render(
       <SiteShell>
         <h1>Directory</h1>
@@ -37,9 +92,6 @@ describe('site shell', () => {
 
     const navigation = screen.getByRole('navigation', { name: 'Primary' })
 
-    expect(
-      within(navigation).getByRole('link', { name: 'Projects' }),
-    ).toHaveAttribute('href', '/#projects')
     expect(
       within(navigation).getByRole('link', { name: 'Principles' }),
     ).toHaveAttribute('href', '/#principles')
