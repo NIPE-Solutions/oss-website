@@ -59,7 +59,13 @@ export interface OpenSourceProject {
   }
   readonly accent: string
   readonly visual:
-    'bottom-sheet' | 'readonly-view' | 'swipe-actions' | 'codemod'
+    | 'bottom-sheet'
+    | 'readonly-view'
+    | 'swipe-actions'
+    | 'anchored-layer'
+    | 'pull-to-refresh'
+    | 'viewport'
+    | 'codemod'
   readonly featured: boolean
   readonly order: number
 }

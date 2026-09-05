@@ -68,9 +68,9 @@ export default function PrivacyPage() {
       <section aria-labelledby="outbound-heading">
         <h2 id="outbound-heading">Outbound links</h2>
         <p>
-          GitHub, npm, and NIPE Solutions are external destinations and are not
-          embedded in this site. Those providers receive request data only after
-          you follow a link, and then apply their own privacy terms.
+          GitHub and npm are external destinations and are not embedded in this
+          site. Those providers receive request data only after you follow a
+          link, and then apply their own privacy terms.
         </p>
       </section>
 

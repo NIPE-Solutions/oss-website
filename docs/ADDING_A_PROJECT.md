@@ -20,11 +20,28 @@ Each entry needs a unique `slug`, `name`, `category`, `description`,
 optional support URLs directly in `support` (`issues`, `discussions`,
 `security`, or `documentation`); no fallback URL is inferred.
 
+Use a dedicated `visual` motif and accent token for each public project. The
+same registry entry places that motif in the hero constellation, homepage
+directory, and project detail page. Open Graph images currently use the fixed
+NIPE Open Source treatment with project text metadata; they do not render the
+project motif or registry accent. Set `order` deliberately: it controls the
+constellation and directory narrative rather than indicating quality or
+adoption. Check accent text, links, focus rings, and motif edges in both themes
+before publishing the entry.
+
 Every entry has a purpose description and purpose source. Each item in
 `claims` is either `capability` or `limitation` and needs its own claim source
 with a label and HTTPS URL. An example, if present, also needs a source. Keep
 the wording factual and cite the exact release, documentation page, or other
-primary source that supports it.
+primary source that supports it. Prefer release-tagged evidence for released
+packages and commit-pinned evidence for public development or prerelease
+projects so later default-branch changes cannot silently alter the cited fact.
+
+Use the dedicated project site as `documentation` when it resolves and is the
+project's canonical documentation destination. If that hostname is not ready,
+use a commit-pinned repository document as a temporary fallback and record the
+domain follow-up in `docs/LAUNCH_CHECKLIST.md`. Replace the fallback only after
+the intended hostname, TLS certificate, and content have been checked.
 
 ## Lifecycle examples
 
@@ -159,7 +176,9 @@ const archivedProject = {
    accurate rather than deleting historic pages without an owner decision.
 4. Run focused tests, `npm run validate:projects`, and `npm run check`. Run
    `npm run test:e2e` for visitor-facing changes.
-5. Request maintainer review of the evidence and wording before merge.
+5. Verify the motif's constellation placement and compact mobile treatment at
+   the supported breakpoints, including keyboard focus and reduced motion.
+6. Request maintainer review of the evidence and wording before merge.
 
 Individual project repositories and documentation sites remain the technical
 sources of truth. The directory summarizes verified facts and links outward;

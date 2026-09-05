@@ -90,9 +90,9 @@ export default function ImpressumPage() {
         <h2 id="external-heading">Projects and external links</h2>
         <p>
           Project source code is provided under the license named on each
-          project page. External links, including links to GitHub, npm, project
-          documentation, and NIPE Solutions, lead to services operated under
-          their respective providers’ terms and privacy information.
+          project page. External links, including links to GitHub, npm, and
+          project documentation, lead to services operated under their
+          respective providers’ terms and privacy information.
         </p>
       </section>
     </LegalPage>

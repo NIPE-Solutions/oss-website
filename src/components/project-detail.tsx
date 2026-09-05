@@ -1,22 +1,15 @@
 import type { CSSProperties } from 'react'
+import Link from 'next/link'
 
 import { CodeExample } from '@/components/code-example'
 import { ExternalLink } from '@/components/external-link'
 import { InstallCommand } from '@/components/install-command'
-import type { OpenSourceProject, ProjectStatus } from '@/content/project-types'
+import { ProjectVisual } from '@/components/project-visual'
+import { projectStatusLabels } from '@/content/project-status'
+import type { OpenSourceProject } from '@/content/project-types'
 
 interface ProjectDetailProps {
   readonly project: OpenSourceProject
-}
-
-const statusLabels: Record<ProjectStatus, string> = {
-  stable: 'Stable',
-  beta: 'Beta',
-  alpha: 'Alpha',
-  preview: 'Preview',
-  development: 'Development',
-  maintenance: 'Maintenance',
-  archived: 'Archived',
 }
 
 export function ProjectDetail({ project }: ProjectDetailProps) {
@@ -31,15 +24,18 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
   return (
     <article className="project-detail" style={style}>
       <header className="project-detail__header">
-        <div className="site-frame reading-width">
-          <p className="project-detail__eyebrow">Project detail</p>
-          <div className="project-detail__title-row">
-            <h1>{project.name}</h1>
-            <span className="project-status">
-              {statusLabels[project.status]}
-            </span>
+        <div className="site-frame project-detail__header-layout">
+          <div className="project-detail__intro">
+            <p className="project-detail__eyebrow">Project detail</p>
+            <div className="project-detail__title-row">
+              <h1>{project.name}</h1>
+              <span className="project-status">
+                {projectStatusLabels[project.status]}
+              </span>
+            </div>
+            <p className="project-detail__summary">{project.description}</p>
           </div>
-          <p className="project-detail__summary">{project.description}</p>
+          <ProjectVisual project={project} />
         </div>
       </header>
 
@@ -130,6 +126,13 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
               npm package
             </ExternalLink>
           ) : null}
+        </nav>
+
+        <nav
+          className="project-detail__ecosystem"
+          aria-label="Ecosystem discovery"
+        >
+          <Link href="/#projects">Explore other projects</Link>
         </nav>
       </div>
     </article>

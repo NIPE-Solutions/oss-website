@@ -6,7 +6,7 @@ export const projectCategories = [
   { id: 'tooling', label: 'Tooling' },
 ] as const
 
-export const projects: readonly OpenSourceProject[] = [
+const projectRegistry = [
   {
     slug: 'react-spring-bottom-sheet',
     name: 'React Spring Bottom Sheet',
@@ -187,7 +187,7 @@ console.log(view.user.name) // Bob`,
     accent: 'var(--project-readonly-view)',
     visual: 'readonly-view',
     featured: true,
-    order: 2,
+    order: 6,
   },
   {
     slug: 'flex-layout-codemod',
@@ -273,7 +273,7 @@ console.log(view.user.name) // Bob`,
     accent: 'var(--project-codemod)',
     visual: 'codemod',
     featured: true,
-    order: 3,
+    order: 7,
   },
   {
     slug: 'react-swipe-actions',
@@ -303,7 +303,7 @@ console.log(view.user.name) // Bob`,
         'It supplies the row interaction while applications keep ownership of list data, mutations, undo, confirmation, and removal.',
       source: {
         label: 'Audited README',
-        href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md',
+        href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/1c798c20878165cb2a3702ea18f4967834551b63/README.md',
       },
     },
     claims: [
@@ -314,7 +314,7 @@ console.log(view.user.name) // Bob`,
           'Reveals measured leading and trailing actions through composable Root, Content, Leading, Trailing, and Action components.',
         source: {
           label: 'Audited row API',
-          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md#start-with-the-row-api',
+          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/1c798c20878165cb2a3702ea18f4967834551b63/README.md#start-with-the-row-api',
         },
       },
       {
@@ -324,7 +324,7 @@ console.log(view.user.name) // Bob`,
           'Documents physical-arrow keyboard controls, Escape closing, inactive-action tab order, accessible row labels, and logical leading and trailing state in LTR and RTL.',
         source: {
           label: 'Interaction guide',
-          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/docs/guides/interaction-accessibility.md',
+          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/1c798c20878165cb2a3702ea18f4967834551b63/docs/guides/interaction-accessibility.md',
         },
       },
       {
@@ -334,7 +334,7 @@ console.log(view.user.name) // Bob`,
           'Supports controlled or uncontrolled open state, optional full-swipe activation, and groups that close the previously open sibling.',
         source: {
           label: 'State documentation',
-          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md#state-accessibility-and-platforms',
+          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/1c798c20878165cb2a3702ea18f4967834551b63/README.md#state-accessibility-and-platforms',
         },
       },
       {
@@ -344,7 +344,7 @@ console.log(view.user.name) // Bob`,
           'The 0.1 line is alpha and intentionally excludes generic gesture hooks, nested swipe roots, portals, React Native, asChild, and application list lifecycle features.',
         source: {
           label: 'Documented alpha boundaries',
-          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md#state-accessibility-and-platforms',
+          href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/1c798c20878165cb2a3702ea18f4967834551b63/README.md#state-accessibility-and-platforms',
         },
       },
     ],
@@ -370,15 +370,326 @@ import '@nipe-solutions/react-swipe-actions/core.css'
 </Root>`,
       source: {
         label: 'Audited row example',
-        href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/6cf9c5ccd7608158455ba86963fb4d5610690e53/README.md#start-with-the-row-api',
+        href: 'https://github.com/NIPE-Solutions/react-swipe-actions/blob/1c798c20878165cb2a3702ea18f4967834551b63/README.md#start-with-the-row-api',
       },
     },
     accent: 'var(--project-swipe-actions)',
     visual: 'swipe-actions',
     featured: true,
+    order: 2,
+  },
+  {
+    slug: 'react-anchored-layer',
+    name: 'React Anchored Layer',
+    category: 'ui-interaction',
+    description:
+      'Anchored floating layers for React that keep arbitrary portal content aligned through scroll, resize, and layout changes.',
+    visibility: 'public',
+    status: 'alpha',
+    repository: 'https://github.com/NIPE-Solutions/react-anchored-layer',
+    documentation: 'https://react-anchored-layer.nipesolutions.com',
+    npm: {
+      package: '@nipe-solutions/react-anchored-layer',
+      published: false,
+    },
+    support: {
+      documentation: 'https://react-anchored-layer.nipesolutions.com',
+      issues: 'https://github.com/NIPE-Solutions/react-anchored-layer/issues',
+      security:
+        'https://github.com/NIPE-Solutions/react-anchored-layer/security/policy',
+    },
+    license: 'MIT',
+    purpose: {
+      description:
+        'It exists to keep arbitrary portal content aligned with an anchor while the application retains ownership of interaction and accessibility semantics.',
+      source: {
+        label: 'Audited responsibility boundary',
+        href: 'https://github.com/NIPE-Solutions/react-anchored-layer/blob/93c83bd2cd569bfdc2c5bd128f1f3add39ae7696/README.md#responsibility',
+      },
+    },
+    claims: [
+      {
+        kind: 'capability',
+        title: 'Portal and anchor tracking',
+        description:
+          'Renders arbitrary content through a portal and keeps it aligned with its anchor through scrolling, resizing, and layout changes.',
+        source: {
+          label: 'Audited quick start',
+          href: 'https://github.com/NIPE-Solutions/react-anchored-layer/blob/93c83bd2cd569bfdc2c5bd128f1f3add39ae7696/README.md#quick-start',
+        },
+      },
+      {
+        kind: 'capability',
+        title: 'Collision and measurement ownership',
+        description:
+          'Owns positioning, portal placement, measurement, collision handling, and first-position visibility.',
+        source: {
+          label: 'Audited responsibility boundary',
+          href: 'https://github.com/NIPE-Solutions/react-anchored-layer/blob/93c83bd2cd569bfdc2c5bd128f1f3add39ae7696/README.md#responsibility',
+        },
+      },
+      {
+        kind: 'capability',
+        title: 'SSR-safe import',
+        description:
+          'Module import and server rendering are safe without DOM globals; portal content is established after mounting on the client.',
+        source: {
+          label: 'Audited responsibility boundary',
+          href: 'https://github.com/NIPE-Solutions/react-anchored-layer/blob/93c83bd2cd569bfdc2c5bd128f1f3add39ae7696/README.md#responsibility',
+        },
+      },
+      {
+        kind: 'limitation',
+        title: 'Application-owned interaction semantics',
+        description:
+          'Applications own dismissal, focus, keyboard selection, request state, and ARIA semantics, including dropdown, combobox, menu, and tooltip behavior.',
+        source: {
+          label: 'Audited responsibility boundary',
+          href: 'https://github.com/NIPE-Solutions/react-anchored-layer/blob/93c83bd2cd569bfdc2c5bd128f1f3add39ae7696/README.md#responsibility',
+        },
+      },
+    ],
+    example: {
+      language: 'tsx',
+      code: `import { AnchoredLayer } from '@nipe-solutions/react-anchored-layer'
+import '@nipe-solutions/react-anchored-layer/core.css'
+
+;<AnchoredLayer.Root open={open} onOpenChange={setOpen}>
+  <AnchoredLayer.Anchor asChild>
+    <input aria-controls="address-results" aria-expanded={open} />
+  </AnchoredLayer.Anchor>
+  <AnchoredLayer.Content
+    id="address-results"
+    placement="bottom-start"
+    offset={6}
+    matchAnchorWidth
+  >
+    {results}
+  </AnchoredLayer.Content>
+</AnchoredLayer.Root>`,
+      source: {
+        label: 'Audited quick start',
+        href: 'https://github.com/NIPE-Solutions/react-anchored-layer/blob/93c83bd2cd569bfdc2c5bd128f1f3add39ae7696/README.md#quick-start',
+      },
+    },
+    accent: 'var(--project-anchored-layer)',
+    visual: 'anchored-layer',
+    featured: true,
+    order: 3,
+  },
+  {
+    slug: 'react-pull-to-refresh',
+    name: 'React Pull to Refresh',
+    category: 'ui-interaction',
+    description:
+      'Pull-to-refresh for React with scroll arbitration, resistance, threshold hysteresis, and an application-owned refresh lifecycle.',
+    visibility: 'public',
+    status: 'alpha',
+    repository: 'https://github.com/NIPE-Solutions/react-pull-to-refresh',
+    documentation: 'https://react-pull-to-refresh.nipesolutions.com',
+    npm: {
+      package: '@nipe-solutions/react-pull-to-refresh',
+      published: false,
+    },
+    support: {
+      documentation: 'https://react-pull-to-refresh.nipesolutions.com',
+      issues: 'https://github.com/NIPE-Solutions/react-pull-to-refresh/issues',
+      security:
+        'https://github.com/NIPE-Solutions/react-pull-to-refresh/security/policy',
+    },
+    license: 'MIT',
+    purpose: {
+      description:
+        'It exists to coordinate downward intent, the active scroll boundary, resistance, threshold hysteresis, exactly-once refresh commitment, and settling while applications own data and errors.',
+      source: {
+        label: 'Audited purpose statement',
+        href: 'https://github.com/NIPE-Solutions/react-pull-to-refresh/blob/3e7b232a23b59e7e44ca0a6b8a13d3d02f839b18/README.md#why-this-exists',
+      },
+    },
+    claims: [
+      {
+        kind: 'capability',
+        title: 'Scroll-boundary and direction arbitration',
+        description:
+          'Resolves the active scroll surface, tolerates fractional WebKit offsets, and rejects horizontal or upward movement before taking pointer capture.',
+        source: {
+          label: 'Audited scroll ownership',
+          href: 'https://github.com/NIPE-Solutions/react-pull-to-refresh/blob/3e7b232a23b59e7e44ca0a6b8a13d3d02f839b18/README.md#scroll-ownership',
+        },
+      },
+      {
+        kind: 'capability',
+        title: 'Resistance and threshold hysteresis',
+        description:
+          'Coordinates resisted visual distance and threshold hysteresis without taking ownership of the feed or cache.',
+        source: {
+          label: 'Audited purpose statement',
+          href: 'https://github.com/NIPE-Solutions/react-pull-to-refresh/blob/3e7b232a23b59e7e44ca0a6b8a13d3d02f839b18/README.md#why-this-exists',
+        },
+      },
+      {
+        kind: 'capability',
+        title: 'Exactly-once async commitment',
+        description:
+          'Commits an armed gesture to the application-owned refresh function exactly once and coordinates the asynchronous refreshing and settling states.',
+        source: {
+          label: 'Audited purpose statement',
+          href: 'https://github.com/NIPE-Solutions/react-pull-to-refresh/blob/3e7b232a23b59e7e44ca0a6b8a13d3d02f839b18/README.md#why-this-exists',
+        },
+      },
+      {
+        kind: 'limitation',
+        title: 'Native refresh and device QA boundaries',
+        description:
+          'Browser-native page refresh can still win without application containment, and physical-device validation remains pending beyond automated browser checks.',
+        source: {
+          label: 'Audited browser notes',
+          href: 'https://github.com/NIPE-Solutions/react-pull-to-refresh/blob/3e7b232a23b59e7e44ca0a6b8a13d3d02f839b18/README.md#browser-notes',
+        },
+      },
+    ],
+    example: {
+      language: 'tsx',
+      code: `import { PullToRefresh } from '@nipe-solutions/react-pull-to-refresh'
+import '@nipe-solutions/react-pull-to-refresh/core.css'
+
+export function Inbox() {
+  async function refresh() {
+    await refetch()
+  }
+
+  return (
+    <>
+      <button type="button" onClick={() => void refresh()}>
+        Refresh inbox
+      </button>
+      <PullToRefresh.Root onRefresh={refresh}>
+        <PullToRefresh.Indicator>
+          <Spinner />
+        </PullToRefresh.Indicator>
+        <PullToRefresh.Content>
+          <Messages />
+        </PullToRefresh.Content>
+      </PullToRefresh.Root>
+    </>
+  )
+}`,
+      source: {
+        label: 'Audited quick start',
+        href: 'https://github.com/NIPE-Solutions/react-pull-to-refresh/blob/3e7b232a23b59e7e44ca0a6b8a13d3d02f839b18/README.md#react-pull-to-refresh',
+      },
+    },
+    accent: 'var(--project-pull-to-refresh)',
+    visual: 'pull-to-refresh',
+    featured: true,
     order: 4,
   },
-] as const
+  {
+    slug: 'react-viewport',
+    name: 'React Viewport',
+    category: 'ui-interaction',
+    description:
+      'Reactive React geometry for layout and visual viewports, keyboard occlusion, and safe areas.',
+    visibility: 'public',
+    status: 'alpha',
+    repository: 'https://github.com/NIPE-Solutions/react-viewport',
+    documentation:
+      'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md',
+    npm: {
+      package: '@nipe-solutions/react-viewport',
+      published: false,
+    },
+    support: {
+      documentation:
+        'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md',
+      issues: 'https://github.com/NIPE-Solutions/react-viewport/issues',
+      security:
+        'https://github.com/NIPE-Solutions/react-viewport/security/policy',
+    },
+    license: 'MIT',
+    purpose: {
+      description:
+        'It exists for React behavior that needs measured viewport geometry or an explicit distinction between layout and visual viewports when CSS alone cannot express it.',
+      source: {
+        label: 'Audited project overview',
+        href: 'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md#nipe-solutionsreact-viewport',
+      },
+    },
+    claims: [
+      {
+        kind: 'capability',
+        title: 'Separate layout and visual geometry',
+        description:
+          'Keeps layout and visual viewport coordinate systems separate, with explicit fallback geometry when VisualViewport is unavailable.',
+        source: {
+          label: 'Audited viewport model',
+          href: 'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md#layout-viewport-versus-visual-viewport',
+        },
+      },
+      {
+        kind: 'capability',
+        title: 'Conservative keyboard and safe-area state',
+        description:
+          'Reports safe-area geometry and infers keyboard occlusion only when focus, zoom, and occlusion thresholds provide conservative evidence.',
+        source: {
+          label: 'Audited keyboard model',
+          href: 'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md#keyboard-state-is-conservative',
+        },
+      },
+      {
+        kind: 'capability',
+        title: 'SSR and CSS-variable support',
+        description:
+          'Provides an SSR-safe stable server snapshot and an optional hook that installs measured viewport, keyboard, and safe-area CSS variables.',
+        source: {
+          label: 'Audited SSR behavior',
+          href: 'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md#ssr-and-hydration',
+        },
+      },
+      {
+        kind: 'limitation',
+        title: 'Heuristic and physical-device boundaries',
+        description:
+          'Keyboard inference can miss floating or split keyboards, the alpha makes no universal browser claim, and physical-device QA remains pending.',
+        source: {
+          label: 'Audited browser limitations',
+          href: 'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md#browser-terminology-and-limitations',
+        },
+      },
+    ],
+    example: {
+      language: 'tsx',
+      code: `import { useViewport } from '@nipe-solutions/react-viewport'
+
+export function ViewportReadout() {
+  const viewport = useViewport()
+
+  if (!viewport.ready || viewport.visual === null) {
+    return <p>Measuring viewport…</p>
+  }
+
+  return (
+    <p>
+      Visible size: {viewport.visual.width} × {viewport.visual.height}; keyboard:{' '}
+      {viewport.keyboard.open ? \`\${viewport.keyboard.height}px\` : 'closed'}
+    </p>
+  )
+}`,
+      source: {
+        label: 'Audited quick start',
+        href: 'https://github.com/NIPE-Solutions/react-viewport/blob/08a4b3a2353d934835eb1054dd6ddadef2370e65/README.md#quick-start',
+      },
+    },
+    accent: 'var(--project-viewport)',
+    visual: 'viewport',
+    featured: true,
+    order: 5,
+  },
+] satisfies OpenSourceProject[]
+
+export const projects: readonly OpenSourceProject[] = projectRegistry.sort(
+  (first, second) => first.order - second.order,
+)
 
 export const publicProjects = projects.filter(
   ({ visibility }) => visibility === 'public',

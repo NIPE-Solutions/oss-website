@@ -25,11 +25,18 @@ export function createPageMetadata({
   description,
   path,
 }: PageMetadataInput): Metadata {
+  const url = productionUrl(path)
+
   return {
     title,
     description,
     alternates: {
-      canonical: productionUrl(path),
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
     },
   }
 }

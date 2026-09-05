@@ -120,7 +120,7 @@ describe('repository documentation', () => {
     }
 
     for (const manualCheck of [
-      'nipesolutions.com TLS issue',
+      'Repair and independently verify `nipesolutions.com` before restoring',
       'npm browser verification',
       'visual social preview',
       'private vulnerability reporting',

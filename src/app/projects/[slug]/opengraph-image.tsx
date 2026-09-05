@@ -41,6 +41,9 @@ export default async function ProjectOpenGraphImage({
 
   const status =
     project.status[0].toUpperCase() + project.status.slice(1).toLowerCase()
+  const footerLabel = project.npm?.published
+    ? project.npm.package
+    : `opensource.nipesolutions.com/projects/${project.slug}`
 
   return new ImageResponse(
     <div
@@ -133,7 +136,7 @@ export default async function ProjectOpenGraphImage({
             background: '#b52d2d',
           }}
         />
-        {project.npm?.package}
+        {footerLabel}
       </div>
     </div>,
     size,

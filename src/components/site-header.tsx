@@ -1,4 +1,5 @@
 import { ExternalLink } from '@/components/external-link'
+import { ProjectMenu } from '@/components/project-menu'
 import { siteConfig } from '@/lib/site'
 
 export function SiteHeader() {
@@ -18,12 +19,14 @@ export function SiteHeader() {
           <span className="site-identity__scope">Open Source</span>
         </a>
         <nav className="primary-navigation" aria-label="Primary">
-          <a href="/#projects">Projects</a>
+          <ProjectMenu />
+          <a className="project-menu-fallback" href="/#projects">
+            Projects
+          </a>
           <a href="/#principles">Principles</a>
           <ExternalLink href={siteConfig.githubOrganization}>
             GitHub
           </ExternalLink>
-          <ExternalLink href={siteConfig.nipeUrl}>NIPE Solutions</ExternalLink>
         </nav>
       </div>
     </header>

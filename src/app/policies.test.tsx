@@ -6,6 +6,7 @@ import ImpressumPage from '@/app/impressum/page'
 import NotFound, { metadata as notFoundMetadata } from '@/app/not-found'
 import PrivacyPage from '@/app/privacy/page'
 import SecurityPage from '@/app/security/page'
+import { publicProjects } from '@/content/projects'
 
 afterEach(cleanup)
 
@@ -54,6 +55,16 @@ describe('legal routes', () => {
     expect(screen.getByText(/Wirtschaftskammer Wien/)).toBeInTheDocument()
   })
 
+  it('describes only the outbound destinations currently linked by the site', () => {
+    render(<ImpressumPage />)
+
+    const external = screen.getByRole('region', {
+      name: 'Projects and external links',
+    })
+    expect(external).toHaveTextContent(/GitHub, npm, and project documentation/)
+    expect(external).not.toHaveTextContent(/and NIPE Solutions/)
+  })
+
   it('describes only this static site’s actual processing', () => {
     const { container } = render(<PrivacyPage />)
 
@@ -93,7 +104,8 @@ describe('legal routes', () => {
     const outbound = screen.getByRole('region', {
       name: 'Outbound links',
     })
-    expect(outbound).toHaveTextContent(/GitHub, npm, and NIPE Solutions/)
+    expect(outbound).toHaveTextContent(/GitHub and npm/)
+    expect(outbound).not.toHaveTextContent(/NIPE Solutions/)
     expect(outbound).toHaveTextContent(/only after you follow a link/i)
     expect(outbound).toHaveTextContent(/not embedded/i)
   })
@@ -173,6 +185,18 @@ describe('project support routes', () => {
       'href',
       'https://github.com/NIPE-Solutions/react-swipe-actions/discussions',
     )
+
+    for (const project of publicProjects) {
+      for (const [kind, href] of Object.entries(project.support ?? {})) {
+        if (kind === 'security') continue
+
+        expect(
+          within(directory).getByRole('link', {
+            name: `${project.name} ${kind}`,
+          }),
+        ).toHaveAttribute('href', href)
+      }
+    }
   })
 
   it('uses only verified project-specific security destinations', () => {
@@ -201,6 +225,18 @@ describe('project support routes', () => {
       'href',
       'https://github.com/NIPE-Solutions/react-swipe-actions/security/advisories/new',
     )
+
+    for (const project of publicProjects) {
+      const link = screen.queryByRole('link', {
+        name: `${project.name} security`,
+      })
+
+      if (project.support?.security) {
+        expect(link).toHaveAttribute('href', project.support.security)
+      } else {
+        expect(link).not.toBeInTheDocument()
+      }
+    }
   })
 })
 
