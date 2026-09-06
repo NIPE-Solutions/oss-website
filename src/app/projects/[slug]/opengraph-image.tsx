@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { ProjectMotif } from '@/components/project-motif'
 
 import { publicProjects } from '@/content/projects'
 
@@ -72,6 +73,7 @@ export default async function ProjectOpenGraphImage({
         }}
       >
         <span style={{ display: 'flex' }}>NIPE Open Source</span>
+        <ProjectMotif visual={project.visual} decorative color="#596d91" />
         <span
           style={{
             display: 'flex',

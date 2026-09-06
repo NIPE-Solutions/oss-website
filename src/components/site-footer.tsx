@@ -1,39 +1,24 @@
 import Link from 'next/link'
-
-import { ExternalLink } from '@/components/external-link'
-import { publicProjects } from '@/content/projects'
+import { ExternalLink } from './external-link'
 import { siteConfig } from '@/lib/site'
-
 export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="site-frame site-footer__inner">
-        <p>NIPE Open Source is maintained by NIPE Solutions e.U. in Vienna.</p>
+        <div>
+          <strong>NIPE Open Source</strong>
+          <p>Maintained by NIPE Solutions e.U. · Vienna</p>
+          <p>© {new Date().getFullYear()} NIPE Solutions e.U.</p>
+        </div>
         <nav className="footer-navigation" aria-label="Footer">
-          <div>
-            <h2>Projects</h2>
-            {publicProjects.map((project) => (
-              <Link href={`/projects/${project.slug}`} key={project.slug}>
-                {project.name}
-              </Link>
-            ))}
-          </div>
-          <div>
-            <h2>Resources</h2>
-            <Link href="/contributing">Contributing</Link>
-            <Link href="/security">Security</Link>
-          </div>
-          <div>
-            <h2>NIPE</h2>
-            <ExternalLink href={siteConfig.githubOrganization}>
-              GitHub
-            </ExternalLink>
-          </div>
-          <div>
-            <h2>Legal</h2>
-            <Link href="/impressum">Impressum</Link>
-            <Link href="/privacy">Privacy</Link>
-          </div>
+          <Link href="/#projects">Projects</Link>
+          <ExternalLink href={siteConfig.githubOrganization}>
+            GitHub
+          </ExternalLink>
+          <Link href="/contributing">Contributing</Link>
+          <Link href="/security">Security</Link>
+          <Link href="/impressum">Imprint</Link>
+          <Link href="/privacy">Privacy</Link>
         </nav>
       </div>
     </footer>

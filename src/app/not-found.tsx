@@ -17,7 +17,7 @@ export default function NotFound() {
         project-support destination.
       </p>
       <nav aria-label="Page recovery">
-        <a href="/">Home</a>
+        <a href="/">Back to project index</a>
         <a href="/#projects">Projects</a>
         <a href="/contributing">Contributing</a>
         <a href="/security">Security</a>

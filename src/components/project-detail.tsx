@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 
+import { projectCategories, projectNumber } from '@/content/projects'
 import { CodeExample } from '@/components/code-example'
 import { ExternalLink } from '@/components/external-link'
 import { InstallCommand } from '@/components/install-command'
@@ -26,7 +27,10 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
       <header className="project-detail__header">
         <div className="site-frame project-detail__header-layout">
           <div className="project-detail__intro">
-            <p className="project-detail__eyebrow">Project detail</p>
+            <p className="project-detail__eyebrow">
+              Project / {projectNumber(project.slug)} ·{' '}
+              {projectCategories.find((c) => c.id === project.category)?.label}
+            </p>
             <div className="project-detail__title-row">
               <h1>{project.name}</h1>
               <span className="project-status">
@@ -40,13 +44,8 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
       </header>
 
       <div className="site-frame reading-width project-detail__content">
-        <section aria-labelledby="overview-heading">
-          <h2 id="overview-heading">Overview</h2>
-          <p>{project.description}</p>
-        </section>
-
         <section aria-labelledby="purpose-heading">
-          <h2 id="purpose-heading">Why it exists</h2>
+          <h2 id="purpose-heading">Purpose</h2>
           <p>{project.purpose.description}</p>
           <ExternalLink
             href={project.purpose.source.href}
@@ -57,7 +56,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
         </section>
 
         <section aria-labelledby="capabilities-heading">
-          <h2 id="capabilities-heading">Capabilities</h2>
+          <h2 id="capabilities-heading">Scope & ownership</h2>
           <ul className="project-detail__claims">
             {capabilityClaims.map((claim) => (
               <li key={claim.title}>
@@ -76,7 +75,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
 
         {limitationClaims.length > 0 ? (
           <section aria-labelledby="limitations-heading">
-            <h2 id="limitations-heading">Limitations</h2>
+            <h2 id="limitations-heading">Boundaries & limitations</h2>
             {limitationClaims.map((limitation) => (
               <div
                 className="project-detail__limitation"
@@ -106,9 +105,17 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
         ) : null}
 
         {project.npm?.published ? (
-          <InstallCommand packageName={project.npm.package} />
+          <InstallCommand
+            packageName={`${project.npm.package}@${project.npm.version}`}
+          />
         ) : null}
 
+        <p className="package-meta">
+          {project.license} license
+          {project.npm?.published
+            ? ` · ${project.npm.package} · ${project.npm.version}`
+            : ' · Not published to npm yet.'}
+        </p>
         <nav
           className="project-detail__actions"
           aria-label={`${project.name} actions`}
@@ -119,6 +126,27 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
             </ExternalLink>
           ) : null}
           <ExternalLink href={project.repository}>Source</ExternalLink>
+          {project.support?.issues && (
+            <ExternalLink href={project.support.issues}>Issues</ExternalLink>
+          )}
+          {project.support?.security && (
+            <ExternalLink href={project.support.security}>
+              Security
+            </ExternalLink>
+          )}
+          {project.changelog && (
+            <ExternalLink href={project.changelog}>Changelog</ExternalLink>
+          )}
+          {project.resources?.map((link) => (
+            <ExternalLink key={link.href} href={link.href}>
+              {link.label}
+            </ExternalLink>
+          ))}
+          {Object.values(project.funding ?? {}).map((url) => (
+            <ExternalLink key={url} href={url}>
+              Support maintenance
+            </ExternalLink>
+          ))}
           {project.npm?.published ? (
             <ExternalLink
               href={`https://www.npmjs.com/package/${project.npm.package}`}

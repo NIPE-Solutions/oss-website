@@ -1,15 +1,9 @@
-export type ProjectCategory = 'ui-interaction' | 'runtime' | 'tooling'
+export type ProjectCategory =
+  'ui-interaction' | 'browser-primitives' | 'runtime' | 'tooling'
 
 export type ProjectVisibility = 'public' | 'hidden'
 
-export type ProjectStatus =
-  | 'stable'
-  | 'beta'
-  | 'alpha'
-  | 'preview'
-  | 'development'
-  | 'maintenance'
-  | 'archived'
+export type ProjectStatus = 'stable' | 'beta' | 'alpha' | 'experimental'
 
 export interface ProjectSource {
   readonly label: string
@@ -26,6 +20,7 @@ export interface ProjectClaim {
 export interface ProjectNpm {
   readonly package: string
   readonly published: boolean
+  readonly version?: string
 }
 
 export interface ProjectSupport {
@@ -66,6 +61,15 @@ export interface OpenSourceProject {
     | 'pull-to-refresh'
     | 'viewport'
     | 'codemod'
+    | 'drag-dismiss'
+    | 'caret-geometry'
+    | 'technical'
+  readonly changelog?: string
+  readonly resources?: readonly ProjectSource[]
+  readonly funding?: {
+    readonly githubSponsors?: string
+    readonly openCollective?: string
+  }
   readonly featured: boolean
   readonly order: number
 }

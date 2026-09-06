@@ -1,38 +1,50 @@
 export function Principles() {
   return (
     <section
-      className="principles"
+      className="principles site-frame"
       id="principles"
       aria-labelledby="principles-heading"
     >
-      <div className="site-frame principles__inner">
-        <header className="section-introduction">
-          <h2 id="principles-heading">Engineering principles</h2>
+      <div className="independence">
+        <h2 id="principles-heading">
+          Independent by default.
+          <br />
+          Designed to compose.
+        </h2>
+        <div>
           <p>
-            These are working constraints reflected in the projects above, not
-            claims that every library solves every case.
+            No shared runtime. No required NIPE stack. Each project owns its
+            API, documentation and release cycle.
           </p>
-        </header>
+          <p>
+            Caret Geometry can provide a virtual caret reference to a compatible
+            positioner. The positioner owns placement. Composition starts with
+            matching boundaries, not installing the whole catalogue.
+          </p>
+        </div>
+      </div>
+      <div className="build-principles">
+        <h2>How we build</h2>
         <div className="principles__list">
           <article>
-            <h3>Evidence before claims</h3>
+            <h3>Focused scope</h3>
             <p>
-              Capabilities and limits in this directory follow released
-              documentation, package metadata, and current source.
+              Each project solves one problem and stops before it becomes a
+              framework. Application state stays with the application.
             </p>
           </article>
           <article>
-            <h3>Accessibility is behavior</h3>
+            <h3>Browser evidence</h3>
             <p>
-              UI components document focus, keyboard, motion, and background
-              behavior alongside their visual states.
+              Interaction and geometry projects document browser behavior,
+              automated tests and the limits of physical-device verification.
             </p>
           </article>
           <article>
-            <h3>Focused by design</h3>
+            <h3>Reviewable software</h3>
             <p>
-              Each project solves a bounded problem rather than expanding into a
-              framework.
+              Strict TypeScript APIs, explicit ownership and inspectable output.
+              The codemod leaves uncertain cases unchanged and reports why.
             </p>
           </article>
         </div>

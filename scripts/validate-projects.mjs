@@ -1,20 +1,14 @@
-import { readFileSync } from 'node:fs'
+import { loadRegistry } from './load-registry.mjs'
 import { fileURLToPath } from 'node:url'
-import vm from 'node:vm'
 
-import ts from 'typescript'
-
-const knownCategories = new Set(['ui-interaction', 'runtime', 'tooling'])
-const knownVisibilities = new Set(['public', 'hidden'])
-const knownStatuses = new Set([
-  'stable',
-  'beta',
-  'alpha',
-  'preview',
-  'development',
-  'maintenance',
-  'archived',
+const knownCategories = new Set([
+  'ui-interaction',
+  'browser-primitives',
+  'runtime',
+  'tooling',
 ])
+const knownVisibilities = new Set(['public', 'hidden'])
+const knownStatuses = new Set(['stable', 'beta', 'alpha', 'experimental'])
 const knownClaimKinds = new Set(['capability', 'limitation'])
 const knownVisuals = new Set([
   'bottom-sheet',
@@ -24,6 +18,9 @@ const knownVisuals = new Set([
   'pull-to-refresh',
   'viewport',
   'codemod',
+  'drag-dismiss',
+  'caret-geometry',
+  'technical',
 ])
 const supportDestinations = [
   'issues',
@@ -54,6 +51,7 @@ function validateSource(errors, slug, source, context) {
 export function validateProjects(entries) {
   const errors = []
   const slugs = new Set()
+  const packages = new Set()
   const orders = new Set()
 
   for (const entry of entries) {
@@ -98,7 +96,38 @@ export function validateProjects(entries) {
       errors.push(`Project "${slug}" is missing a license.`)
     }
 
+    if (entry.visibility === 'public') {
+      if (!isHttpsUrl(entry.support?.issues))
+        errors.push(`Project "${slug}" requires public issues.`)
+      if (!entry.npm)
+        errors.push(
+          `Project "${slug}" requires explicit npm publication state.`,
+        )
+      if (
+        entry.documentation &&
+        isHttpsUrl(entry.documentation) &&
+        !new URL(entry.documentation).hostname.endsWith('.nipesolutions.com')
+      )
+        errors.push(
+          `Project "${slug}" requires canonical project documentation.`,
+        )
+    }
+    for (const url of [
+      entry.changelog,
+      ...(entry.resources ?? []).map((link) => link.href),
+      ...Object.values(entry.funding ?? {}),
+    ]) {
+      if (url !== undefined && !isHttpsUrl(url))
+        errors.push(`Project "${slug}" has an invalid resource URL.`)
+    }
     if (entry.npm) {
+      if (packages.has(entry.npm.package))
+        errors.push(`Duplicate package "${entry.npm.package}".`)
+      packages.add(entry.npm.package)
+      if (entry.npm.published && !entry.npm.version)
+        errors.push(`Project "${slug}" requires a verified published version.`)
+      if (!entry.npm.published && entry.npm.version)
+        errors.push(`Project "${slug}" cannot expose an unpublished version.`)
       if (!nipePackageName.test(entry.npm.package)) {
         errors.push(
           `Project "${slug}" has an invalid npm package "${entry.npm.package}"; expected a scoped @nipe-solutions package name.`,
@@ -159,26 +188,6 @@ export function validateProjects(entries) {
   }
 
   return errors
-}
-
-function loadRegistry() {
-  const registryPath = new URL('../src/content/projects.ts', import.meta.url)
-  const source = readFileSync(registryPath, 'utf8')
-  const compiled = ts.transpileModule(source, {
-    compilerOptions: {
-      module: ts.ModuleKind.CommonJS,
-      target: ts.ScriptTarget.ES2022,
-    },
-    fileName: fileURLToPath(registryPath),
-  }).outputText
-  const registryModule = { exports: {} }
-
-  vm.runInNewContext(compiled, {
-    module: registryModule,
-    exports: registryModule.exports,
-  })
-
-  return registryModule.exports.projects
 }
 
 function run() {

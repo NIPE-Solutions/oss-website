@@ -15,7 +15,7 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
-    exclude: [...defaultExclude, 'e2e/**'],
+    exclude: [...defaultExclude, 'e2e/**', '.worktrees/**'],
     setupFiles: ['./src/test/setup.ts'],
   },
 })

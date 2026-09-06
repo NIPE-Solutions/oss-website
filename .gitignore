@@ -11,3 +11,13 @@ test-results/
 
 .worktrees/
 .superpowers/
+
+.DS_Store
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.codex/
+.claude/
+.agents/
+docs/superpowers/
+docs/audits/

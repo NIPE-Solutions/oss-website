@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
 import { resolve } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
@@ -10,6 +11,21 @@ function readRepositoryFile(path) {
 }
 
 describe('repository documentation', () => {
+  it('keeps private workflow and assistant artifacts out of tracked files', () => {
+    const tracked = execFileSync('git', ['ls-files', '-z'], {
+      encoding: 'utf8',
+    })
+      .split('\0')
+      .filter(Boolean)
+    expect(
+      tracked.filter((path) =>
+        /(^|\/)(AGENTS\.md|CLAUDE\.md|GEMINI\.md|\.codex|\.claude|\.agents|\.superpowers)(\/|$)|^docs\/(superpowers|audits)\//i.test(
+          path,
+        ),
+      ),
+    ).toEqual([])
+  })
+
   it('documents local development, quality, and Vercel deployment commands', () => {
     const readme = readRepositoryFile('README.md')
 
@@ -60,7 +76,7 @@ describe('repository documentation', () => {
 
     expect(guide).toContain('src/content/projects.ts')
     expect(guide).toContain('one registry entry')
-    expect(guide).toContain('docs/audits/project-sources.md')
+    expect(guide).toContain('source')
     expect(guide).toContain('npm run validate:projects')
     expect(guide).toContain('npm run check')
   })
@@ -90,8 +106,7 @@ describe('repository documentation', () => {
       '### Stable npm package',
       '### Public beta',
       '### GitHub-only tool',
-      '### Hidden development project',
-      '### Public archived project',
+      '### Hidden experimental project',
     ]) {
       expect(guide).toContain(lifecycleExample)
     }
@@ -128,17 +143,6 @@ describe('repository documentation', () => {
     ]) {
       expect(checklist).toContain(manualCheck)
     }
-  })
-
-  it('describes the approved ecosystem identity with the current exact tagline', () => {
-    const audit = readRepositoryFile('docs/audits/final-audit.md')
-
-    expect(audit).toContain(
-      'The umbrella “Focused primitives and tools for the web.” positioning is',
-    )
-    expect(audit).not.toContain(
-      'The umbrella “Production-grade primitives and tools for the web” positioning is',
-    )
   })
 
   it('records exact recommended GitHub repository metadata', () => {

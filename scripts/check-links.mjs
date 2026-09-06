@@ -1,7 +1,7 @@
+import { loadRegistry } from './load-registry.mjs'
 import { readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import vm from 'node:vm'
 
 import ts from 'typescript'
 
@@ -106,6 +106,13 @@ export function collectProjectLinks(projects) {
       }
     }
 
+    for (const href of [
+      project.changelog,
+      ...(project.resources ?? []).map((link) => link.href),
+      ...Object.values(project.funding ?? {}),
+    ]) {
+      if (href) links.push({ source, href })
+    }
     if (project.purpose?.source?.href) {
       links.push({ source, href: project.purpose.source.href })
     }
@@ -218,26 +225,6 @@ function walkFiles(directory) {
 
     return [absolutePath]
   })
-}
-
-function loadRegistry() {
-  const registryPath = new URL('../src/content/projects.ts', import.meta.url)
-  const source = readFileSync(registryPath, 'utf8')
-  const compiled = ts.transpileModule(source, {
-    compilerOptions: {
-      module: ts.ModuleKind.CommonJS,
-      target: ts.ScriptTarget.ES2022,
-    },
-    fileName: fileURLToPath(registryPath),
-  }).outputText
-  const registryModule = { exports: {} }
-
-  vm.runInNewContext(compiled, {
-    module: registryModule,
-    exports: registryModule.exports,
-  })
-
-  return registryModule.exports.projects
 }
 
 function collectSourceLinks(sourceRoot) {

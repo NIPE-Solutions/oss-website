@@ -16,6 +16,11 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  openGraph: {
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: productionUrl('/'),
+  },
   alternates: {
     canonical: productionUrl('/'),
   },
@@ -40,7 +45,7 @@ export function SiteShell({ children }: SiteShellProps) {
 
 export default function RootLayout({ children }: SiteShellProps) {
   return (
-    <html lang="en">
+    <html lang="en" data-build-commit={process.env.NEXT_PUBLIC_BUILD_COMMIT}>
       <body>
         <SiteStructuredData />
         <SiteShell>{children}</SiteShell>

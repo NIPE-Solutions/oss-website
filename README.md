@@ -29,8 +29,7 @@ npm run build
 npm run preview
 ```
 
-Run browser checks separately. They start the configured local server when
-needed:
+Run browser checks separately. They build and start an isolated server on port 4387:
 
 ```bash
 npm run test:e2e
@@ -46,7 +45,7 @@ The project directory is driven by the single registry in
 through the [registry-first workflow](docs/ADDING_A_PROJECT.md); do not copy
 project facts into pages or introduce visitor-time GitHub/npm requests.
 
-Public technical claims must be traceable to the evidence audit. The legal and
+Public technical claims must be traceable to their linked primary sources. The legal and
 privacy pages use the owner-approved Bottom Sheet legal source and the actual
 processing of this site. That source approval is not a claim of legal
 compliance; professional owner/legal review remains recommended after material

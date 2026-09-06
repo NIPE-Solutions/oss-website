@@ -1,46 +1,49 @@
-import { ProjectEntry } from '@/components/project-entry'
+import { ProjectRow } from '@/components/project-row'
 import { projectCategories, publicProjects } from '@/content/projects'
 
 export function ProjectDirectory() {
-  const populatedCategories = projectCategories
-    .map((category) => ({
-      ...category,
-      projects: publicProjects.filter(
-        (project) => project.category === category.id,
-      ),
-    }))
-    .filter(({ projects }) => projects.length > 0)
-
   return (
     <section
-      className="project-directory"
+      className="project-directory site-frame"
       id="projects"
       aria-labelledby="projects-heading"
     >
-      <div className="site-frame">
-        <header className="section-introduction">
-          <h2 id="projects-heading">Projects</h2>
-          <p>
-            Public projects and their canonical technical references, grouped by
-            the problem they address.
-          </p>
-        </header>
-
-        <div className="project-directory__categories">
-          {populatedCategories.map((category) => (
-            <section
-              className="project-category"
-              key={category.id}
-              aria-labelledby={`${category.id}-heading`}
-            >
-              <h3 id={`${category.id}-heading`}>{category.label}</h3>
-              {category.projects.map((project) => (
-                <ProjectEntry key={project.slug} project={project} />
-              ))}
-            </section>
-          ))}
-        </div>
-      </div>
+      <header className="directory-heading">
+        <h2 id="projects-heading">Project index</h2>
+        <span>Choose the problem. Take the piece.</span>
+      </header>
+      {projectCategories.map((category) => {
+        const entries = publicProjects.filter(
+          (project) => project.category === category.id,
+        )
+        return entries.length ? (
+          <section
+            className="project-category"
+            key={category.id}
+            aria-labelledby={`${category.id}-heading`}
+          >
+            <header className="category-header">
+              <div>
+                <h3 id={`${category.id}-heading`}>{category.label}</h3>
+                <p>{category.description}</p>
+              </div>
+              <span
+                className="category-count"
+                aria-label={`${entries.length} projects`}
+              >
+                {String(entries.length).padStart(2, '0')}
+              </span>
+            </header>
+            {entries.map((project) => (
+              <ProjectRow key={project.slug} project={project} />
+            ))}
+          </section>
+        ) : null
+      })}
+      <p className="status-legend">
+        Alpha — API and behavior may change. Beta — API settling, broader
+        validation. Stable — compatibility expectations established.
+      </p>
     </section>
   )
 }

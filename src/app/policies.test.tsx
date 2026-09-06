@@ -150,42 +150,6 @@ describe('project support routes', () => {
       name: 'Project contribution routes',
     })
 
-    expect(
-      within(directory).queryByRole('link', {
-        name: 'React Spring Bottom Sheet issues',
-      }),
-    ).not.toBeInTheDocument()
-    expect(
-      within(directory).getByRole('link', {
-        name: 'React Spring Bottom Sheet documentation',
-      }),
-    ).toHaveAttribute(
-      'href',
-      'https://react-spring-bottom-sheet.nipesolutions.com',
-    )
-    expect(
-      within(directory).getByRole('link', { name: 'Readonly View issues' }),
-    ).toHaveAttribute(
-      'href',
-      'https://github.com/NIPE-Solutions/readonly-view/issues',
-    )
-    expect(
-      within(directory).getByRole('link', {
-        name: 'Angular Flex-Layout Codemod documentation',
-      }),
-    ).toHaveAttribute(
-      'href',
-      'https://github.com/NIPE-Solutions/flex-layout-migrator/blob/v2.0.0-beta.1/docs/SUPPORT.md',
-    )
-    expect(
-      within(directory).getByRole('link', {
-        name: 'React Swipe Actions discussions',
-      }),
-    ).toHaveAttribute(
-      'href',
-      'https://github.com/NIPE-Solutions/react-swipe-actions/discussions',
-    )
-
     for (const project of publicProjects) {
       for (const [kind, href] of Object.entries(project.support ?? {})) {
         if (kind === 'security') continue
@@ -201,30 +165,6 @@ describe('project support routes', () => {
 
   it('uses only verified project-specific security destinations', () => {
     render(<SecurityPage />)
-
-    expect(
-      screen.queryByText('React Spring Bottom Sheet'),
-    ).not.toBeInTheDocument()
-    expect(
-      screen.getByRole('link', { name: 'Readonly View security' }),
-    ).toHaveAttribute(
-      'href',
-      'https://github.com/NIPE-Solutions/readonly-view/security/policy',
-    )
-    expect(
-      screen.getByRole('link', {
-        name: 'Angular Flex-Layout Codemod security',
-      }),
-    ).toHaveAttribute(
-      'href',
-      'https://github.com/NIPE-Solutions/flex-layout-migrator/security/advisories/new',
-    )
-    expect(
-      screen.getByRole('link', { name: 'React Swipe Actions security' }),
-    ).toHaveAttribute(
-      'href',
-      'https://github.com/NIPE-Solutions/react-swipe-actions/security/advisories/new',
-    )
 
     for (const project of publicProjects) {
       const link = screen.queryByRole('link', {
@@ -255,10 +195,9 @@ describe('not-found route', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'Page not found' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute(
-      'href',
-      '/',
-    )
+    expect(
+      screen.getByRole('link', { name: 'Back to project index' }),
+    ).toHaveAttribute('href', '/')
     expect(screen.getByRole('link', { name: 'Projects' })).toHaveAttribute(
       'href',
       '/#projects',

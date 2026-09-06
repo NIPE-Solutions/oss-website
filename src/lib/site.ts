@@ -6,6 +6,6 @@ export const siteConfig = {
   title: 'NIPE Open Source — Focused primitives and tools for the web',
   tagline: 'Focused primitives and tools for the web.',
   description:
-    'Focused React interaction primitives, runtime utilities, and developer tooling with independent packages and project-owned documentation.',
+    'Independent browser primitives, React interaction libraries, runtime utilities and migration tools by NIPE Solutions.',
   githubOrganization: 'https://github.com/NIPE-Solutions',
 } as const

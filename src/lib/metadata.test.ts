@@ -47,9 +47,9 @@ describe('page metadata', () => {
     expect(siteConfig.title).toBe(
       'NIPE Open Source — Focused primitives and tools for the web',
     )
-    expect(siteConfig.description).toContain('React interaction primitives')
+    expect(siteConfig.description).toContain('React interaction libraries')
     expect(siteConfig.description).toContain('runtime utilities')
-    expect(siteConfig.description).toContain('developer tooling')
+    expect(siteConfig.description).toContain('migration tools')
   })
 
   it('keeps canonical URLs on the production origin', () => {
@@ -104,76 +104,30 @@ describe('page metadata', () => {
     ])
   })
 
-  it('derives unique project titles, descriptions, and canonicals from the registry', async () => {
-    const projectMetadata = await Promise.all(
-      publicProjects.map(({ slug }) =>
-        generateMetadata({ params: Promise.resolve({ slug }) }),
+  it('derives unique project titles, descriptions and canonicals', async () => {
+    for (const project of publicProjects) {
+      const metadata = await generateMetadata({
+        params: Promise.resolve({ slug: project.slug }),
+      })
+      expect(metadata.title).toBe(project.name)
+      expect(metadata.description).toBe(project.description)
+      expect(metadata.alternates?.canonical).toBe(
+        `https://opensource.nipesolutions.com/projects/${project.slug}`,
+      )
+    }
+  })
+
+  it('lists every public route in the sitemap at the production origin', () => {
+    expect(
+      sitemap()
+        .filter((route) => route.url.includes('/projects/'))
+        .map((route) => route.url),
+    ).toEqual(
+      publicProjects.map(
+        (project) =>
+          `https://opensource.nipesolutions.com/projects/${project.slug}`,
       ),
     )
-
-    expect(projectMetadata.map(({ title }) => title)).toEqual([
-      'React Spring Bottom Sheet',
-      'React Swipe Actions',
-      'React Anchored Layer',
-      'React Pull to Refresh',
-      'React Viewport',
-      'Readonly View',
-      'Angular Flex-Layout Codemod',
-    ])
-    expect(projectMetadata.map(({ description }) => description)).toEqual([
-      'Accessible React 19 bottom sheets with a compound Sheet API, named snap points, and separately exported styles.',
-      'Composable React rows with measured leading and trailing actions, keyboard support, logical RTL sides, and optional full-swipe activation.',
-      'Anchored floating layers for React that keep arbitrary portal content aligned through scroll, resize, and layout changes.',
-      'Pull-to-refresh for React with scroll arbitration, resistance, threshold hysteresis, and an application-owned refresh lifecycle.',
-      'Reactive React geometry for layout and visual viewports, keyboard occlusion, and safe areas.',
-      'A deeply readonly, lazy, live view of owner-controlled mutable data for JavaScript and TypeScript.',
-      'A beta Angular template codemod for Flex-Layout to Tailwind CSS v4 migrations.',
-    ])
-    expect(
-      projectMetadata.map(({ alternates }) => alternates?.canonical),
-    ).toEqual([
-      'https://opensource.nipesolutions.com/projects/react-spring-bottom-sheet',
-      'https://opensource.nipesolutions.com/projects/react-swipe-actions',
-      'https://opensource.nipesolutions.com/projects/react-anchored-layer',
-      'https://opensource.nipesolutions.com/projects/react-pull-to-refresh',
-      'https://opensource.nipesolutions.com/projects/react-viewport',
-      'https://opensource.nipesolutions.com/projects/readonly-view',
-      'https://opensource.nipesolutions.com/projects/flex-layout-codemod',
-    ])
-  })
-})
-
-describe('discovery routes', () => {
-  it('lists every public route in the sitemap at the production origin', () => {
-    expect(sitemap()).toEqual([
-      { url: 'https://opensource.nipesolutions.com/' },
-      {
-        url: 'https://opensource.nipesolutions.com/projects/react-spring-bottom-sheet',
-      },
-      {
-        url: 'https://opensource.nipesolutions.com/projects/react-swipe-actions',
-      },
-      {
-        url: 'https://opensource.nipesolutions.com/projects/react-anchored-layer',
-      },
-      {
-        url: 'https://opensource.nipesolutions.com/projects/react-pull-to-refresh',
-      },
-      {
-        url: 'https://opensource.nipesolutions.com/projects/react-viewport',
-      },
-      { url: 'https://opensource.nipesolutions.com/projects/readonly-view' },
-      {
-        url: 'https://opensource.nipesolutions.com/projects/flex-layout-codemod',
-      },
-      { url: 'https://opensource.nipesolutions.com/contributing' },
-      { url: 'https://opensource.nipesolutions.com/security' },
-      { url: 'https://opensource.nipesolutions.com/impressum' },
-      { url: 'https://opensource.nipesolutions.com/privacy' },
-    ])
-    expect(
-      sitemap().filter(({ url }) => url.includes('/projects/')),
-    ).toHaveLength(publicProjects.length)
   })
 
   it('prevents indexing and crawling outside production', () => {

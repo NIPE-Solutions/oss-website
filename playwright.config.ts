@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test'
 
-const port = 4173
+const port = 4387
 const baseURL = `http://127.0.0.1:${port}`
 
 export default defineConfig({
@@ -20,6 +20,6 @@ export default defineConfig({
     command: `npm run build && npm run preview -- --port ${port}`,
     url: baseURL,
     timeout: 120_000,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
   },
 })
