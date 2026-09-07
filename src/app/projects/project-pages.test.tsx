@@ -27,7 +27,7 @@ it.each(publicProjects)(
     render(await Page({ params: Promise.resolve({ slug: p.slug }) }))
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(p.name)
     expect(
-      screen.getByRole('heading', { name: 'What the application owns' }),
+      screen.getByRole('heading', { name: 'Boundaries & limitations' }),
     ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Documentation' })).toHaveAttribute(
       'href',

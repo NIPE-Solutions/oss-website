@@ -2,6 +2,11 @@ import type { OpenSourceProject } from '@/content/project-types'
 
 // Each drawing describes the package's operation, in the same coordinate system.
 const geometry: Record<OpenSourceProject['visual'], readonly string[]> = {
+  'data-inspector': [
+    'M24 24H72V44H24Z M96 64H156V84H96Z',
+    'M48 44V74H96 M72 34H138V64',
+    'M138 84V104H12V34H24 M18 28L24 34L18 40',
+  ],
   technical: ['M30 30H150V90H30Z M60 60H120'],
   'bottom-sheet': [
     'M24 18H154V102H24Z',

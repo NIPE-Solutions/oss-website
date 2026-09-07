@@ -120,6 +120,12 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           className="project-detail__actions"
           aria-label={`${project.name} actions`}
         >
+          {project.website && (
+            <ExternalLink href={project.website}>Project website</ExternalLink>
+          )}
+          {project.playground && (
+            <ExternalLink href={project.playground}>Playground</ExternalLink>
+          )}
           {project.documentation ? (
             <ExternalLink href={project.documentation}>
               Documentation

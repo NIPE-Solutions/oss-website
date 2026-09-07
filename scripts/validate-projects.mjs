@@ -21,6 +21,7 @@ const knownVisuals = new Set([
   'drag-dismiss',
   'caret-geometry',
   'technical',
+  'data-inspector',
 ])
 const supportDestinations = [
   'issues',
@@ -80,6 +81,20 @@ export function validateProjects(entries) {
 
     if (!isHttpsUrl(entry.repository)) {
       errors.push(`Project "${slug}" has a repository URL that must use HTTPS.`)
+    }
+
+    for (const field of ['website', 'playground']) {
+      if (entry[field] && !isHttpsUrl(entry[field]))
+        errors.push(`Project "${slug}" ${field} must use HTTPS.`)
+    }
+
+    if (
+      entry.featured &&
+      (!entry.feature?.headline || !entry.website || !entry.playground)
+    ) {
+      errors.push(
+        `Featured project "${slug}" requires a headline, website and playground.`,
+      )
     }
 
     if (entry.documentation && !isHttpsUrl(entry.documentation)) {

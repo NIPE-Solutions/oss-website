@@ -5,8 +5,8 @@ import { validateProjects } from '../../scripts/validate-projects.mjs'
 import sitemap from '../app/sitemap'
 
 describe('ecosystem directory contract', () => {
-  it('publishes nine audited projects in four areas', () => {
-    expect(publicProjects).toHaveLength(9)
+  it('publishes ten audited projects in four areas', () => {
+    expect(publicProjects).toHaveLength(10)
     expect(projectCategories.map((c) => c.id)).toEqual([
       'ui-interaction',
       'browser-primitives',

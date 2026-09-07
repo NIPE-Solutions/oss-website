@@ -22,6 +22,7 @@ describe('audited project content', () => {
   })
   it('keeps exact audited release channels and editorial numbering', () => {
     expect(publicProjects.map((p) => p.status)).toEqual([
+      'beta',
       'stable',
       'alpha',
       'alpha',
@@ -42,6 +43,7 @@ describe('audited project content', () => {
       '07',
       '08',
       '09',
+      '10',
     ])
     expect(getProject('unknown')).toBeUndefined()
   })

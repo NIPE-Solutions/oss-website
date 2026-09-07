@@ -83,3 +83,19 @@ must be distinguished from npm registry publication checks.
 
 Keep local instructions, planning files, audit scratch files and browser
 artifacts outside version control.
+
+## Featured project
+
+Set `featured: true` only for the current featured project, and `false` on the
+other entries. Supply `website`, `playground` and a `feature` object with a
+concise `headline` and 3–5 `signals`. Keep it first in its category using `order`.
+The directory renders its wide presentation instead of an ordinary row; header
+and footer featured links use the same registry flag. The inspector preview is
+static HTML/CSS, not an installed library or an interactive tree.
+
+React Data Inspector was verified on 2026-09-07 against repository commit
+`f9f3e09504467b1ac44dd21d370895d5541b36d7`, the live website, and the npm registry:
+Beta, published `0.1.0-beta.0`, canonical `/docs` and `/playground`. Issues are
+enabled; Discussions and a project security policy are absent. Projects without
+a configured security policy remain listed on the security page with an explicit
+note and a repository link, never a fabricated reporting URL.

@@ -1,3 +1,4 @@
+import { featuredProjects } from '@/content/projects'
 import Link from 'next/link'
 import { ExternalLink } from './external-link'
 import { siteConfig } from '@/lib/site'
@@ -12,6 +13,11 @@ export function SiteFooter() {
         </div>
         <nav className="footer-navigation" aria-label="Footer">
           <Link href="/#projects">Projects</Link>
+          {featuredProjects.map((project) => (
+            <Link key={project.slug} href={`/projects/${project.slug}`}>
+              {project.name}
+            </Link>
+          ))}
           <ExternalLink href={siteConfig.githubOrganization}>
             GitHub
           </ExternalLink>

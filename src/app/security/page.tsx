@@ -57,7 +57,22 @@ export default function SecurityPage() {
                   Security
                 </ExternalLink>
               </li>
-            ) : null,
+            ) : (
+              <li key={project.slug}>
+                <h3>{project.name}</h3>
+                <p>
+                  No project-specific security policy is currently listed. Check
+                  the repository for current reporting guidance before sharing
+                  sensitive details.
+                </p>
+                <ExternalLink
+                  href={project.repository}
+                  aria-label={`${project.name} repository`}
+                >
+                  Repository
+                </ExternalLink>
+              </li>
+            ),
           )}
         </ul>
       </section>
