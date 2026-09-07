@@ -116,6 +116,6 @@ describe('registry validation', () => {
       { encoding: 'utf8' },
     )
     expect(result.status, result.stderr).toBe(0)
-    expect(result.stdout).toContain('Validated 9 projects')
+    expect(result.stdout).toContain('Validated 10 projects')
   })
 })

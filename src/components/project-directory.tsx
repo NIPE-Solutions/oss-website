@@ -1,3 +1,4 @@
+import { FeaturedProject } from '@/components/featured-project'
 import { ProjectRow } from '@/components/project-row'
 import { projectCategories, publicProjects } from '@/content/projects'
 
@@ -34,9 +35,13 @@ export function ProjectDirectory() {
                 {String(entries.length).padStart(2, '0')}
               </span>
             </header>
-            {entries.map((project) => (
-              <ProjectRow key={project.slug} project={project} />
-            ))}
+            {entries.map((project) =>
+              project.featured ? (
+                <FeaturedProject key={project.slug} project={project} />
+              ) : (
+                <ProjectRow key={project.slug} project={project} />
+              ),
+            )}
           </section>
         ) : null
       })}

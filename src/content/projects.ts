@@ -6,7 +6,7 @@ export const projectCategories = [
     id: 'ui-interaction',
     label: 'UI & Interaction',
     description:
-      'Focused React interaction primitives with explicit gesture, accessibility and ownership boundaries.',
+      'Focused React inspection and interaction primitives with explicit gesture, accessibility and ownership boundaries.',
   },
   {
     id: 'browser-primitives',
@@ -29,6 +29,39 @@ export const projectCategories = [
 ] as const
 
 const entries = [
+  {
+    slug: 'react-data-inspector',
+    name: 'React Data Inspector',
+    category: 'ui-interaction',
+    description:
+      'A React inspector for real JavaScript object graphs. Explore values, follow shared references and cycles, and keep your application in control.',
+    visibility: 'public',
+    status: 'beta',
+    website: 'https://react-data-inspector.nipesolutions.com/',
+    playground: 'https://react-data-inspector.nipesolutions.com/playground',
+    documentation: 'https://react-data-inspector.nipesolutions.com/docs',
+    repository: 'https://github.com/NIPE-Solutions/react-data-inspector',
+    npm: {
+      package: '@nipe-solutions/react-data-inspector',
+      published: true,
+      version: '0.1.0-beta.0',
+    },
+    support: {
+      issues: 'https://github.com/NIPE-Solutions/react-data-inspector/issues',
+      documentation: 'https://react-data-inspector.nipesolutions.com/docs',
+    },
+    changelog:
+      'https://github.com/NIPE-Solutions/react-data-inspector/blob/main/CHANGELOG.md',
+    license: 'MIT',
+    accent: 'var(--nipe-red)',
+    visual: 'data-inspector',
+    featured: true,
+    feature: {
+      headline: 'Inspect the object you actually have.',
+      signals: ['React 18.3 / 19', 'TypeScript', 'Circular + shared refs'],
+    },
+    order: 1,
+  },
   {
     slug: 'react-spring-bottom-sheet',
     name: 'React Spring Bottom Sheet',
@@ -54,8 +87,8 @@ const entries = [
     license: 'MIT',
     accent: 'var(--project-bottom-sheet)',
     visual: 'bottom-sheet',
-    featured: true,
-    order: 1,
+    featured: false,
+    order: 2,
   },
   {
     slug: 'react-swipe-actions',
@@ -83,8 +116,8 @@ const entries = [
     license: 'MIT',
     accent: 'var(--project-swipe-actions)',
     visual: 'swipe-actions',
-    featured: true,
-    order: 2,
+    featured: false,
+    order: 3,
   },
   {
     slug: 'react-anchored-layer',
@@ -112,8 +145,8 @@ const entries = [
     license: 'MIT',
     accent: 'var(--project-anchored-layer)',
     visual: 'anchored-layer',
-    featured: true,
-    order: 3,
+    featured: false,
+    order: 4,
   },
   {
     slug: 'react-pull-to-refresh',
@@ -141,8 +174,8 @@ const entries = [
     license: 'MIT',
     accent: 'var(--project-pull-to-refresh)',
     visual: 'pull-to-refresh',
-    featured: true,
-    order: 4,
+    featured: false,
+    order: 5,
   },
   {
     slug: 'react-drag-dismiss',
@@ -170,8 +203,8 @@ const entries = [
     license: 'MIT',
     accent: 'var(--project-drag-dismiss)',
     visual: 'drag-dismiss',
-    featured: true,
-    order: 5,
+    featured: false,
+    order: 6,
   },
   {
     slug: 'caret-geometry',
@@ -199,8 +232,8 @@ const entries = [
     license: 'MIT',
     accent: 'var(--project-caret-geometry)',
     visual: 'caret-geometry',
-    featured: true,
-    order: 6,
+    featured: false,
+    order: 7,
   },
   {
     slug: 'react-viewport',
@@ -228,8 +261,8 @@ const entries = [
     license: 'MIT',
     accent: 'var(--project-viewport)',
     visual: 'viewport',
-    featured: true,
-    order: 7,
+    featured: false,
+    order: 8,
     resources: [
       {
         label: 'CSS baseline',
@@ -267,8 +300,8 @@ const entries = [
     license: 'MIT',
     accent: 'var(--project-readonly-view)',
     visual: 'readonly-view',
-    featured: true,
-    order: 8,
+    featured: false,
+    order: 9,
   },
   {
     slug: 'flex-layout-codemod',
@@ -296,8 +329,8 @@ const entries = [
     license: 'MIT',
     accent: 'var(--project-codemod)',
     visual: 'codemod',
-    featured: true,
-    order: 9,
+    featured: false,
+    order: 10,
   },
 ] as const
 
@@ -318,3 +351,7 @@ export function projectNumber(slug: string) {
     '0',
   )
 }
+
+export const featuredProjects = publicProjects.filter(
+  (project) => project.featured,
+)

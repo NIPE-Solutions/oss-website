@@ -39,6 +39,12 @@ export interface OpenSourceProject {
   readonly status: ProjectStatus
   readonly repository: string
   readonly documentation?: string
+  readonly website?: string
+  readonly playground?: string
+  readonly feature?: {
+    readonly headline: string
+    readonly signals: readonly string[]
+  }
   readonly npm?: ProjectNpm
   readonly support?: ProjectSupport
   readonly license?: string
@@ -64,6 +70,7 @@ export interface OpenSourceProject {
     | 'drag-dismiss'
     | 'caret-geometry'
     | 'technical'
+    | 'data-inspector'
   readonly changelog?: string
   readonly resources?: readonly ProjectSource[]
   readonly funding?: {

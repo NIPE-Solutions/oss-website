@@ -1,3 +1,4 @@
+import { featuredProjects } from '@/content/projects'
 import { ExternalLink } from '@/components/external-link'
 import { siteConfig } from '@/lib/site'
 
@@ -19,6 +20,11 @@ export function SiteHeader() {
         </a>
         <nav className="primary-navigation" aria-label="Primary">
           <a href="/#projects">Projects</a>
+          {featuredProjects.map((project) => (
+            <a key={project.slug} href={`/#${project.slug}`}>
+              {project.name}
+            </a>
+          ))}
           <a href="/#principles">Principles</a>
           <ExternalLink href={siteConfig.githubOrganization}>
             GitHub

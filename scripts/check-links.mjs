@@ -107,6 +107,8 @@ export function collectProjectLinks(projects) {
     }
 
     for (const href of [
+      project.website,
+      project.playground,
       project.changelog,
       ...(project.resources ?? []).map((link) => link.href),
       ...Object.values(project.funding ?? {}),

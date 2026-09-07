@@ -5,7 +5,9 @@ test('directory navigation and project links work without nested anchors', async
   page,
 }) => {
   await page.goto('/')
-  await expect(page.locator('.project-row')).toHaveCount(publicProjects.length)
+  await expect(page.locator('.project-category article')).toHaveCount(
+    publicProjects.length,
+  )
   await expect(page.locator('a a')).toHaveCount(0)
   for (const p of publicProjects) {
     const row = page.getByRole('article', { name: p.name })
@@ -25,6 +27,7 @@ test('primary navigation works with keyboard and visible focus', async ({
     'Skip to content',
     'NIPE Open Source home',
     'Projects',
+    'React Data Inspector',
     'Principles',
     'GitHub',
   ]) {

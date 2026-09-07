@@ -3,6 +3,38 @@ import type { OpenSourceProject } from './project-types'
 export const projectContent: Readonly<
   Record<string, Pick<OpenSourceProject, 'purpose' | 'claims'>>
 > = {
+  'react-data-inspector': {
+    purpose: {
+      description:
+        'Inspect JavaScript values as object graphs while keeping application state and styling under application control.',
+      source: {
+        label: 'Audited project README',
+        href: 'https://github.com/NIPE-Solutions/react-data-inspector/blob/f9f3e09504467b1ac44dd21d370895d5541b36d7/README.md',
+      },
+    },
+    claims: [
+      {
+        kind: 'capability',
+        title: 'Types, identity and safe inspection',
+        description:
+          'Real JavaScript types, distinct shared and circular references, descriptor-based inspection, and controlled expansion and selection.',
+        source: {
+          label: 'Audited project README',
+          href: 'https://github.com/NIPE-Solutions/react-data-inspector/blob/f9f3e09504467b1ac44dd21d370895d5541b36d7/README.md',
+        },
+      },
+      {
+        kind: 'limitation',
+        title: 'Read-only beta',
+        description:
+          'Editing is not part of the public API. Getters are not evaluated, promises are not awaited, and functions are not executed. WeakMap and WeakSet contents remain opaque.',
+        source: {
+          label: 'Audited project README',
+          href: 'https://github.com/NIPE-Solutions/react-data-inspector/blob/f9f3e09504467b1ac44dd21d370895d5541b36d7/README.md',
+        },
+      },
+    ],
+  },
   'react-spring-bottom-sheet': {
     purpose: {
       description:
