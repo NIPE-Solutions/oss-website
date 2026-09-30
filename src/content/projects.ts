@@ -36,7 +36,7 @@ const entries = [
     description:
       'A React inspector for real JavaScript object graphs. Explore values, follow shared references and cycles, and keep your application in control.',
     visibility: 'public',
-    status: 'beta',
+    status: 'stable',
     website: 'https://react-data-inspector.nipesolutions.com/',
     playground: 'https://react-data-inspector.nipesolutions.com/playground',
     documentation: 'https://react-data-inspector.nipesolutions.com/docs',
@@ -44,7 +44,7 @@ const entries = [
     npm: {
       package: '@nipe-solutions/react-data-inspector',
       published: true,
-      version: '0.1.0-beta.0',
+      version: '1.0.0',
     },
     support: {
       issues: 'https://github.com/NIPE-Solutions/react-data-inspector/issues',
@@ -75,7 +75,7 @@ const entries = [
     npm: {
       package: '@nipe-solutions/react-spring-bottom-sheet',
       published: true,
-      version: '5.0.1',
+      version: '5.0.2',
     },
     support: {
       issues:
@@ -97,13 +97,13 @@ const entries = [
     description:
       'Composable swipe-reveal actions for React rows with measured action regions, logical RTL sides, keyboard interaction and optional full swipe.',
     visibility: 'public',
-    status: 'alpha',
+    status: 'stable',
     repository: 'https://github.com/NIPE-Solutions/react-swipe-actions',
     documentation: 'https://react-swipe-actions.nipesolutions.com/',
     npm: {
       package: '@nipe-solutions/react-swipe-actions',
       published: true,
-      version: '0.1.0-alpha.3',
+      version: '1.0.0',
     },
     support: {
       issues: 'https://github.com/NIPE-Solutions/react-swipe-actions/issues',
@@ -126,13 +126,13 @@ const entries = [
     description:
       'Keep floating React content aligned with an anchor through portals, scrolling, resizing and layout changes — without owning popup semantics.',
     visibility: 'public',
-    status: 'alpha',
+    status: 'stable',
     repository: 'https://github.com/NIPE-Solutions/react-anchored-layer',
     documentation: 'https://react-anchored-layer.nipesolutions.com/',
     npm: {
       package: '@nipe-solutions/react-anchored-layer',
       published: true,
-      version: '0.1.0-alpha.0',
+      version: '1.0.0',
     },
     support: {
       issues: 'https://github.com/NIPE-Solutions/react-anchored-layer/issues',
@@ -155,13 +155,13 @@ const entries = [
     description:
       'Pull-to-refresh mechanics with scroll ownership, resistance, threshold hysteresis and an application-owned asynchronous refresh lifecycle.',
     visibility: 'public',
-    status: 'alpha',
+    status: 'stable',
     repository: 'https://github.com/NIPE-Solutions/react-pull-to-refresh',
     documentation: 'https://react-pull-to-refresh.nipesolutions.com/',
     npm: {
       package: '@nipe-solutions/react-pull-to-refresh',
       published: true,
-      version: '0.1.0-alpha.1',
+      version: '1.0.0',
     },
     support: {
       issues: 'https://github.com/NIPE-Solutions/react-pull-to-refresh/issues',
@@ -184,13 +184,13 @@ const entries = [
     description:
       'Drag-to-dismiss mechanics for arbitrary React content with intent detection, velocity, resistance and settling — while the application owns removal.',
     visibility: 'public',
-    status: 'alpha',
+    status: 'stable',
     repository: 'https://github.com/NIPE-Solutions/react-drag-dismiss',
     documentation: 'https://react-drag-dismiss.nipesolutions.com/',
     npm: {
       package: '@nipe-solutions/react-drag-dismiss',
       published: true,
-      version: '0.1.0-alpha.1',
+      version: '1.0.0',
     },
     support: {
       issues: 'https://github.com/NIPE-Solutions/react-drag-dismiss/issues',
@@ -213,13 +213,13 @@ const entries = [
     description:
       'Reliable viewport coordinates for carets in inputs, textareas and editable DOM, with observation and virtual references for floating UI.',
     visibility: 'public',
-    status: 'alpha',
+    status: 'stable',
     repository: 'https://github.com/NIPE-Solutions/caret-geometry',
     documentation: 'https://caret-geometry.nipesolutions.com/',
     npm: {
       package: '@nipe-solutions/caret-geometry',
       published: true,
-      version: '0.1.0-alpha.0',
+      version: '1.0.0',
     },
     support: {
       issues: 'https://github.com/NIPE-Solutions/caret-geometry/issues',
@@ -242,13 +242,13 @@ const entries = [
     description:
       'Shared reactive visual-viewport, zoom, keyboard-occlusion and safe-area geometry for React logic when CSS or a one-off browser API read is not enough.',
     visibility: 'public',
-    status: 'alpha',
+    status: 'stable',
     repository: 'https://github.com/NIPE-Solutions/react-viewport',
     documentation: 'https://react-viewport.nipesolutions.com/',
     npm: {
       package: '@nipe-solutions/react-viewport',
       published: true,
-      version: '0.1.0-alpha.0',
+      version: '1.0.0',
     },
     support: {
       issues: 'https://github.com/NIPE-Solutions/react-viewport/issues',
@@ -310,13 +310,13 @@ const entries = [
     description:
       'Review-first Angular template migration tooling for removing Flex Layout with compiler-aware analysis, explicit targets and diagnostics for cases that should remain manual.',
     visibility: 'public',
-    status: 'beta',
+    status: 'stable',
     repository: 'https://github.com/NIPE-Solutions/flex-layout-migrator',
     documentation: 'https://angular-flex-layout-codemod.nipesolutions.com/',
     npm: {
       package: '@nipe-solutions/flex-layout-codemod',
       published: true,
-      version: '2.0.0-beta.4',
+      version: '2.0.0',
     },
     support: {
       issues: 'https://github.com/NIPE-Solutions/flex-layout-migrator/issues',

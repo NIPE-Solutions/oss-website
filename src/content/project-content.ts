@@ -25,7 +25,7 @@ export const projectContent: Readonly<
       },
       {
         kind: 'limitation',
-        title: 'Read-only beta',
+        title: 'Read-only inspection',
         description:
           'Editing is not part of the public API. Getters are not evaluated, promises are not awaited, and functions are not executed. WeakMap and WeakSet contents remain opaque.',
         source: {
