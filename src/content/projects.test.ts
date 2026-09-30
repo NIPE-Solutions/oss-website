@@ -22,16 +22,16 @@ describe('audited project content', () => {
   })
   it('keeps exact audited release channels and editorial numbering', () => {
     expect(publicProjects.map((p) => p.status)).toEqual([
-      'beta',
       'stable',
-      'alpha',
-      'alpha',
-      'alpha',
-      'alpha',
-      'alpha',
-      'alpha',
       'stable',
-      'beta',
+      'stable',
+      'stable',
+      'stable',
+      'stable',
+      'stable',
+      'stable',
+      'stable',
+      'stable',
     ])
     expect(publicProjects.map((p) => projectNumber(p.slug))).toEqual([
       '01',

@@ -61,6 +61,31 @@ it('omits npm and version for unpublished packages', () => {
     screen.queryByRole('link', { name: 'npm package' }),
   ).not.toBeInTheDocument()
 })
+it.each([
+  ['react-data-inspector', '@nipe-solutions/react-data-inspector', '1.0.0'],
+  [
+    'react-spring-bottom-sheet',
+    '@nipe-solutions/react-spring-bottom-sheet',
+    '5.0.2',
+  ],
+  ['react-swipe-actions', '@nipe-solutions/react-swipe-actions', '1.0.0'],
+  ['react-anchored-layer', '@nipe-solutions/react-anchored-layer', '1.0.0'],
+  ['react-pull-to-refresh', '@nipe-solutions/react-pull-to-refresh', '1.0.0'],
+  ['react-drag-dismiss', '@nipe-solutions/react-drag-dismiss', '1.0.0'],
+  ['caret-geometry', '@nipe-solutions/caret-geometry', '1.0.0'],
+  ['react-viewport', '@nipe-solutions/react-viewport', '1.0.0'],
+  ['readonly-view', '@nipe-solutions/readonly-view', '2.0.1'],
+  ['flex-layout-codemod', '@nipe-solutions/flex-layout-codemod', '2.0.0'],
+])(
+  'offers the published stable install command for %s',
+  async (slug, packageName, version) => {
+    render(await Page({ params: Promise.resolve({ slug }) }))
+    expect(screen.getByText('STABLE')).toBeInTheDocument()
+    expect(
+      screen.getByText(`npm install ${packageName}@${version}`),
+    ).toBeInTheDocument()
+  },
+)
 it('returns not-found for invalid projects', async () => {
   await expect(
     Page({ params: Promise.resolve({ slug: 'invalid' }) }),
