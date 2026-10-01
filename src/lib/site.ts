@@ -8,4 +8,6 @@ export const siteConfig = {
   description:
     'Independent browser primitives, React interaction libraries including React Data Inspector, runtime utilities and migration tools by NIPE Solutions.',
   githubOrganization: 'https://github.com/NIPE-Solutions',
+  githubRepository: 'https://github.com/NIPE-Solutions/oss-website',
+  companyWebsite: 'https://nipesolutions.com',
 } as const

@@ -22,8 +22,19 @@ for (const width of [320, 375, 768, 1024, 1440, 1920])
         .locator('.hero')
         .evaluate((e) => e.getBoundingClientRect().height),
     ).toBeLessThan(650)
+    const sectionHeight = await page
+      .locator('.community-support, .custom-work')
+      .evaluateAll((sections) =>
+        sections.reduce(
+          (height, section) => height + section.getBoundingClientRect().height,
+          0,
+        ),
+      )
+    expect(sectionHeight).toBeLessThan(600)
+    // Keep the original content's density budget as the page gains two sections.
     expect(
-      await page.evaluate(() => document.documentElement.scrollHeight),
+      (await page.evaluate(() => document.documentElement.scrollHeight)) -
+        sectionHeight,
     ).toBeLessThan(6500)
     if ([375, 768, 1440].includes(width))
       await page.screenshot({
