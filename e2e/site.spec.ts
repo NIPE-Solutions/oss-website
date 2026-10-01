@@ -1,6 +1,59 @@
 import { expect, test } from '@playwright/test'
 import { publicProjects } from '../src/content/projects'
 
+for (const width of [375, 1280]) {
+  for (const colorScheme of ['light', 'dark'] as const) {
+    test(`support and custom-work links stay readable at ${width}px in ${colorScheme} mode`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 })
+      await page.emulateMedia({ colorScheme, reducedMotion: 'reduce' })
+      await page.goto('/')
+      const support = page.getByRole('region', {
+        name: 'Found something useful?',
+      })
+      const work = page.getByRole('region', {
+        name: 'Need something built for your team?',
+      })
+      await expect(support).toBeVisible()
+      await expect(work).toBeVisible()
+      const star = support.getByRole('link', { name: 'Star on GitHub' })
+      await expect(star).toHaveAttribute(
+        'href',
+        'https://github.com/NIPE-Solutions/oss-website',
+      )
+      await expect(
+        support.getByRole('link', { name: 'Explore our GitHub projects' }),
+      ).toHaveAttribute('href', 'https://github.com/NIPE-Solutions')
+      const custom = work.getByRole('link', { name: 'Discuss custom work' })
+      await expect(custom).toHaveAttribute('href', 'https://nipesolutions.com')
+      await expect(
+        page
+          .getByRole('navigation', { name: 'Primary' })
+          .getByRole('link', { name: 'Custom work' }),
+      ).toHaveAttribute('href', 'https://nipesolutions.com')
+      for (const link of [star, custom]) {
+        const box = await link.boundingBox()
+        expect(box?.width).toBeGreaterThanOrEqual(44)
+        expect(box?.height).toBeGreaterThanOrEqual(44)
+        await page.keyboard.press('Tab')
+        await link.focus()
+        await expect(link).toBeFocused()
+        expect(
+          await link.evaluate(
+            (element) => getComputedStyle(element).outlineStyle,
+          ),
+        ).not.toBe('none')
+      }
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true)
+    })
+  }
+}
+
 test('directory navigation and project links work without nested anchors', async ({
   page,
 }) => {
@@ -30,6 +83,7 @@ test('primary navigation works with keyboard and visible focus', async ({
     'React Data Inspector',
     'Principles',
     'GitHub',
+    'Custom work',
   ]) {
     await page.keyboard.press('Tab')
     await expect(page.locator(':focus')).toHaveAccessibleName(name)

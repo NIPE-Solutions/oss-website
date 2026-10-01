@@ -19,7 +19,19 @@ it('provides landmarks, a skip link and compact navigation', () => {
     within(screen.getByRole('navigation', { name: 'Primary' }))
       .getAllByRole('link')
       .map((l) => l.textContent?.replace('↗', '').trim()),
-  ).toEqual(['Projects', 'React Data Inspector', 'Principles', 'GitHub'])
+  ).toEqual([
+    'Projects',
+    'React Data Inspector',
+    'Principles',
+    'GitHub',
+    'Custom work',
+  ])
+  expect(
+    within(screen.getByRole('navigation', { name: 'Primary' })).getByRole(
+      'link',
+      { name: 'Custom work' },
+    ),
+  ).toHaveAttribute('href', 'https://nipesolutions.com')
   const footer = within(screen.getByRole('navigation', { name: 'Footer' }))
   for (const [name, href] of [
     ['Imprint', '/impressum'],

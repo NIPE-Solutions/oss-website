@@ -29,6 +29,12 @@ export function SiteHeader() {
           <ExternalLink href={siteConfig.githubOrganization}>
             GitHub
           </ExternalLink>
+          <ExternalLink
+            className="primary-navigation__work"
+            href={siteConfig.companyWebsite}
+          >
+            Custom work
+          </ExternalLink>
         </nav>
       </div>
     </header>

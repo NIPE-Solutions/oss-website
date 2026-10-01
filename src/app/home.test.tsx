@@ -4,6 +4,31 @@ import Home from './page'
 import { ProjectRow } from '@/components/project-row'
 import { publicProjects, projectCategories } from '@/content/projects'
 afterEach(cleanup)
+it('offers repository support with a distinct link to the wider collection', () => {
+  render(<Home />)
+  const support = within(
+    screen.getByRole('region', { name: 'Found something useful?' }),
+  )
+  expect(support.getByRole('link', { name: 'Star on GitHub' })).toHaveAttribute(
+    'href',
+    'https://github.com/NIPE-Solutions/oss-website',
+  )
+  expect(
+    support.getByRole('link', { name: 'Explore our GitHub projects' }),
+  ).toHaveAttribute('href', 'https://github.com/NIPE-Solutions')
+})
+it('routes custom-work enquiries to NIPE Solutions rather than open-source support', () => {
+  render(<Home />)
+  const work = within(
+    screen.getByRole('region', { name: 'Need something built for your team?' }),
+  )
+  expect(
+    work.getByRole('link', { name: 'Discuss custom work' }),
+  ).toHaveAttribute('href', 'https://nipesolutions.com')
+  expect(
+    work.getByRole('link', { name: 'Discuss custom work' }),
+  ).not.toHaveAttribute('target')
+})
 it('renders a typography-led index with derived counts and all category groups', () => {
   const { container } = render(<Home />)
   expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
