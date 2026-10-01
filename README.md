@@ -1,8 +1,38 @@
 # NIPE Open Source
 
-The public directory for NIPE-maintained open-source software. It is a static
-Next.js site; individual project repositories and documentation sites remain
-the technical sources of truth.
+Find the NIPE-maintained libraries and tools that solve the part of your web
+application you do not want to rebuild.
+
+[Browse the directory](https://opensource.nipesolutions.com) for project
+overviews, installation commands, documentation, demos, and support routes.
+Each project page explains its scope and links to the repository behind its
+technical claims, so you can assess a package before adding it to your app.
+
+## Find a project
+
+| When you need to…                                                                       | Project                                                                              |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Inspect JavaScript objects, collections, cycles, and shared references in React         | [React Data Inspector](https://react-data-inspector.nipesolutions.com)               |
+| Build a React 19 bottom sheet with snap points and coordinated scrolling                | [React Spring Bottom Sheet](https://react-spring-bottom-sheet.nipesolutions.com)     |
+| Reveal row actions with a swipe, while keeping keyboard access and RTL behavior         | [React Swipe Actions](https://react-swipe-actions.nipesolutions.com)                 |
+| Keep floating content aligned with a control through portals and layout changes         | [React Anchored Layer](https://react-anchored-layer.nipesolutions.com)               |
+| Add a pull-to-refresh gesture to an application-owned refresh operation                 | [React Pull to Refresh](https://react-pull-to-refresh.nipesolutions.com)             |
+| Let people dismiss React content with a drag, without handing over app state            | [React Drag Dismiss](https://react-drag-dismiss.nipesolutions.com)                   |
+| Position autocomplete or mention suggestions beside the text cursor                     | [Caret Geometry](https://caret-geometry.nipesolutions.com)                           |
+| Read shared visual-viewport geometry, keyboard occlusion, and safe-area values in React | [React Viewport](https://react-viewport.nipesolutions.com)                           |
+| Expose live JavaScript data while rejecting writes through the public view              | [ReadonlyView](https://readonly-view.nipesolutions.com)                              |
+| Migrate supported Angular Flex-Layout directives to Tailwind CSS v4 or native CSS       | [Angular Flex-Layout Codemod](https://angular-flex-layout-codemod.nipesolutions.com) |
+
+The libraries have separate compatibility and support boundaries. In particular,
+automated browser coverage is not physical-device or human screen-reader
+verification; check each project's documentation for the evidence you need.
+
+## About this repository
+
+This is the directory website, not a combined library or an npm package to
+install. It is a statically generated Next.js site with one project registry.
+Individual repositories and documentation sites remain the technical sources
+of truth. There are no visitor-time GitHub or npm API requests.
 
 ## Development
 
